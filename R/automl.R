@@ -43,10 +43,11 @@ sbamlmodpsoparam <- function(mylspsoparam, mylspsopart)
             mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_j", l, sep = '')]]))
           }
           #to avoid stagnation for bB & j
-          set.seed(mylspsoparam$seed + i)
           myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0])
+          set.seed(mylspsoparam$seed + i)
           mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0] <- stats::runif(n = myprov, min = 0, max = 0.05)
           myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1])
+          set.seed(mylspsoparam$seed + i)
           mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1] <- stats::runif(n = myprov, min = 0.95, max = 1)
           rm(myprov)
         }
@@ -337,13 +338,17 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
   if (!"auto_psopartpopsize" %in% myprov) {autopar[["auto_psopartpopsize"]] <- TRUE}
   if (!"auto_psopartpopsize_min" %in% myprov) {autopar[["auto_psopartpopsize_min"]] <- 2}
   if (!"auto_psopartpopsize_max" %in% myprov) {autopar[["auto_psopartpopsize_max"]] <- 50}
+  if (!"auto_lambda" %in% myprov) {autopar[["auto_lambda"]] <- FALSE}
+  if (!"auto_lambda_min" %in% myprov) {autopar[["auto_lambda_min"]] <- -2}
+  if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 3}
   rm(myprov)
   #
   myprov <- c(autopar$auto_minibatchsize,
               autopar$auto_learningrate,
               autopar$auto_beta1,
               autopar$auto_beta2,
-              autopar$auto_psopartpopsize)
+              autopar$auto_psopartpopsize,
+              autopar$auto_lambda)
   autopar$psonbvar2optim <- length(myprov)
 
   if (sum(myprov) == 0 & autopar$numiterations > 1)
@@ -445,6 +450,20 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
                                                  "), digits = 0)")
       ))
     }
+    if (autopar$auto_lambda == TRUE & !"lambda" %in% names(hpar))
+    {
+     hpar$lambda <- eval(parse(text =
+                                        paste0("10^(",
+                                               sbamlprepscalem11201(mylspsoactivpart$Position[6]),
+                                               " * (",
+                                               autopar$auto_learningrate_max,
+                                               " - (",
+                                               autopar$auto_learningrate_min,
+                                               ")) + (",
+                                               autopar$auto_learningrate_min,
+                                               "))")
+     ))
+    }
     hpar <- sbamlhparvalid(hpar = hpar)
     #
     mymodel <- try(automl_train_manual(Xref = Xref, Yref = Yref, hpar = hpar), TRUE)
@@ -490,7 +509,7 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
         }
         mylastlog <- paste("iteration", iternbr,
                            "particle", i,
-                           "weighted err:", round(mylspsopart[[i]]$Cost, digits = 5),
+                           "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
                            "(train:", round(mylspsopart[[i]]$Best$model$error$tr, digits = 5),
                            "cvalid:", round(mylspsopart[[i]]$Best$model$error$cv, digits = 5),
                            ")", sep = " ")
@@ -565,6 +584,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
     mycvpctg <- mydl$hpar$testcvsize / 100
     mycvgainunder <- mydl$hpar$testgainunder / 100
     mythld <- floor(dim(Xref)[2] * mycvpctg)
+    set.seed(mydl$hpar$seed)
     mysample <- sample(x = dim(Xref)[2], size = mythld, replace = FALSE)
     Xcv <- matrix(Xref[,mysample], nrow = dim(Xref)[1], byrow = F)
     Ycv <- matrix(Yref[,mysample], nrow = dim(Yref)[1], byrow = F)
@@ -733,7 +753,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
       bB <- mydl[[paste("mydl_bB", l, sep = '')]]
       cat(paste('   dim W', l, ': [', paste(dim(W), collapse = ','),
                 '] (min|max: ',min(W),', ',max(W),
-                ')  dim bB', l, ': [',  paste(dim(bB), collapse = ','),
+                ')\n   dim bB', l, ': [',  paste(dim(bB), collapse = ','),
                 '] (min|max: ',min(bB),', ',max(bB),
                 ')\n', sep = ''))
       if (mydl$hpar$batchnor_mom != 0)

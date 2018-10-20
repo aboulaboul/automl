@@ -6,7 +6,7 @@ List of parameters to allow multi deep neural network automatic hyperparameters 
 Not mandatory (the list is preset and all arguments are initialized with default value) but it is advisable to adjust some important arguments for performance reasons (including processing time)
 }
 \arguments{
-\item{psopartpopsize}{ number of particles in swarm, the main argument that should be tuned\cr
+\item{psopartpopsize}{ number of particles in swarm, the main argument that should be tuned (default value 8, which is quite low)\cr
 #tuning priority 1}
 
 \item{psoxxx}{ see \link{pso} for other PSO specific arguments details}
@@ -35,6 +35,11 @@ the minimum and maximum value for \sQuote{learningrate} correspond to 10 to the 
 \item{auto_psopartpopsize_min}{ see below}
 \item{auto_psopartpopsize_max}{ \sQuote{auto_psopartpopsize} default value \sQuote{TRUE} for automatic adjustment of \sQuote{psopartpopsize} argument in \link{automl_train_manual} function\cr
 the minimum and maximum value for \sQuote{learningrate} ; default 2 for \sQuote{auto_psopartpopsize_min} and 50 for \sQuote{auto_psopartpopsize_max})}
+
+\item{auto_lambda}{ see below}
+\item{auto_lambda_min}{ see below}
+\item{auto_lambda_max}{ \sQuote{auto_lambda} default value \sQuote{FALSE} for automatic adjustment of \sQuote{lambda} regularization argument in \link{automl_train_manual} function\cr
+the minimum and maximum value for \sQuote{lambda} correspond to 10 to the power value  (default -2) for \sQuote{auto_lambda_min} and (default 3) for \sQuote{auto_lambda_max})}
 
 \item{seed}{ seed for reproductibility (default 4)}
 

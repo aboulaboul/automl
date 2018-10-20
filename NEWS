@@ -1,0 +1,12 @@
+automl 1.0.6
+============================================
+* vignette howto_automl: why, how and basic howto
+* 'auto_lambda' autopar regularization hyperparameter
+* seed bug fix for reproductibility
+* display enhancement in NN structure display
+
+automl 1.0.5
+============================================
+* first public release on CRAN
+* There's so much to do; transfert learning, CNN, RNN ...
+  feel free to join

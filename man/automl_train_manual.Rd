@@ -24,13 +24,14 @@ ymat <- iris[,1]
 #with gradient descent
 amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
                                 hpar = list(learningrate = 0.01,
+                                            numiterations = 30,
                                             minibatchsize = 2^2))
 \dontrun{
 #with PSO
 amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
                                 hpar = list(modexec = 'trainwpso',
-                                            numiterations = 20,
-                                            psopartpopsize = 30))
+                                            numiterations = 30,
+                                            psopartpopsize = 50))
 #with PSO and custom cost function
 f <- 'J=abs((y-yhat)/y)'
 f <- c(f, 'J=sum(J[!is.infinite(J)],na.rm=TRUE)')
@@ -38,8 +39,8 @@ f <- c(f, 'J=(J/length(y))')
 f <- paste(f, collapse = ';')
 amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
                                 hpar = list(modexec = 'trainwpso',
-                                            numiterations = 20,
-                                            psopartpopsize = 30,
+                                            numiterations = 30,
+                                            psopartpopsize = 50,
                                             costcustformul = f))
 
 ##CLASSIFICATION (predict Species given other Iris parameters)
