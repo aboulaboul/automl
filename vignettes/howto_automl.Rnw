@@ -1,7 +1,7 @@
 %\VignetteIndexEntry{howto_automl.pdf}
 \documentclass[10pt,a4paper,oneside]{report}
 \usepackage[a4paper]{geometry}
-\geometry{hscale=0.85,vscale=0.85,centering}
+\geometry{hscale=0.90,vscale=0.90,centering}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \title{automl R package vignette}
@@ -10,26 +10,34 @@
 \tableofcontents
 \newpage
 \section{Introduction to automl package}
-This document is intended to answer the following questions; why \& how automl and how to use it
+This document is intended to answer the following questions; why \& how automl and how to use it\\\\
+automl package provides: \\
+-Deep Learning last tricks (those who have taken Andrew NG’s MOOC on Coursera will be in familiar territory)\\
+-hyperparameters autotune with metaheuristic (PSO)\\
+-experimental stuff and more to come (you’re welcome as coauthor!)\\
+
+
+
 \section{Why \& how automl}
 
-\subsection{Deep Learning existing frameworks, disadvandages}
+\subsection{Deep Learning existing frameworks, disadvantages}
 Deploying and maintaining most Deep Learning frameworks means: Python...\\
 R language is so simple to install and maintain in production environments that it is obvious to use a pure R based package for deep learning !\\
 
-\subsection{Neural Network - Deep Learning, disadvandages}
+\subsection{Neural Network - Deep Learning, disadvantages}
 Disadvantages :\\
-1st disadvandage: you have to test manually different combinations of parameters (number of layers, nodes, activation function, etc ...) and then also tune manually hyper parameters for training (learning rate, momentum, mini batch size, etc ...)\\
-2nd disadvandage: only for those who are not mathematicians, calculating derivative in case of new cost or activation function, may by an issue.\\\\
+1st disadvantage: you have to test manually different combinations of parameters (number of layers, nodes, activation function, etc ...) and then also tune manually hyper parameters for training (learning rate, momentum, mini batch size, etc ...)\\
+2nd disadvantage: only for those who are not mathematicians, calculating derivative in case of new cost or activation function, may by an issue.\\\\
 \includegraphics[width=0.9\textwidth]{imgperc001.png}\\
 
 \subsection{Metaheuristic - PSO, benefits}
 The Particle Swarm Optimization algorithm is a great and simple one.\\
 In a few words, the first step consists in throwing randomly a set of particles in a space and the next steps consist in discovering the best solution while converging.\\
 \includegraphics[width=0.9\textwidth]{imgperc002.png}\\
+video tutorial from Yarpiz is a great ressource\\
 
 \subsection{Birth of automl package}
-automl package was born from the idea to use metaheuristic PSO to address the identified disadvandages above.\\
+automl package was born from the idea to use metaheuristic PSO to address the identified disadvantages above.\\
 And last but not the least reason: use R and R only :-)\\
 3 functions are available:\\
   - automl\_train\_manual: the manual mode to train a model\\
@@ -38,21 +46,23 @@ And last but not the least reason: use R and R only :-)\\
 
 \subsection{Mix 1: hyperparameters tuning with PSO}
 Mix 1 consists in using PSO algorithm to optimize the hyperparameters: each particle corresponds to a set of hyperparameters.\\
-The automl\_train function was made to do that.\\
+The automl\_train function was made to do that.\\\\
 \includegraphics[width=0.9\textwidth]{imgperc003.png}\\
 nb: parameters (nodes number, activation functions, etc...) are not automatically tuned for the moment, but why not in the futur
 
 \subsection{Mix 2: PSO instead of gradient descent}
-\includegraphics[width=0.9\textwidth]{imgperc004.png}\\
 Mix 2 is experimental, it consists in using PSO algorithm to optimize the weights of Neural Network in place of gradient descent: each particle corresponds to a set of neural network weights matrices.\\
-The automl\_train\_manual function do that too.\\
+The automl\_train\_manual function do that too.\\\\
+\includegraphics[width=0.9\textwidth]{imgperc004.png}\\
 
 
-\section{How to}
+\section{First steps: How to}
+For those who will laugh at seeing deep learning with one hidden layer and the Iris data set of 150 records, I will say: you're perfectly right :-)\\
+The goal at this stage is simply to take the first steps
 
 \subsection{fit a regression model manually (hard way)}
 Subject: predict Sepal.Length given other Iris parameters\\
-1st with gradient descent and default learning rate (0.001) and mini batch size (32)\\
+1st with gradient descent and default hyperparameters value for learning rate (0.001) and mini batch size (32)\\
 \begin{Schunk}
 \begin{Sinput}
 data(iris)
@@ -129,7 +139,9 @@ xmat <- as.matrix(cbind(iris[,2:4], as.numeric(iris$Species)))
 ymat <- iris[,1]
 start.time <- Sys.time()
 amlmodel <- automl_train(Xref = xmat, Yref = ymat,
- autopar = list(psopartpopsize = 15, numiterations = 5, nbcores = 4))
+                         autopar = list(psopartpopsize = 15,
+                                        numiterations = 5,
+                                        nbcores = 4))
 end.time <- Sys.time()
 cat(paste('time ellapsed:', end.time - start.time, '\n'))
 \end{Sinput}
@@ -186,9 +198,9 @@ data(iris)
 xmat <- as.matrix(cbind(iris[,2:4], as.numeric(iris$Species)))
 ymat <- iris[,1]
 amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
-                                 hpar = list(modexec = 'trainwpso',
-                                             numiterations = 30,
-                                             psopartpopsize = 50))
+                                hpar = list(modexec = 'trainwpso',
+                                            numiterations = 30,
+                                            psopartpopsize = 50))
 \end{Sinput}
 \begin{Soutput}
 (cost: mse)
@@ -212,8 +224,8 @@ head(res)
 [6,]    5.4 5.277315
 \end{Soutput}
 \end{Schunk}
-Pretty good too!\\
-But time consuming on larger datasets: gradient descent should be prefered in this case\\
+Pretty good too, even better!\\
+But time consuming on larger datasets: where gradient descent should be preferred in this case\\
 
 \subsection{fit a regression model with custom cost (experimental way, Mix 2)}
 Same subject: predict Sepal.Length given other Iris parameters\\
@@ -258,7 +270,7 @@ head(res)
 
 \subsection{fit a classification model with softmax (Mix 2)}
 Subject: predict Species given other Iris parameters\\
-Softmax is available with PSO (no derivative needed ;-)\\
+Softmax is available with PSO, no derivative needed ;-)\\
 \begin{Schunk}
 \begin{Sinput}
 data(iris)
@@ -317,21 +329,48 @@ Same subject: predict Species given other Iris parameters\\
 1st example: with gradient descent and 2 hidden layers containing 10 nodes, with various activation functions for hidden layers\\
 \begin{Schunk}
 \begin{Sinput}
-amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
-                                hpar = list(layersshape = c(10, 10, 0),
-                                            layersacttype = c('tanh', 'relu', 'sigmoid'),
-                                            layersdropoprob = c(0, 0, 0)))
+data(iris)
+xmat = iris[,1:4]
+lab2pred <- levels(iris$Species)
+lghlab <- length(lab2pred)
+iris$Species <- as.numeric(iris$Species)
+ymat <- matrix(seq(from = 1, to = lghlab, by = 1), nrow(xmat), lghlab, byrow = TRUE)
+ymat <- (ymat == as.numeric(iris$Species)) + 0
+amlmodel <- automl_train_manual(
+                Xref = xmat, Yref = ymat,
+                hpar = list(
+                    layersshape = c(10, 10, 0),
+                    layersacttype = c('tanh', 'relu', ''),
+                    layersdropoprob = c(0, 0, 0)
+                    )
+                )
 \end{Sinput}
 \end{Schunk}
-
+nb: last activation type may be left to blank (it will be set automatically)\\\\
 2nd example: with gradient descent and no hidden layer (logistic regression)\\
 \begin{Schunk}
 \begin{Sinput}
+data(iris)
+xmat = iris[,1:4]
+lab2pred <- levels(iris$Species)
+lghlab <- length(lab2pred)
+iris$Species <- as.numeric(iris$Species)
+ymat <- matrix(seq(from = 1, to = lghlab, by = 1), nrow(xmat), lghlab, byrow = TRUE)
+ymat <- (ymat == as.numeric(iris$Species)) + 0
 amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
                                 hpar = list(layersshape = c(0),
                                             layersacttype = c('sigmoid'),
                                             layersdropoprob = c(0)))
 \end{Sinput}
 \end{Schunk}
-\end{document}
 
+
+\section{ToDo List}
+
+- transfert learning from existing frameworks\\
+- add autotune to other parameters (layers, dropout, ...)\\
+- CNN\\
+- RNN\\\\
+    -> join the team !\\
+    https://github.com/aboulaboul/automl
+\end{document}
