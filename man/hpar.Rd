@@ -55,7 +55,7 @@ output layer nodes number, may be left to 0 it will be automatically set by Y ma
 default value one hidden layer with 10 nodes: c(10, 0)\cr
 #tuning priority 4}
 
-\item{layersacttype}{ activation function for each layer; \sQuote{linear} for no activtion or \sQuote{sigmoid}, \sQuote{relu} or \sQuote{reluleaky} or \sQuote{tanh} or \sQuote{softmax} (softmax for output layer only supported in trainwpso exec mode)\cr
+\item{layersacttype}{ activation function for each layer; \sQuote{linear} for no activation or \sQuote{sigmoid}, \sQuote{relu} or \sQuote{reluleaky} or \sQuote{tanh} or \sQuote{softmax} (softmax for output layer only supported in trainwpso exec mode)\cr
 output layer activation function may be left to \sQuote{}, default value \sQuote{linear} for regression, \sQuote{sigmoid} for classification\cr
 nb: layersacttype parameter vector must have same length as layersshape parameter vector\cr
 default value c(\sQuote{relu}, \sQuote{})\cr
@@ -86,6 +86,8 @@ default value no drop out: c(0, 0)\cr
 
 \item{epsil}{ epsilon the low value to avoid dividing by 0 or log(0) in cost function, etc ... (default value 1e-12)\cr
 }
+
+\item{verbose}{ to display or not the costs and the shapes (default TRUE)}\cr
 
 \emph{back to  \link{automl_train}, \link{automl_train_manual}}
 }

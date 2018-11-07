@@ -25,6 +25,7 @@ res <- cbind(ymat, automl_predict(model = amlmodel, X = xmat))
 colnames(res) <- c('actual', 'predict')
 head(res)
 #
+\dontrun{
 ##CLASSIFICATION (predict Species given other Iris parameters)
 data(iris)
 xmat = iris[,1:4]
@@ -40,4 +41,5 @@ res <- cbind(ymat, round(automl_predict(model = amlmodel, X = xmat)))
 colnames(res) <- c(paste('act',lab2pred, sep = '_'),
  paste('pred',lab2pred, sep = '_'))
 head(res)
+}
 }

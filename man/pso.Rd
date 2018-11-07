@@ -10,7 +10,7 @@ All PSO parameters and hyperparameters are preset with default value\cr
 \item{psopartpopsize}{ number of particles in swarm (discrete value)\cr
 (\sQuote{autopar} context: default value 8, which means that 8 different neural net hyperparameters sets will be tested\cr
 (\sQuote{hpar} context: default value 50, which means that 50 neural net weights sets will be tested\cr
-#tuning priority 1}\cr
+#tuning priority 1} (impact on memory consumption)\cr
 
 \emph{CAUTION: you should only change the values below if you know what you are doing}
 

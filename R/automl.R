@@ -341,6 +341,16 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
   if (!"auto_lambda" %in% myprov) {autopar[["auto_lambda"]] <- FALSE}
   if (!"auto_lambda_min" %in% myprov) {autopar[["auto_lambda_min"]] <- -2}
   if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 3}
+  if (!"auto_psovelocitymaxratio" %in% myprov) {autopar[["auto_psovelocitymaxratio"]] <- TRUE}
+  if (!"auto_psovelocitymaxratio_min" %in% myprov) {autopar[["auto_psovelocitymaxratio_min"]] <- 0.01}
+  if (!"auto_psovelocitymaxratio_max" %in% myprov) {autopar[["auto_psovelocitymaxratio_max"]] <- 0.5}
+  if (!"auto_layers" %in% myprov) {autopar[["auto_layers"]] <- TRUE}
+  if (!"auto_layers_min" %in% myprov) {autopar[["auto_layers_min"]] <- 1}
+  if (!"auto_layers_max" %in% myprov) {autopar[["auto_layers_max"]] <- 1}
+  if (!"auto_layersnodes_min" %in% myprov) {autopar[["auto_layersnodes_min"]] <- 3}
+  if (!"auto_layersnodes_max" %in% myprov) {autopar[["auto_layersnodes_max"]] <- 33}
+  if (!"auto_layersdropoprob_min" %in% myprov) {autopar[["auto_layersdropoprob_min"]] <- 0}
+  if (!"auto_layersdropoprob_max" %in% myprov) {autopar[["auto_layersdropoprob_max"]] <- 0}
   rm(myprov)
   #
   myprov <- c(autopar$auto_minibatchsize,
@@ -348,8 +358,19 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
               autopar$auto_beta1,
               autopar$auto_beta2,
               autopar$auto_psopartpopsize,
-              autopar$auto_lambda)
-  autopar$psonbvar2optim <- length(myprov)
+              autopar$auto_lambda,
+              autopar$auto_psovelocitymaxratio)
+  if (autopar$auto_layers == TRUE)
+  {
+   myprov <- c(myprov, rep(1, (1 + 3 * autopar$auto_layers_max)));#because layers nb, nodes nbs, act types, dropout
+  }
+  #100 reservations for positions initialization reproductibility
+  if (length(myprov) > 100)
+  {
+   mylastlog <- ("warning: positions initialization reproductibility")
+   warning(mylastlog)
+  }
+  autopar$psonbvar2optim <- ifelse(length(myprov) > 100, length(myprov), 100);
 
   if (sum(myprov) == 0 & autopar$numiterations > 1)
   {
@@ -392,11 +413,12 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
       set.seed(autopar$seed + myactivpartnbr)
       hpar$modexec <- c('trainwgrad', 'trainwpso')[sample(2, 1, replace = TRUE)]
     }
+    MYdep = 1
     if (autopar$auto_minibatchsize == TRUE & !"minibatchsize" %in% names(hpar))
     {
       hpar$minibatchsize <- eval(parse(text =
                                          paste0("2^round(",
-                                                sbamlprepscalem11201(mylspsoactivpart$Position[1]),
+                                                sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                                 " * (",
                                                 autopar$auto_minibatchsize_max,
                                                 " - (",
@@ -406,11 +428,12 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
                                                 "), digits = 0)")
       ))
     }
+    MYdep = MYdep + 1
     if (autopar$auto_learningrate == TRUE & !"learningrate" %in% names(hpar))
     {
       hpar$learningrate <- eval(parse(text =
                                         paste0("10^(",
-                                               sbamlprepscalem11201(mylspsoactivpart$Position[2]),
+                                               sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                                " * (",
                                                autopar$auto_learningrate_max,
                                                " - (",
@@ -420,27 +443,30 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
                                                "))")
       ))
     }
+    MYdep = MYdep + 1
     if (autopar$auto_beta1 == TRUE & !"beta1" %in% names(hpar))
     {
       hpar$beta1 <- eval(parse(text =
                                  paste0("1 - 10^(-",
-                                        sbamlprepscalem11201(mylspsoactivpart$Position[3]),
+                                        sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                         " - 1)")
       ))
     }
+    MYdep = MYdep + 1
     if (autopar$auto_beta2 == TRUE & !"beta2" %in% names(hpar))
     {
       hpar$beta2 <- eval(parse(text =
                                  paste0("1 - 10^(-",
-                                        sbamlprepscalem11201(mylspsoactivpart$Position[4]),
+                                        sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                         " - 2)")
       ))
     }
+    MYdep = MYdep + 1
     if (autopar$auto_psopartpopsize == TRUE & !"psopartpopsize" %in% names(hpar))
     {
       hpar$psopartpopsize <- eval(parse(text =
                                           paste0("round(",
-                                                 sbamlprepscalem11201(mylspsoactivpart$Position[5]),
+                                                 sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                                  " * (",
                                                  autopar$auto_psopartpopsize_max,
                                                  " - (",
@@ -450,19 +476,127 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
                                                  "), digits = 0)")
       ))
     }
+    MYdep = MYdep + 1
     if (autopar$auto_lambda == TRUE & !"lambda" %in% names(hpar))
     {
      hpar$lambda <- eval(parse(text =
                                         paste0("10^(",
-                                               sbamlprepscalem11201(mylspsoactivpart$Position[6]),
+                                               sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
                                                " * (",
-                                               autopar$auto_learningrate_max,
+                                               autopar$auto_lambda_max,
                                                " - (",
-                                               autopar$auto_learningrate_min,
+                                               autopar$auto_lambda_min,
                                                ")) + (",
-                                               autopar$auto_learningrate_min,
+                                               autopar$auto_lambda_min,
                                                "))")
      ))
+    }
+    MYdep = MYdep + 1
+    if (autopar$auto_psovelocitymaxratio == TRUE & !"psovelocitymaxratio" %in% names(hpar))
+    {
+     hpar$psovelocitymaxratio <- eval(parse(text =
+                                paste0(sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
+                                       " * (",
+                                       autopar$auto_psovelocitymaxratio_max,
+                                       " - (",
+                                       autopar$auto_psovelocitymaxratio_min,
+                                       ")) + (",
+                                       autopar$auto_psovelocitymaxratio_min,
+                                       ")")
+     ))
+    }
+    MYdep <- MYdep + 1
+    if (autopar$auto_layers == TRUE)
+    {
+     MYlayernbr <- eval(parse(text =
+                               paste0("round(",
+                                      sbamlprepscalem11201(mylspsoactivpart$Position[MYdep]),
+                                      " * (",
+                                      autopar$auto_layers_max,
+                                      " - (",
+                                      autopar$auto_layers_min,
+                                      ")) + (",
+                                      autopar$auto_layers_min,
+                                      "), digits = 0)")
+     ))
+    }
+    MYdep <- MYdep + 1
+    if (autopar$auto_layers == TRUE & !"layersshape" %in% names(hpar))
+    {
+     MYformula <- "c("
+     for (i in MYdep:(MYdep + MYlayernbr - 1))
+     {
+      MYformula <- c(MYformula, eval(parse(text =
+                               paste0("round(",
+                                      sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                      " * (",
+                                      autopar$auto_layersnodes_max,
+                                      " - (",
+                                      autopar$auto_layersnodes_min,
+                                      ")) + (",
+                                      autopar$auto_layersnodes_min,
+                                      "), digits = 0)")
+      )))
+      if (i != (MYdep + MYlayernbr - 1))
+      {
+       MYformula <- c(MYformula, ',')
+      } else {
+       MYformula <- c(MYformula, ',0)')
+      }
+     }
+     hpar$layersshape <-  eval(parse(text = paste(MYformula, collapse = '')))
+    }
+    MYdep <- MYdep + autopar$auto_layers_max
+    if (autopar$auto_layers == TRUE & !"layersacttype" %in% names(hpar))
+    {
+     MYformula <- "c("
+     MYhiddenacttype <- c('sigmoid', 'relu', 'reluleaky', 'tanh')
+     for (i in MYdep:(MYdep + MYlayernbr - 1))
+     {
+      MYformula <- c(MYformula, "'", MYhiddenacttype[eval(parse(text =
+                                            paste0("round(",
+                                                   sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                                   " * (",
+                                                   length(MYhiddenacttype),
+                                                   " - (",
+                                                   1,
+                                                   ")) + (",
+                                                   1,
+                                                   "), digits = 0)")
+      ))], "'")
+      if (i != (MYdep + MYlayernbr - 1))
+      {
+       MYformula <- c(MYformula, ',')
+      } else {
+       MYformula <- c(MYformula, ",'')")
+      }
+     }
+     hpar$layersacttype <-  eval(parse(text = paste(MYformula, collapse = '')))
+    }
+    MYdep <- MYdep + autopar$auto_layers_max
+    if (autopar$auto_layers == TRUE & !"layersdropoprob" %in% names(hpar))
+    {
+     MYformula <- "c("
+     for (i in MYdep:(MYdep + MYlayernbr - 1))
+     {
+      MYformula <- c(MYformula, eval(parse(text =
+                                            paste0(sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                                   " * (",
+                                                   autopar$auto_layersdropoprob_max,
+                                                   " - (",
+                                                   autopar$auto_layersdropoprob_min,
+                                                   ")) + (",
+                                                   autopar$auto_layersdropoprob_min,
+                                                   ")")
+      )))
+      if (i != (MYdep + MYlayernbr - 1))
+      {
+       MYformula <- c(MYformula, ',')
+      } else {
+       MYformula <- c(MYformula, ',0)')
+      }
+     }
+     hpar$layersdropoprob <-  eval(parse(text = paste(MYformula, collapse = '')))
     }
     hpar <- sbamlhparvalid(hpar = hpar)
     #

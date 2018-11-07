@@ -41,6 +41,19 @@ the minimum and maximum value for \sQuote{learningrate} ; default 2 for \sQuote{
 \item{auto_lambda_max}{ \sQuote{auto_lambda} default value \sQuote{FALSE} for automatic adjustment of \sQuote{lambda} regularization argument in \link{automl_train_manual} function\cr
 the minimum and maximum value for \sQuote{lambda} correspond to 10 to the power value  (default -2) for \sQuote{auto_lambda_min} and (default 3) for \sQuote{auto_lambda_max})}
 
+\item{auto_psovelocitymaxratio}{ see below}
+\item{auto_psovelocitymaxratio_min}{ see below}
+\item{auto_psovelocitymaxratio_max}{ \sQuote{auto_psovelocitymaxratio} default value \sQuote{TRUE} for automatic adjustment of \sQuote{psovelocitymaxratio} PSO velocity max ratio argument in \link{automl_train_manual} function\cr
+the minimum and maximum value for \sQuote{psovelocitymaxratio}; default 0.01 for \sQuote{auto_psovelocitymaxratio_min} and 0.5 for \sQuote{auto_psovelocitymaxratio_max}}
+
+\item{auto_layers}{ see below (\sQuote{auto_layers} default value \sQuote{TRUE} for automatic adjustment of layers shape in \link{automl_train_manual} function)}
+\item{auto_layers_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the minimum number of hidden layers (default 1)}
+\item{auto_layers_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the maximum number of hidden layers (default 1)}
+\item{auto_layersnodes_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the minimum number of nodes per layer (default 3)}
+\item{auto_layersnodes_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the maximum number of nodes per layer (default 33)}
+\item{auto_layersdropoprob_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersdropoprob}) the minimum dropout ratio per layer (default 0)}
+\item{auto_layersdropoprob_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersdropoprob}) the maximum dropout ratio per layer (default 0)}
+
 \item{seed}{ seed for reproductibility (default 4)}
 
 \item{nbcores}{ number of cores used to parallelize particles optimization, not available on Windows (default 1, automatically reduced if not enough cores)}

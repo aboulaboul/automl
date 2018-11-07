@@ -1,3 +1,11 @@
+automl 1.0.8
+============================================
+* New automatic hyperparameters adjustments below:
+  'auto_psovelocitymaxratio' autopar PSO velocity max ratio
+  'auto_layer' autopar layer shape (layers number, nodes
+  number per layer, activation types and dropout ratios)
+* 'auto_lambda' bug fix
+
 automl 1.0.7
 ============================================
 * vignette completion

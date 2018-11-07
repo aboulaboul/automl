@@ -48,7 +48,6 @@ And last but not the least reason: use R and R only :-)\\
 Mix 1 consists in using PSO algorithm to optimize the hyperparameters: each particle corresponds to a set of hyperparameters.\\
 The automl\_train function was made to do that.\\\\
 \includegraphics[width=0.9\textwidth]{imgperc003.png}\\
-nb: parameters (nodes number, activation functions, etc...) are not automatically tuned for the moment, but why not in the futur
 
 \subsection{Mix 2: PSO instead of gradient descent}
 Mix 2 is experimental, it consists in using PSO algorithm to optimize the weights of Neural Network in place of gradient descent: each particle corresponds to a set of neural network weights matrices.\\
@@ -147,30 +146,33 @@ cat(paste('time ellapsed:', end.time - start.time, '\n'))
 \end{Sinput}
 \begin{Soutput}
 (cost: mse)
-iteration 1 particle 1 weighted err: 22.05305 (train: 19.95908 cvalid: 14.72417 ) BEST MODEL KEPT
-iteration 1 particle 2 weighted err: 31.69094 (train: 20.55559 cvalid: 27.51518 )
-iteration 1 particle 3 weighted err: 22.08092 (train: 20.52354 cvalid: 16.63009 )
-iteration 1 particle 4 weighted err: 20.02091 (train: 19.18378 cvalid: 17.09095 ) BEST MODEL KEPT
-iteration 1 particle 5 weighted err: 28.36339 (train: 20.6763 cvalid: 25.48073 )
-iteration 1 particle 6 weighted err: 28.92088 (train: 20.92546 cvalid: 25.9226 )
-iteration 1 particle 7 weighted err: 21.67837 (train: 20.73866 cvalid: 18.38941 )
-iteration 1 particle 8 weighted err: 29.80416 (train: 16.09191 cvalid: 24.66206 )
-iteration 1 particle 9 weighted err: 22.93199 (train: 20.5561 cvalid: 14.61638 )
-iteration 1 particle 10 weighted err: 21.18474 (train: 19.64622 cvalid: 15.79992 )
-iteration 1 particle 11 weighted err: 23.32084 (train: 20.78257 cvalid: 14.43688 )
-iteration 1 particle 12 weighted err: 22.27164 (train: 20.81055 cvalid: 17.15783 )
-iteration 1 particle 13 weighted err: 2.23479 (train: 1.95683 cvalid: 1.26193 ) BEST MODEL KEPT
-iteration 1 particle 14 weighted err: 23.1183 (train: 20.79754 cvalid: 14.99564 )
-iteration 1 particle 15 weighted err: 20.71678 (train: 19.40506 cvalid: 16.12575 )
+iteration 1 particle 1 weighted err: 23.08807 (train: 20.43233 cvalid: 13.79297 ) BEST MODEL KEPT
+iteration 1 particle 2 weighted err: 23.29786 (train: 20.80544 cvalid: 14.57438 )
+iteration 1 particle 3 weighted err: 21.37242 (train: 20.49244 cvalid: 18.29247 ) BEST MODEL KEPT
+iteration 1 particle 4 weighted err: 22.44818 (train: 21.07049 cvalid: 17.62624 )
+iteration 1 particle 5 weighted err: 25.90267 (train: 20.79786 cvalid: 23.98837 )
+iteration 1 particle 6 weighted err: 23.10971 (train: 21.0241 cvalid: 22.3276 )
+iteration 1 particle 7 weighted err: 20.63938 (train: 20.56765 cvalid: 20.38834 ) BEST MODEL KEPT
+iteration 1 particle 8 weighted err: 25.00172 (train: 20.13291 cvalid: 23.17591 )
+iteration 1 particle 9 weighted err: 22.1777 (train: 20.7751 cvalid: 17.26859 )
+iteration 1 particle 10 weighted err: 15.92525 (train: 13.59336 cvalid: 15.05079 ) BEST MODEL KEPT
+iteration 1 particle 11 weighted err: 19.86139 (train: 19.28898 cvalid: 17.85796 )
+iteration 1 particle 12 weighted err: 21.90814 (train: 21.05856 cvalid: 18.93462 )
+iteration 1 particle 13 weighted err: 13.64409 (train: 12.87311 cvalid: 10.94568 ) BEST MODEL KEPT
+iteration 1 particle 14 weighted err: 23.06805 (train: 20.8384 cvalid: 15.26429 )
+iteration 1 particle 15 weighted err: 22.33673 (train: 20.87946 cvalid: 17.23627 )
 ...
-iteration 4 particle 3 weighted err: 0.3469 (train: 0.32236 cvalid: 0.26104 )
-iteration 4 particle 4 weighted err: 0.2448 (train: 0.07047 cvalid: 0.17943 )
-iteration 4 particle 5 weighted err: 0.09674 (train: 5e-05 cvalid: 0.06048 ) BEST MODEL KEPT
-iteration 4 particle 6 weighted err: 0.71267 (train: 6e-05 cvalid: 0.44544 )
-iteration 4 particle 7 weighted err: 0.65614 (train: 0.63381 cvalid: 0.57796 )
-iteration 4 particle 8 weighted err: 0.46477 (train: 0.356 cvalid: 0.08408 )
+iteration 3 particle 1 weighted err: 4.51508 (train: 0.12889 cvalid: 2.87026 )
+iteration 3 particle 2 weighted err: 1.0349 (train: 0.81318 cvalid: 0.25888 ) BEST MODEL KEPT
+iteration 3 particle 3 weighted err: 0.16113 (train: 0.15751 cvalid: 0.14845 ) BEST MODEL KEPT
+iteration 3 particle 4 weighted err: 17.98279 (train: 16.49247 cvalid: 12.76667 )
+iteration 3 particle 5 weighted err: 7.11793 (train: 0.12653 cvalid: 4.49615 )
+iteration 3 particle 6 weighted err: 22.29957 (train: 20.53873 cvalid: 21.63925 )
+iteration 3 particle 7 weighted err: 1.11164 (train: 0.99896 cvalid: 1.06938 )
+iteration 3 particle 8 weighted err: 11.17099 (train: 10.35378 cvalid: 8.31077 )
+iteration 3 particle 9 weighted err: 0.11955 (train: 0.11199 cvalid: 0.09308 ) BEST MODEL KEPT
 ...
-time ellapsed: 2.65109273195267
+time ellapsed: 2.54119062026342
 \end{Soutput}
 \begin{Sinput}
 res <- cbind(ymat, automl_predict(model = amlmodel, X = xmat))
@@ -179,16 +181,16 @@ head(res)
 \end{Sinput}
 \begin{Soutput}
      actual  predict
-[1,]    5.1 5.193862
-[2,]    4.9 4.836507
-[3,]    4.7 4.899531
-[4,]    4.6 4.987896
-[5,]    5.0 5.265334
-[6,]    5.4 5.683173
+[1,]    5.1 4.906462
+[2,]    4.9 4.891540
+[3,]    4.7 4.877194
+[4,]    4.6 4.897768
+[5,]    5.0 4.921673
+[6,]    5.4 5.053157
 \end{Soutput}
 \end{Schunk}
 It's even better, with no human efforts but machine time\\
-Users on Windows won't benefit from parallelization, the function uses parallel package included with R base...\\
+Windows users won't benefit from parallelization, the function uses parallel package included with R base...\\
 
 \subsection{fit a regression model experimentally (experimental way, Mix 2)}
 Same subject: predict Sepal.Length given other Iris parameters\\
@@ -225,7 +227,6 @@ head(res)
 \end{Soutput}
 \end{Schunk}
 Pretty good too, even better!\\
-But time consuming on larger datasets: where gradient descent should be preferred in this case\\
 
 \subsection{fit a regression model with custom cost (experimental way, Mix 2)}
 Same subject: predict Sepal.Length given other Iris parameters\\
@@ -368,7 +369,6 @@ amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
 \section{ToDo List}
 
 - transfert learning from existing frameworks\\
-- add autotune to other parameters (layers, dropout, ...)\\
 - CNN\\
 - RNN\\\\
     -> join the team !\\
