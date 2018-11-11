@@ -1,3 +1,8 @@
+automl 1.1.0
+============================================
+* same train/test sampling for each particle with automl_train
+* stick to a format in variables naming
+
 automl 1.0.9
 ============================================
 * testcvsize = 0 bug fix
