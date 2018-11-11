@@ -1,3 +1,7 @@
+automl 1.0.9
+============================================
+* testcvsize = 0 bug fix
+
 automl 1.0.8
 ============================================
 * New automatic hyperparameters adjustments below:

@@ -704,14 +704,9 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
       mydl$hpar$costtype <- 'crossentropy'
     }
   }
-  if (mydl$hpar$testcvsize != 0)
-  {
-    mynbtestsoktostop <- 1
-    mytestokcpt <- 0;#to avoid error with test while not defined
-    mytrlastcost <- mycvlastcost <- mydl$hpar$epsil ^ -1;#why not to get a huge number
-  } else {
-    testcvsize <- mytrlastcost <- mycvlastcost <- 0
-  }
+  mynbtestsoktostop <- 1;#legacy hyperparam dropped to simplify
+  mytestokcpt <- 0;#to avoid error with test while not defined
+  mytrlastcost <- mycvlastcost <- mydl$hpar$epsil ^ -1;#why not to get a huge number
   if (mydl$hpar$testcvsize != 0)
   {
     #shuffling handled upstream
@@ -836,6 +831,8 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
               if (mydl$hpar$verbose == TRUE) {cat(paste(mylastlog), '\n', sep = '')}
             }
             mycvlastcost <- mycvcost
+          } else {
+            mydl$error$cv <- NA
           }
           if (mydl$hpar$verbose == TRUE) {cat(paste(' (LR: ', mydl$hpar$learningrate, ')',
                     '\n', sep = ' '))}
