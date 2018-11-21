@@ -1,3 +1,103 @@
+sbamlmodcp <- function(mymodelref, mymodel)
+{
+ mymodel$error <- mymodelref$error
+ mymodel$hpar$layersshape <- mymodelref$hpar$layersshape
+ mymodel$hpar$layersacttype <- mymodelref$hpar$layersacttype
+ for (l in 1:mymodelref$hpar$nblayers)
+ {
+  mymodel[[paste("mydl_W", l, sep = '')]] <- mymodelref[[paste("mydl_W", l, sep = '')]]
+  mymodel[[paste("mydl_vdW", l, sep = '')]] <- mymodelref[[paste("mydl_vdW", l, sep = '')]]
+  mymodel[[paste("mydl_sdW", l, sep = '')]] <- mymodelref[[paste("mydl_sdW", l, sep = '')]]
+  mymodel[[paste("mydl_bB", l, sep = '')]] <- mymodelref[[paste("mydl_bB", l, sep = '')]]
+  mymodel[[paste("mydl_vdbB", l, sep = '')]] <- mymodelref[[paste("mydl_vdbB", l, sep = '')]]
+  mymodel[[paste("mydl_sdbB", l, sep = '')]] <- mymodelref[[paste("mydl_sdbB", l, sep = '')]]
+  mymodel[[paste("mydl_j", l, sep = '')]] <- mymodelref[[paste("mydl_j", l, sep = '')]]
+  mymodel[[paste("mydl_vdj", l, sep = '')]] <- mymodelref[[paste("mydl_vdj", l, sep = '')]]
+  mymodel[[paste("mydl_sdj", l, sep = '')]] <- mymodelref[[paste("mydl_sdj", l, sep = '')]]
+  mymodel[[paste("mydl_M", l, sep = '')]] <- mymodelref[[paste("mydl_M", l, sep = '')]]
+  mymodel[[paste("mydl_vM", l, sep = '')]] <- mymodelref[[paste("mydl_vM", l, sep = '')]]
+  mymodel[[paste("mydl_V", l, sep = '')]] <- mymodelref[[paste("mydl_V", l, sep = '')]]
+  mymodel[[paste("mydl_vV", l, sep = '')]] <- mymodelref[[paste("mydl_vV", l, sep = '')]]
+ }
+ return(mymodel)
+}
+
+sbamlmodhparcp <- function(mdlref, myhpartoignore, autopar = NULL, hpar)
+{
+ valmodimpflagok <- 1
+ if (is.null(autopar))
+ {
+  if (any(c("layersshape", "layersacttype") %in% names(hpar)))
+  {
+   mylastlog <- ("wrng: layersshape or layersacttype defined (mdlref won't be used)")
+   warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+   valmodimpflagok <- 0
+  }
+  if (valmodimpflagok == 1 & "layersdropoprob" %in% names(hpar))
+  {
+   if (length(hpar$layersdropoprob) != length(mdlref$hpar$layersdropoprob))
+   {
+    mylastlog <- ("wrng: layersdropoprob defined with incompatible shape (mdlref won't be used)")
+    warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+    valmodimpflagok <- 0
+   }
+  }
+  if (valmodimpflagok == 1 & "modexec" %in% names(hpar))
+  {
+   if (hpar$modexec == "trainwpso" & mdlref$hpar$modexec == "trainwgrad")
+   {
+    myhpartoignore = c(myhpartoignore, 'psopartpopsize', 'psonbvar2optim', 'psonumiteration',
+                       'psovarvalmin', 'psovarvalmax', 'psovelocitymaxratio',
+                       'psoinertiadampratio', 'psokappa', 'psophi1', 'psophi2', 'psoseed')
+   } else if (hpar$modexec == "trainwgrad" & mdlref$hpar$modexec == "trainwpso")
+   {
+    myhpartoignore = c(myhpartoignore, 'learningrate', 'lrdecayrate', 'chkgradevery',
+                       'chkgradepsilon', 'beta1', 'beta2')
+    if (!"minibatchsize" %in% names(hpar)) {myhpartoignore = c(myhpartoignore, "minibatchsize")}
+   }
+  }
+  if (valmodimpflagok == 1 & all(c('autopar', 'mylspsoparamlvauto') %in% names(hpar)))
+  {
+   myhpartoignore = c(myhpartoignore, c('useautopar', 'overfitautopar', 'verbose'))
+  }
+ }
+ # forcing hpar with mdlref$hpar in agreement with hpar and myhpartoignore
+ if (valmodimpflagok == 1)
+ {
+  for (i in 1:length(mdlref$hpar))
+  {
+   if (!names(mdlref$hpar)[i] %in% myhpartoignore &
+       !names(mdlref$hpar)[i] %in% names(hpar))
+   {
+    hpar[[names(mdlref$hpar)[i]]] <- mdlref$hpar[[names(mdlref$hpar)[i]]]
+   }
+  }
+ }
+ # autopar validated before but may be changed
+ if (!is.null(autopar))
+ {
+  if (autopar$auto_modexec == FALSE) {hpar$modexec <- mdlref$hpar$modexec}
+  if (autopar$auto_minibatchsize == FALSE) {hpar$minibatchsize <- mdlref$hpar$minibatchsize}
+  if (autopar$auto_learningrate == FALSE) {hpar$learningrate <- mdlref$hpar$learningrate}
+  if (autopar$auto_beta1 == FALSE) {hpar$beta1 <- mdlref$hpar$beta1}
+  if (autopar$auto_beta2 == FALSE) {hpar$beta2 <- mdlref$hpar$beta2}
+  if (autopar$auto_psopartpopsize == FALSE) {hpar$psopartpopsize <- mdlref$hpar$psopartpopsize}
+  if (autopar$auto_lambda == FALSE) {hpar$lambda <- mdlref$hpar$lambda}
+  if (autopar$auto_psovelocitymaxratio == FALSE) {hpar$psovelocitymaxratio <- mdlref$hpar$psovelocitymaxratio}
+  if (autopar$auto_layers == FALSE)
+  {
+   if (!"layersshape" %in% names(hpar)) {hpar$layersshape <- mdlref$hpar$layersshape}
+   if (!"layersacttype" %in% names(hpar)) {hpar$layersacttype <- mdlref$hpar$layersacttype}
+   #if layersdropoprob not in hpar, will be defined
+  }
+  if (any(c("layersshape", "layersacttype", "layersdropoprob") %in% names(hpar)))
+  {
+   autopar$auto_layers_min <- autopar$auto_layers_max <- mdlref$hpar$nblayers
+  }
+ }
+ return(list(autopar = autopar, hpar = hpar, valmodimpflagok = valmodimpflagok))
+}
+
 sbamlmodpsoparam <- function(mylspsoparam, mylspsopart)
 {
   mylspsoparam$phi = mylspsoparam$phi1 + mylspsoparam$phi2
@@ -171,6 +271,7 @@ sbamlmoddlcost <- function(mydl, y, yhat, costtype, lambda, nblayers, epsil)
   }
   if (lambda != 0)
   {
+    m = dim(y)[2]
     l2regul <- 0
     for (l in 1:nblayers)
     {
@@ -194,6 +295,18 @@ sbamlmoddlcostbk <- function(y, yhat, costtype)
     dJ <- sbamlmatopebroadcst(yhat, y  * (-1), 'add')
   }
   return(dJ)
+}
+
+sbamlmoddldropo <- function(mymatA, mymatdD, mydropo)
+{
+  #inverted dropout
+  mymin <- min(mymatA)
+  mymax <- max(mymatA)
+  mymatA <- sbamlmatopebroadcst(mymatA, mymatdD, 'mult') / (1 - mydropo)
+  mymatA[mymatA > mymax] <- mymax
+  mymatA[mymatA < mymin] <- mymin
+  #why not to avoid result > 1 in cost function ...
+  return(mymatA)
 }
 
 sbamlmoddlgradchk <- function(mydl, X, Y, nblayers, chkgradepsilon, epsil)
@@ -295,110 +408,16 @@ sbamlmoddlgradchk <- function(mydl, X, Y, nblayers, chkgradepsilon, epsil)
   }
 }
 
-automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
+automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = NULL)
 {
-  Xref <- t(as.matrix(Xref))
-  Yref <- t(as.matrix(Yref))
-  sbamlmatstest(Xref, Yref)
-  Xref <- sbamlmattest(Xref, "Xref")
-  Yref <- sbamlmattest(Yref, "Yref")
-  if (class(hpar) != 'list')
+  myautomatablehpar <- c('modexec','minibatchsize','learningrate',
+                         'beta1','beta2','psopartpopsize',
+                         'lambda','psovelocitymaxratio',
+                         'layersshape','layersacttype','layersdropoprob')
+  sbamlpart2parlln1 <- function(autopar = list(), hpar = list(), mylspsoparam = list())
   {
-    mylastlog <- ("error: hpar is not a list")
-    stop(mylastlog)
-  }
-  if (class(autopar) != 'list')
-  {
-    mylastlog <- ("error: autopar is not a list")
-    stop(mylastlog)
-  }
-  #
-  myprov <- names(autopar)
-  if (!"seed" %in% myprov) {autopar[["seed"]] <- 4}
-  if (!"nbcores" %in% myprov) {autopar[["nbcores"]] <- 1}
-  if (!"verbose" %in% myprov) {autopar[["verbose"]] <- TRUE}
-  if (!"psomodeinit" %in% myprov) {autopar[["psomodeinit"]] <- 'autopar'}
-  if (!"psomodecost" %in% myprov) {autopar[["psomodecost"]] <- 'autopar'}
-  if (!"psopartpopsize" %in% myprov) {autopar[["psopartpopsize"]] <- 8}
-  if (!"numiterations" %in% myprov) {autopar[["numiterations"]] <- 3}
-  if (!"psovelocitymaxratio" %in% myprov) {autopar[["psovelocitymaxratio"]] <- 0.2}
-  if (!"psoinertiadampratio" %in% myprov) {autopar[["psoinertiadampratio"]] <- 1}
-  if (!"psokappa" %in% myprov) {autopar[["psokappa"]] <- 1}
-  if (!"psophi1" %in% myprov) {autopar[["psophi1"]] <- 2.05}
-  if (!"psophi2" %in% myprov) {autopar[["psophi2"]] <- 2.05}
-  if (!"auto_modexec" %in% myprov) {autopar[["auto_modexec"]] <- FALSE}
-  if (!"auto_minibatchsize" %in% myprov) {autopar[["auto_minibatchsize"]] <- TRUE}
-  if (!"auto_minibatchsize_min" %in% myprov) {autopar[["auto_minibatchsize_min"]] <- 0}
-  if (!"auto_minibatchsize_max" %in% myprov) {autopar[["auto_minibatchsize_max"]] <- 9}
-  if (!"auto_learningrate" %in% myprov) {autopar[["auto_learningrate"]] <- TRUE}
-  if (!"auto_learningrate_min" %in% myprov) {autopar[["auto_learningrate_min"]] <- -5}
-  if (!"auto_learningrate_max" %in% myprov) {autopar[["auto_learningrate_max"]] <- -2}
-  if (!"auto_beta1" %in% myprov) {autopar[["auto_beta1"]] <- TRUE}
-  if (!"auto_beta2" %in% myprov) {autopar[["auto_beta2"]] <- TRUE}
-  if (!"auto_psopartpopsize" %in% myprov) {autopar[["auto_psopartpopsize"]] <- TRUE}
-  if (!"auto_psopartpopsize_min" %in% myprov) {autopar[["auto_psopartpopsize_min"]] <- 2}
-  if (!"auto_psopartpopsize_max" %in% myprov) {autopar[["auto_psopartpopsize_max"]] <- 50}
-  if (!"auto_lambda" %in% myprov) {autopar[["auto_lambda"]] <- FALSE}
-  if (!"auto_lambda_min" %in% myprov) {autopar[["auto_lambda_min"]] <- -2}
-  if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 3}
-  if (!"auto_psovelocitymaxratio" %in% myprov) {autopar[["auto_psovelocitymaxratio"]] <- TRUE}
-  if (!"auto_psovelocitymaxratio_min" %in% myprov) {autopar[["auto_psovelocitymaxratio_min"]] <- 0.01}
-  if (!"auto_psovelocitymaxratio_max" %in% myprov) {autopar[["auto_psovelocitymaxratio_max"]] <- 0.5}
-  if (!"auto_layers" %in% myprov) {autopar[["auto_layers"]] <- TRUE}
-  if (!"auto_layers_min" %in% myprov) {autopar[["auto_layers_min"]] <- 1}
-  if (!"auto_layers_max" %in% myprov) {autopar[["auto_layers_max"]] <- 1}
-  if (!"auto_layersnodes_min" %in% myprov) {autopar[["auto_layersnodes_min"]] <- 3}
-  if (!"auto_layersnodes_max" %in% myprov) {autopar[["auto_layersnodes_max"]] <- 33}
-  if (!"auto_layersdropoprob_min" %in% myprov) {autopar[["auto_layersdropoprob_min"]] <- 0}
-  if (!"auto_layersdropoprob_max" %in% myprov) {autopar[["auto_layersdropoprob_max"]] <- 0}
-  rm(myprov)
-  #
-  myprov <- c(autopar$auto_minibatchsize,
-              autopar$auto_learningrate,
-              autopar$auto_beta1,
-              autopar$auto_beta2,
-              autopar$auto_psopartpopsize,
-              autopar$auto_lambda,
-              autopar$auto_psovelocitymaxratio)
-  if (autopar$auto_layers == TRUE)
-  {
-   myprov <- c(myprov, rep(1, (1 + 3 * autopar$auto_layers_max)));#because layers nb, nodes nbs, act types, dropout
-  }
-  #100 reservations for positions initialization reproductibility
-  if (length(myprov) > 100)
-  {
-   mylastlog <- ("warning: positions initialization reproductibility")
-   warning(mylastlog)
-  }
-  autopar$psonbvar2optim <- ifelse(length(myprov) > 100, length(myprov), 100);
-
-  if (sum(myprov) == 0 & autopar$numiterations > 1)
-  {
-    mylastlog <- ("error: no auto hpar set to TRUE in autopar")
-    stop(mylastlog)
-  }
-  rm(myprov)
-  #
-  mylspsoparam <- list(
-    modeinit = autopar$psomodeinit,
-    modecost = autopar$psomodecost,
-    nbvar2optim = autopar$psonbvar2optim,
-    partpopsize = autopar$psopartpopsize,
-    numiteration = autopar$numiterations,
-    varvalmin = -1, varvalmax = 1,
-    velocitymaxratio = autopar$psovelocitymaxratio,
-    inertiadampratio = autopar$psoinertiadampratio,
-    kappa = autopar$psokappa,
-    phi1 = autopar$psophi1,
-    phi2 = autopar$psophi2,
-    seed = autopar$seed)
-  myprovres <- sbamlmodpsoparam(mylspsoparam = mylspsoparam, mylspsopart = NULL)
-  mylspsoparam <- myprovres[["mylspsoparam"]]
-  mylspsopart <- myprovres[["mylspsopart"]]
-  rm(myprovres)
-
-  sbamlpart2parll <- function(mylspsoactivpart)
-  {
+   sbamlpart2parlln2 <- function(mylspsoactivpart)
+   {
     myactivpartnbr <- mylspsoactivpart$Best$idpart
     mylspsoparam$activpart <- myactivpartnbr
     myprovres <- sbamlmodpsooptkern(mylspsoparam = mylspsoparam, mylspsoactivpart = mylspsoactivpart)
@@ -408,108 +427,124 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
     hpar$verbose <- FALSE
     hpar$useautopar <- TRUE
     hpar$seedautopar <- autopar$seed;#for train/test constant sampling
-    hpar$overfitautopar <- FALSE;#TRUE to overfit (no cv test)
     hpar$seed <- autopar$seed + myactivpartnbr
     if (autopar$auto_modexec == TRUE & !"modexec" %in% names(hpar))
     {
-      set.seed(autopar$seed + myactivpartnbr)
-      hpar$modexec <- c('trainwgrad', 'trainwpso')[sample(2, 1, replace = TRUE)]
+     set.seed(autopar$seed + myactivpartnbr)
+     hpar$modexec <- c('trainwgrad', 'trainwpso')[sample(2, 1, replace = TRUE)]
+    } else if (autopar$auto_modexec == FALSE & !"modexec" %in% names(hpar))
+    {
+     hpar$modexec <- 'trainwgrad'
     }
     mydep = 1
     if (autopar$auto_minibatchsize == TRUE & !"minibatchsize" %in% names(hpar))
     {
+     if (hpar$modexec != 'trainwpso')
+     {
       hpar$minibatchsize <- eval(parse(text =
-                                         paste0("2^round(",
-                                                sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                                " * (",
-                                                autopar$auto_minibatchsize_max,
-                                                " - (",
-                                                autopar$auto_minibatchsize_min,
-                                                ")) + (",
-                                                autopar$auto_minibatchsize_min,
-                                                "), digits = 0)")
+                                        paste0("2^round(",
+                                               sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                               " * (",
+                                               autopar$auto_minibatchsize_max,
+                                               " - (",
+                                               autopar$auto_minibatchsize_min,
+                                               ")) + (",
+                                               autopar$auto_minibatchsize_min,
+                                               "), digits = 0)")
       ))
+     }
     }
     mydep = mydep + 1
     if (autopar$auto_learningrate == TRUE & !"learningrate" %in% names(hpar))
     {
-      hpar$learningrate <- eval(parse(text =
-                                        paste0("10^(",
-                                               sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                               " * (",
-                                               autopar$auto_learningrate_max,
-                                               " - (",
-                                               autopar$auto_learningrate_min,
-                                               ")) + (",
-                                               autopar$auto_learningrate_min,
-                                               "))")
-      ))
+     hpar$learningrate <- eval(parse(text =
+                                      paste0("10^(",
+                                             sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                             " * (",
+                                             autopar$auto_learningrate_max,
+                                             " - (",
+                                             autopar$auto_learningrate_min,
+                                             ")) + (",
+                                             autopar$auto_learningrate_min,
+                                             "))")
+     ))
     }
     mydep = mydep + 1
     if (autopar$auto_beta1 == TRUE & !"beta1" %in% names(hpar))
     {
-      hpar$beta1 <- eval(parse(text =
-                                 paste0("1 - 10^(-",
-                                        sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                        " - 1)")
-      ))
+     hpar$beta1 <- eval(parse(text =
+                               paste0("1 - 10^(-",
+                                      sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                      " - 1)")
+     ))
     }
     mydep = mydep + 1
     if (autopar$auto_beta2 == TRUE & !"beta2" %in% names(hpar))
     {
-      hpar$beta2 <- eval(parse(text =
-                                 paste0("1 - 10^(-",
-                                        sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                        " - 2)")
-      ))
+     hpar$beta2 <- eval(parse(text =
+                               paste0("1 - 10^(-",
+                                      sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                      " - 2)")
+     ))
     }
     mydep = mydep + 1
     if (autopar$auto_psopartpopsize == TRUE & !"psopartpopsize" %in% names(hpar))
     {
-      hpar$psopartpopsize <- eval(parse(text =
-                                          paste0("round(",
-                                                 sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                                 " * (",
-                                                 autopar$auto_psopartpopsize_max,
-                                                 " - (",
-                                                 autopar$auto_psopartpopsize_min,
-                                                 ")) + (",
-                                                 autopar$auto_psopartpopsize_min,
-                                                 "), digits = 0)")
-      ))
+     hpar$psopartpopsize <- eval(parse(text =
+                                        paste0("round(",
+                                               sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                               " * (",
+                                               autopar$auto_psopartpopsize_max,
+                                               " - (",
+                                               autopar$auto_psopartpopsize_min,
+                                               ")) + (",
+                                               autopar$auto_psopartpopsize_min,
+                                               "), digits = 0)")
+     ))
     }
     mydep = mydep + 1
     if (autopar$auto_lambda == TRUE & !"lambda" %in% names(hpar))
     {
      hpar$lambda <- eval(parse(text =
-                                        paste0("10^(",
-                                               sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                               " * (",
-                                               autopar$auto_lambda_max,
-                                               " - (",
-                                               autopar$auto_lambda_min,
-                                               ")) + (",
-                                               autopar$auto_lambda_min,
-                                               "))")
+                                paste0("10^(",
+                                       sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                       " * (",
+                                       autopar$auto_lambda_max,
+                                       " - (",
+                                       autopar$auto_lambda_min,
+                                       ")) + (",
+                                       autopar$auto_lambda_min,
+                                       "))")
      ))
     }
     mydep = mydep + 1
     if (autopar$auto_psovelocitymaxratio == TRUE & !"psovelocitymaxratio" %in% names(hpar))
     {
      hpar$psovelocitymaxratio <- eval(parse(text =
-                                paste0(sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
-                                       " * (",
-                                       autopar$auto_psovelocitymaxratio_max,
-                                       " - (",
-                                       autopar$auto_psovelocitymaxratio_min,
-                                       ")) + (",
-                                       autopar$auto_psovelocitymaxratio_min,
-                                       ")")
+                                             paste0(sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
+                                                    " * (",
+                                                    autopar$auto_psovelocitymaxratio_max,
+                                                    " - (",
+                                                    autopar$auto_psovelocitymaxratio_min,
+                                                    ")) + (",
+                                                    autopar$auto_psovelocitymaxratio_min,
+                                                    ")")
      ))
     }
     mydep <- mydep + 1
-    if (autopar$auto_layers == TRUE)
+    if (any(c("layersshape", "layersacttype", "layersdropoprob") %in% names(hpar)))
     {
+     if ("layersshape" %in% names(hpar))
+     {
+      mylayernbr <- length(hpar$layersshape)
+     } else if ("layersacttype" %in% names(hpar))
+     {
+      mylayernbr <- length(hpar$layersacttype)
+     } else if ("layersdropoprob" %in% names(hpar))
+     {
+      mylayernbr <- length(hpar$layersdropoprob)
+     }
+    } else {
      mylayernbr <- eval(parse(text =
                                paste0("round(",
                                       sbamlprepscalem11201(mylspsoactivpart$Position[mydep]),
@@ -528,22 +563,22 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
      myformula <- "c("
      for (i in mydep:(mydep + mylayernbr - 1))
      {
-      myformula <- c(myformula, eval(parse(text =
-                               paste0("round(",
-                                      sbamlprepscalem11201(mylspsoactivpart$Position[i]),
-                                      " * (",
-                                      autopar$auto_layersnodes_max,
-                                      " - (",
-                                      autopar$auto_layersnodes_min,
-                                      ")) + (",
-                                      autopar$auto_layersnodes_min,
-                                      "), digits = 0)")
-      )))
       if (i != (mydep + mylayernbr - 1))
       {
+       myformula <- c(myformula, eval(parse(text =
+                                             paste0("round(",
+                                                    sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                                    " * (",
+                                                    autopar$auto_layersnodes_max,
+                                                    " - (",
+                                                    autopar$auto_layersnodes_min,
+                                                    ")) + (",
+                                                    autopar$auto_layersnodes_min,
+                                                    "), digits = 0)")
+       )))
        myformula <- c(myformula, ',')
       } else {
-       myformula <- c(myformula, ',0)')
+       myformula <- c(myformula, '0)')
       }
      }
      hpar$layersshape <-  eval(parse(text = paste(myformula, collapse = '')))
@@ -555,121 +590,298 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list())
      myhiddenacttype <- c('sigmoid', 'relu', 'reluleaky', 'tanh')
      for (i in mydep:(mydep + mylayernbr - 1))
      {
-      myformula <- c(myformula, "'", myhiddenacttype[eval(parse(text =
-                                            paste0("round(",
-                                                   sbamlprepscalem11201(mylspsoactivpart$Position[i]),
-                                                   " * (",
-                                                   length(myhiddenacttype),
-                                                   " - (",
-                                                   1,
-                                                   ")) + (",
-                                                   1,
-                                                   "), digits = 0)")
-      ))], "'")
       if (i != (mydep + mylayernbr - 1))
       {
+       myformula <- c(myformula, "'", myhiddenacttype[eval(parse(text =
+                                                                  paste0("round(",
+                                                                         sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                                                         " * (",
+                                                                         length(myhiddenacttype),
+                                                                         " - (",
+                                                                         1,
+                                                                         ")) + (",
+                                                                         1,
+                                                                         "), digits = 0)")
+       ))], "'")
        myformula <- c(myformula, ',')
       } else {
-       myformula <- c(myformula, ",'')")
+       myformula <- c(myformula, "'')")
       }
      }
      hpar$layersacttype <-  eval(parse(text = paste(myformula, collapse = '')))
     }
     mydep <- mydep + autopar$auto_layers_max
-    if (autopar$auto_layers == TRUE & !"layersdropoprob" %in% names(hpar))
+    if (!"layersdropoprob" %in% names(hpar))
     {
      myformula <- "c("
      for (i in mydep:(mydep + mylayernbr - 1))
      {
-      myformula <- c(myformula, eval(parse(text =
-                                            paste0(sbamlprepscalem11201(mylspsoactivpart$Position[i]),
-                                                   " * (",
-                                                   autopar$auto_layersdropoprob_max,
-                                                   " - (",
-                                                   autopar$auto_layersdropoprob_min,
-                                                   ")) + (",
-                                                   autopar$auto_layersdropoprob_min,
-                                                   ")")
-      )))
       if (i != (mydep + mylayernbr - 1))
       {
+       if (autopar$auto_layersdropo == FALSE)
+       {
+        myformula <- c(myformula, 0)
+       } else {
+        myformula <- c(myformula, eval(parse(text =
+                                              paste0(sbamlprepscalem11201(mylspsoactivpart$Position[i]),
+                                                     " * (",
+                                                     autopar$auto_layersdropoprob_max,
+                                                     " - (",
+                                                     autopar$auto_layersdropoprob_min,
+                                                     ")) + (",
+                                                     autopar$auto_layersdropoprob_min,
+                                                     ")")
+        )))
+       }
        myformula <- c(myformula, ',')
       } else {
-       myformula <- c(myformula, ',0)')
+       myformula <- c(myformula, '0)')
       }
      }
      hpar$layersdropoprob <-  eval(parse(text = paste(myformula, collapse = '')))
     }
-    hpar <- sbamlhparvalid(hpar = hpar)
+    myprovres <- sbamlvalidhpar(hpar = hpar, myruntype = 'auto')
+    hpar <- myprovres[["hpar"]]
+    valhparflagok <- myprovres[["tstflagok"]]
+    rm(myprovres)
     #
-    mymodel <- try(automl_train_manual(Xref = Xref, Yref = Yref, hpar = hpar), TRUE)
-    if (grepl('error',class(mymodel)[1]))
+    if (valhparflagok == 1)
     {
-      mymodel <- list(error = list(tr = Inf, cv = Inf))
-      mylspsoactivpart$Cost <- Inf
+     mymodel <- try(automl_train_manual(Xref = Xref, Yref = Yref, hpar = hpar), TRUE)
     } else {
-      mylspsoactivpart$Cost <- sbamlmodresult(trerr = mymodel$error$tr,
-                                              cverr = mymodel$error$cv,
-                                              cvflag = mymodel$hpar$testcvsize != 0)
+     mymodel <- NULL
+    }
+    if (grepl('error', class(mymodel)[1]) | is.null(mymodel))
+    {
+     mymodel <- list(error = list(tr = Inf, cv = Inf))
+     mylspsoactivpart$Cost <- Inf
+    } else {
+     mylspsoactivpart$Cost <- sbamlmodresult(trerr = mymodel$error$tr,
+                                             cverr = mymodel$error$cv,
+                                             cvflag = mymodel$hpar$testcvsize != 0 & mymodel$hpar$overfitautopar == FALSE)
     }
     if (mylspsoactivpart$Cost < mylspsoactivpart$Best$Cost)
     {
-      mylspsoactivpart$Best$Position <- mylspsoactivpart$Position
-      mylspsoactivpart$Best$Cost <- mylspsoactivpart$Cost
-      mylspsoactivpart$Best$idpart <- myactivpartnbr
-      mylspsoactivpart$Best$model <- mymodel
+     mylspsoactivpart$Best$Position <- mylspsoactivpart$Position
+     mylspsoactivpart$Best$Cost <- mylspsoactivpart$Cost
+     mylspsoactivpart$Best$idpart <- myactivpartnbr
+     mylspsoactivpart$Best$model <- mymodel
     }
     return(mylspsoactivpart)
+   }
   }
-  mymc <- sbamlparllmc(autopar$nbcores)
   #
-  for (iternbr in 1:autopar$numiterations)
+  hparref <- sbamlvalidhpar(hpar = hpar, myruntype = 'rawmanual')[["hpar"]]
+  autoparref <- sbamlvalidautopar(autopar = autopar, myruntype = 'rawmanual')[["autopar"]]
+  if (!is.null(mdlref))
   {
+   myprovres <- sbamltestmodel(mymodel = mdlref, mymodeltype = 'auto', guess1stlayer = TRUE)
+   mdlref <- myprovres[["mymodel"]]
+   valmodautoflagok <- myprovres[["tstflagok"]]
+   rm(myprovres)
+   if (valmodautoflagok == 1)
+   {
+    #initializing autopar with mdlref$autopar if not defined
+    for (i in 1:length(names(mdlref$autopar)))
+    {
+     if (!names(mdlref$autopar)[i] %in% names(autopar))
+     {
+      autopar[[names(mdlref$autopar)[i]]] <- mdlref$autopar[[names(mdlref$autopar)[i]]]
+     }
+    }
+    #initializing hpar with mdlref$hpar
+    autopar <- sbamlvalidautopar(autopar = autopar, myruntype = 'auto')[["autopar"]]
+    myprovres <- sbamlmodhparcp(mdlref, myhpartoignore = myautomatablehpar, autopar, hpar)
+    autopar <- myprovres[["autopar"]]
+    hpar <- myprovres[["hpar"]]
+    rm(myprovres)
+   }
+  } else {valmodautoflagok <- 0}
+  #
+  Xref <- t(as.matrix(Xref))
+  Yref <- t(as.matrix(Yref))
+  sbamlmatstest(Xref, Yref)
+  Xref <- sbamlmattest(Xref, "Xref")
+  Yref <- sbamlmattest(Yref, "Yref")
+  #
+  if (valmodautoflagok == 0)
+  {
+   autopar <- sbamlvalidautopar(autopar = autoparref, myruntype = 'manual')[["autopar"]]
+  }
+  #
+  if (autopar$auto_runtype == "2steps")
+  {
+   myautonbloop <- 2
+  } else {
+   myautonbloop <- 1
+  }
+  #
+  for (autoloopnbr in 1:myautonbloop)
+  {
+   if (autopar$auto_runtype == "2steps" & autoloopnbr == 1)
+   {
+    hpar$overfitautopar <- TRUE;#TRUE to overfit (cv but no cv test)
+    autopar[["auto_lambda"]] <- FALSE
+    autopar[["auto_layersdropo"]] <- FALSE
+    myprovres <- sbamlvalidautopar(autopar = autopar, myruntype = 'auto')
+    autopar <- myprovres[["autopar"]]
+    if (myprovres[["tstflagok"]] == 0)
+    {
+     mylastlog <- ("wrng: so mdlref autopar won't be used")
+     warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+     autopar <- autoparref
+     autopar[["auto_lambda"]] <- FALSE
+     autopar[["auto_layersdropo"]] <- FALSE
+     autopar <- sbamlvalidautopar(autopar = autopar, myruntype = 'manual')[["autopar"]]
+    }
+    rm(myprovres)
+
+   } else if (autopar$auto_runtype == "2steps" & autoloopnbr == 2)
+   {
+    hpar$overfitautopar <- FALSE;#FALSE to generalize (cv w cv test)
+    autopar[["auto_modexec"]] <- FALSE
+    autopar[["auto_minibatchsize"]] <- FALSE
+    autopar[["auto_learningrate"]] <- FALSE
+    autopar[["auto_beta1"]] <- FALSE
+    autopar[["auto_beta2"]] <- FALSE
+    autopar[["auto_psopartpopsize"]] <- FALSE
+    autopar[["auto_psovelocitymaxratio"]] <- FALSE
+    autopar[["auto_layers"]] <- FALSE
+    #
+    autopar[["auto_lambda"]] <- TRUE
+    autopar[["auto_layersdropo"]] <- TRUE
+    #
+    myprovres <- sbamltestmodel(mymodel = mdlref, mymodeltype = 'auto', guess1stlayer = TRUE)
+    mdlref <- myprovres[["mymodel"]]
+    valmodautoflagok <- myprovres[["tstflagok"]]
+    rm(myprovres)
+    if (valmodautoflagok == 1)
+    {
+     #initializing autopar with mdlref$autopar if not defined
+     for (i in 1:length(names(mdlref$autopar)))
+     {
+      if (!names(mdlref$autopar)[i] %in% names(autopar))
+      {
+       autopar[[names(mdlref$autopar)[i]]] <- mdlref$autopar[[names(mdlref$autopar)[i]]]
+      }
+     }
+     #initializing hpar with mdlref$hpar
+     autopar <- sbamlvalidautopar(autopar = autopar, myruntype = 'manual')[["autopar"]]
+     myprovres <- sbamlmodhparcp(mdlref, myhpartoignore = myautomatablehpar, autopar, hpar)
+     autopar <- myprovres[["autopar"]]
+     hpar <- myprovres[["hpar"]]
+     rm(myprovres)
+    }
+   }
+   #
+   mylspsoparam <- list(
+   modeinit = autopar$psomodeinit,
+   modecost = autopar$psomodecost,
+   nbvar2optim = autopar$psonbvar2optim,
+   partpopsize = autopar$psopartpopsize,
+   numiteration = autopar$numiterations,
+   varvalmin = -1, varvalmax = 1,
+   velocitymaxratio = autopar$psovelocitymaxratio,
+   inertiadampratio = autopar$psoinertiadampratio,
+   kappa = autopar$psokappa,
+   phi1 = autopar$psophi1,
+   phi2 = autopar$psophi2,
+   seed = autopar$seed)
+   myprovres <- sbamlmodpsoparam(mylspsoparam = mylspsoparam, mylspsopart = NULL)
+   mylspsoparam <- myprovres[["mylspsoparam"]]
+   mylspsopart <- myprovres[["mylspsopart"]]
+   rm(myprovres)
+   #
+   mymc <- sbamlparllmc(autopar$nbcores)
+   sbamlpart2parll <- sbamlpart2parlln1(autopar = autopar, hpar = hpar, mylspsoparam = mylspsoparam)
+   #
+   for (iternbr in 1:autopar$numiterations)
+   {
     if (mymc != 1)
     {
-      mylsres <- parallel::mclapply(X = mylspsopart, FUN = sbamlpart2parll,
-                                      mc.preschedule = FALSE, mc.set.seed = FALSE,
-                                      mc.silent = FALSE, mc.cores = getOption("mc.cores", mymc),
-                                      mc.cleanup = TRUE, mc.allow.recursive = FALSE)
+     mylsres <- parallel::mclapply(X = mylspsopart, FUN = sbamlpart2parll,
+                                   mc.preschedule = FALSE, mc.set.seed = FALSE,
+                                   mc.silent = FALSE, mc.cores = getOption("mc.cores", mymc),
+                                   mc.cleanup = TRUE, mc.allow.recursive = FALSE)
     } else {
-      mylsres <- lapply(X = mylspsopart, FUN = sbamlpart2parll)
+     mylsres <- lapply(X = mylspsopart, FUN = sbamlpart2parll)
     }
     mylspsopart <- mylsres
     for (i in 1:autopar$psopartpopsize)
     {
-      if (autopar$verbose == TRUE)
+     if (autopar$verbose == TRUE)
+     {
+      if (iternbr == 1 & i == 1)
       {
-        if (iternbr == 1 & i == 1)
-        {
-          cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))
-        }
-        mylastlog <- paste("iteration", iternbr,
-                           "particle", i,
-                           "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
+       if (autopar$auto_runtype == "2steps")
+       {
+        cat(paste('STEP: ', autoloopnbr,' (',ifelse(autoloopnbr == 1, 'overfitting', 'regularization'),')\n', sep = ''))
+       }
+       cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))
+      }
+      mylastlog <- paste("iteration", iternbr,
+                         "particle", i, sep = " ")
+      if (any(!c('Cost', 'model') %in% names(mylspsopart[[i]]$Best)))
+      {
+       mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
+      } else {
+       if (is.na(mylspsopart[[i]]$Best$model$error$cv))
+       {
+        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5), sep = " ")
+       } else {
+        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
                            "(train:", round(mylspsopart[[i]]$Best$model$error$tr, digits = 5),
                            "cvalid:", round(mylspsopart[[i]]$Best$model$error$cv, digits = 5),
                            ")", sep = " ")
-        cat(mylastlog)
+       }
       }
-      if (mylspsopart[[i]]$Best$Cost < mylspsoparam$globalbest$Cost)
-      {
-        mylspsoparam$globalbest <- mylspsopart[[i]]$Best
-        if (autopar$verbose == TRUE) {cat(" BEST MODEL KEPT\n")}
-      } else {if (autopar$verbose == TRUE) {cat("\n")}}
+      cat(mylastlog)
+     }
+     if (mylspsopart[[i]]$Best$Cost < mylspsoparam$globalbest$Cost)
+     {
+      mylspsoparam$globalbest <- mylspsopart[[i]]$Best
+      if (autopar$verbose == TRUE) {cat(" BEST MODEL KEPT\n")}
+     } else {if (autopar$verbose == TRUE) {cat("\n")}}
     }
     mylspsoparam$globbestcostlog[iternbr, 1] <- mylspsoparam$globalbest$idpart
     mylspsoparam$globbestcostlog[iternbr, 2] <- mylspsoparam$globalbest$Cost
+   }
+   mymodel <- mylspsoparam$globalbest$model
+   mylspsoparam$globalbest$model <- NULL
+   mymodel$mylspsoparamlvauto <- mylspsoparam
+   mymodel$autopar <- autopar
+   myprovres <- sbamltestmodel(mymodel = mymodel, mymodeltype = 'auto')
+   mymodel <- myprovres[["mymodel"]]
+   rm(myprovres)
+   if (autopar$auto_runtype == "2steps" & autoloopnbr == 1)
+   {
+    hpar <- hparref; autopar <- autoparref
+    mdlref <- mymodel
+   } else {
+    return(mymodel)
+   }
   }
-  mymodel <- mylspsoparam$globalbest$model
-  mylspsoparam$globalbest$model <- NULL
-  mymodel$mylspsoparamlvauto <- mylspsoparam
-  sbamltestmodel(mymodel)
-  return(mymodel)
 }
 
-automl_train_manual <- function(Xref, Yref, hpar = list())
+automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
 {
-  hpar <- sbamlhparvalid(hpar)
+  hpar <- sbamlvalidhpar(hpar = hpar, myruntype = 'rawmanual')[["hpar"]]
+  if (!is.null(mdlref))
+  {
+   myprovres <- sbamltestmodel(mymodel = mdlref, mymodeltype = 'manual', guess1stlayer = TRUE)
+   mdlref <- myprovres[["mymodel"]]
+   valmodimpflagok <- myprovres[["tstflagok"]]
+   rm(myprovres)
+   if (valmodimpflagok == 1)
+   {
+    myprovres <- sbamlmodhparcp(mdlref, myhpartoignore = NULL, autopar = NULL, hpar)
+    hpar <- myprovres[["hpar"]]
+    valmodimpflagok <- myprovres[["valmodimpflagok"]]
+    rm(myprovres)
+   }
+  } else {valmodimpflagok <- 0}
+  #
+  hpar <- sbamlvalidhpar(hpar = hpar, myruntype = 'manual')[["hpar"]]
   if (hpar$useautopar == FALSE)
   {
     Xref <- t(as.matrix(Xref))
@@ -680,6 +892,10 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
   }
   mydl <- list()
   mydl$error$cv <- mydl$error$tr <- Inf
+  if (valmodimpflagok == 1)
+  {
+   mydl <- sbamlmodcp(mdlref, mydl)
+  }
   mydl[['hpar']] <- hpar
   mydl$hpar$layersshape <- c(dim(Xref)[1], mydl$hpar$layersshape)
   mydl$hpar$layersshape[length(mydl$hpar$layersshape)] <- dim(Yref)[1]
@@ -738,7 +954,10 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
   }
   if (mydl$hpar$modexec == 'trainwgrad')
   {
-    mydl <- sbamlmoddlparaminit(mydl, mydl$hpar$layersshape, mydl$hpar$layersacttype, mydl$hpar$seed, mydl$hpar$batchnor_mom)
+    if (valmodimpflagok == 0)
+    {
+     mydl <- sbamlmoddlparaminit(mydl, mydl$hpar$layersshape, mydl$hpar$layersacttype, mydl$hpar$seed, mydl$hpar$batchnor_mom)
+    }
   } else if (mydl$hpar$modexec == 'trainwpso')
   {
     mylspsoparam <- list(
@@ -756,6 +975,13 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
     mylspsoparam <- myprovres[["mylspsoparam"]]
     mylspsopart <- myprovres[["mylspsopart"]]
     rm(myprovres)
+    if (valmodimpflagok == 1 & "mylspsoparam" %in% names(mdlref))
+    {
+     mylspsoparam$globalbest <- mdlref$mylspsoparam$globalbest
+     mylspsoparam$globalbest$idpart <- 1
+     mylspsopart[[1]]$Position <- mylspsopart[[1]]$Best$Position <- mdlref$mylspsoparam$globalbest$Position
+     mylspsopart[[1]]$Cost <- mylspsopart[[1]]$Best$Cost <- mdlref$mylspsoparam$globalbest$Cost
+    }
   }
 
   myflagcontinue <- 1
@@ -904,7 +1130,15 @@ automl_train_manual <- function(Xref, Yref, hpar = list())
     }
     cat(paste('   dim Y', ': [', paste(dim(Yref), collapse = ','), ']\n', sep = ''))
   }
-  if (hpar$useautopar == FALSE) {sbamltestmodel(mydl)}
+  myprovres <- sbamltestmodel(mymodel = mydl, mymodeltype = 'manual', guess1stlayer = FALSE)
+  mydl <- myprovres[["mymodel"]]
+  valmodflagok <- myprovres[["tstflagok"]]
+  rm(myprovres)
+  if (valmodflagok == 0 & mydl$hpar$useautopar == TRUE)
+  {
+   mylastlog <- ("error: model training error")
+   stop(mylastlog);#to return error to automl_train
+  }
   return(mydl)
 }
 
@@ -936,19 +1170,21 @@ sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambd
       dA <- sbamlmoddlcostbk(Y,
                              Yhat,
                              costtype)
-      if (layersdropoprob[l] != 0)
-      {
-        D <- mydl[[paste("mydl_D", l, sep = '')]]
-        dA <- sbamlmatopebroadcst(dA, D, 'mult') / (1 - layersdropoprob[l])
-      }
       mydl[[paste("mydl_dA", l, sep = '')]] <- dA
-    } else {
-      dA <- mydl[[paste("mydl_dA", l, sep = '')]]
+    } else
+    {
+     dA <- mydl[[paste("mydl_dA", l, sep = '')]]
+     if (layersdropoprob[l] != 0)
+     {
+      D <- mydl[[paste("mydl_D", l, sep = '')]]
+      dA <- sbamlmoddldropo(dA, D, layersdropoprob[l])
+     }
     }
     if (batchnor_mom == 0)
     {
       dZ <- sbamlmoddlsubbkact(mydl, dA, l, layersacttype[l], batchnor_mom)
-    } else {
+    } else
+    {
       dZt <- sbamlmoddlsubbkact(mydl, dA, l, layersacttype[l], batchnor_mom)
       # BN
       Z <- mydl[[paste("mydl_Z", l, sep = '')]]
@@ -983,7 +1219,6 @@ sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambd
     Aprev <- mydl[[paste("mydl_A",(l - 1), sep = '')]]
     W <- mydl[[paste("mydl_W", l, sep = '')]]
     mygrads <- sbamlmoddlsubbklin(mydl, dZ, Aprev, W, l, lambda,
-                                  ifelse(l == 1, 0, layersdropoprob[l - 1]),
                                   batchnor_mom)
     mydl[[paste("mydl_dW", l, sep = '')]] <- mygrads$dW
     if (batchnor_mom == 0)
@@ -1038,7 +1273,6 @@ sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropop
       Zt <- sbamlmatopebroadcst(sbamlmatopebroadcst(Zn, j, 'mult'), bB, 'add')
       A <- sbamlmoddlsubfwact(Zt, layersacttype[l])
     }
-    if (l != nblayers) {Aprev <- A}
     if (modexec %in% c('trainwgrad', 'trainwpso'))
     {
       if (layersdropoprob[l] != 0)
@@ -1047,7 +1281,7 @@ sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropop
         D <- matrix(stats::runif(n = dim(A)[1] * dim(A)[2], min = 0, max = 1),
                     nrow = dim(A)[1], ncol = dim(A)[2], byrow = FALSE)
         D <- D > layersdropoprob[l]
-        A <- sbamlmatopebroadcst(A, D, 'mult') / (1 - layersdropoprob[l])
+        A <- sbamlmoddldropo(A, D, layersdropoprob[l])
       }
       mydl[[paste("mydl_Z", l, sep = '')]] <- Z
       mydl[[paste("mydl_A", l, sep = '')]] <- A
@@ -1061,6 +1295,7 @@ sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropop
         mydl[[paste("mydl_Zt", l, sep = '')]] <- Zt
       }
     }
+    if (l != nblayers) {Aprev <- A}
   }
   return(list(A = A, mydl = mydl))
 }
@@ -1151,7 +1386,7 @@ sbamlmoddlsubbkact <- function(mydl, dA, l, activtype, batchnor_mom)
   return(dZ)
 }
 
-sbamlmoddlsubbklin <- function(mydl, dZ, Aprev, W, l, lambda, layerdropoprobprev, batchnor_mom)
+sbamlmoddlsubbklin <- function(mydl, dZ, Aprev, W, l, lambda, batchnor_mom)
 {
   m <- dim(Aprev)[2]
   dW <- sbamlmatopebroadcst(dZ, t(Aprev), 'dot') * (1 / m)
@@ -1175,11 +1410,6 @@ sbamlmoddlsubbklin <- function(mydl, dZ, Aprev, W, l, lambda, layerdropoprobprev
   if (l != 1)
   {
     dAprev <- sbamlmatopebroadcst(t(W), dZ, 'dot')
-    if (layerdropoprobprev != 0)
-    {
-      D <- mydl[[paste("mydl_D", (l - 1), sep = '')]]
-      dAprev <- sbamlmatopebroadcst(dAprev, D, 'mult') / (1 - layerdropoprobprev)
-    }
     res[['dAprev']] = dAprev
   }
   return(res)
@@ -1236,18 +1466,16 @@ sbamlmoddlparaminit <- function(mydl, layersshape, layersacttype, seed, batchnor
     mydl[[paste("mydl_bB", l, sep = '')]] <- mymat
     mydl[[paste("mydl_vdbB", l, sep = '')]] <- mymat
     mydl[[paste("mydl_sdbB", l, sep = '')]] <- mymat
-    if (batchnor_mom != 0)
-    {
-      mymat <- matrix(rep(1, n),nrow = n, ncol = 1)
-      mydl[[paste("mydl_j", l, sep = '')]] <- mymat
-      mydl[[paste("mydl_vdj", l, sep = '')]] <- mymat
-      mydl[[paste("mydl_sdj", l, sep = '')]] <- mymat
-      mymat <- matrix(rep(0, n),nrow = n, ncol = 1)
-      mydl[[paste("mydl_M", l, sep = '')]] <- mymat
-      mydl[[paste("mydl_vM", l, sep = '')]] <- mymat
-      mydl[[paste("mydl_V", l, sep = '')]] <- mymat
-      mydl[[paste("mydl_vV", l, sep = '')]] <- mymat
-    }
+    #if (batchnor_mom != 0);#legacy: same architecture 4 all since mdlref
+    mymat <- matrix(rep(1, n),nrow = n, ncol = 1)
+    mydl[[paste("mydl_j", l, sep = '')]] <- mymat
+    mydl[[paste("mydl_vdj", l, sep = '')]] <- mymat
+    mydl[[paste("mydl_sdj", l, sep = '')]] <- mymat
+    mymat <- matrix(rep(0, n),nrow = n, ncol = 1)
+    mydl[[paste("mydl_M", l, sep = '')]] <- mymat
+    mydl[[paste("mydl_vM", l, sep = '')]] <- mymat
+    mydl[[paste("mydl_V", l, sep = '')]] <- mymat
+    mydl[[paste("mydl_vV", l, sep = '')]] <- mymat
   }
   return(mydl)
 }
@@ -1452,13 +1680,13 @@ sbamlmattest <- function(mymat, mymatname)
     {
       mymat[is.na(mymat)] <- 0
       mylastlog <- paste("wrng: NAs replaced by 0s in", mymatname, sep = " ")
-      warning(mylastlog)
+      warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
     }
     if (any(is.infinite(mymat)))
     {
       mymat[is.infinite(mymat)] <- 0
       mylastlog <- paste("wrng: infinite values replaced by 0s in", mymatname, sep = " ")
-      warning(mylastlog)
+      warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
     }
   } else {
     mylastlog <- paste("error:", mymatname, "type is not numeric", sep = " ")
@@ -1508,36 +1736,152 @@ sbamlpart2mydl <- function(mylspsoactivpart)
   return(mydl)
 }
 
-sbamlhparvalid <- function(hpar)
+sbamlvalidautopar <- function(autopar, myruntype = 'manual')
 {
-  if (class(hpar) != 'list')
+ #myruntype:
+ # = 'manual' produce error on error
+ # = 'auto' produce warning on error
+ # = 'rawmanual' only raw test produce error on error
+ # = 'rawauto' only raw test produce warning on error
+ myflagok <- 1
+ if (class(autopar) != 'list')
+ {
+  if (myruntype %in% c('manual', 'rawmanual'))
   {
-    mylastlog <- ("error: hpar is not a list")
-    stop(mylastlog)
+   mylastlog <- ("error: autopar is not a list")
+   stop(mylastlog)
+  } else if (myruntype %in% c('auto', 'rawauto')) {
+   myflagok <- 0
+   mylastlog <- ("wrng: autopar is not a list")
+   warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
   }
+ }
+ if (myflagok == 1 & !myruntype %in% c('rawmanual', 'rawauto'))
+ {
+  #
+  myprov <- names(autopar)
+  if (!"seed" %in% myprov) {autopar[["seed"]] <- 4}
+  if (!"nbcores" %in% myprov) {autopar[["nbcores"]] <- 1}
+  if (!"verbose" %in% myprov) {autopar[["verbose"]] <- TRUE}
+  if (!"psomodeinit" %in% myprov) {autopar[["psomodeinit"]] <- 'autopar'}
+  if (!"psomodecost" %in% myprov) {autopar[["psomodecost"]] <- 'autopar'}
+  if (!"psopartpopsize" %in% myprov) {autopar[["psopartpopsize"]] <- 8}
+  if (!"numiterations" %in% myprov) {autopar[["numiterations"]] <- 3}
+  if (!"psovelocitymaxratio" %in% myprov) {autopar[["psovelocitymaxratio"]] <- 0.2}
+  if (!"psoinertiadampratio" %in% myprov) {autopar[["psoinertiadampratio"]] <- 1}
+  if (!"psokappa" %in% myprov) {autopar[["psokappa"]] <- 1}
+  if (!"psophi1" %in% myprov) {autopar[["psophi1"]] <- 2.05}
+  if (!"psophi2" %in% myprov) {autopar[["psophi2"]] <- 2.05}
+  if (!"auto_modexec" %in% myprov) {autopar[["auto_modexec"]] <- FALSE}
+  if (!"auto_runtype" %in% myprov) {autopar[["auto_runtype"]] <- 'normal'}
+  if (!"auto_minibatchsize" %in% myprov) {autopar[["auto_minibatchsize"]] <- TRUE}
+  if (!"auto_minibatchsize_min" %in% myprov) {autopar[["auto_minibatchsize_min"]] <- 0}
+  if (!"auto_minibatchsize_max" %in% myprov) {autopar[["auto_minibatchsize_max"]] <- 9}
+  if (!"auto_learningrate" %in% myprov) {autopar[["auto_learningrate"]] <- TRUE}
+  if (!"auto_learningrate_min" %in% myprov) {autopar[["auto_learningrate_min"]] <- -5}
+  if (!"auto_learningrate_max" %in% myprov) {autopar[["auto_learningrate_max"]] <- -2}
+  if (!"auto_beta1" %in% myprov) {autopar[["auto_beta1"]] <- TRUE}
+  if (!"auto_beta2" %in% myprov) {autopar[["auto_beta2"]] <- TRUE}
+  if (!"auto_psopartpopsize" %in% myprov) {autopar[["auto_psopartpopsize"]] <- TRUE}
+  if (!"auto_psopartpopsize_min" %in% myprov) {autopar[["auto_psopartpopsize_min"]] <- 2}
+  if (!"auto_psopartpopsize_max" %in% myprov) {autopar[["auto_psopartpopsize_max"]] <- 50}
+  if (!"auto_lambda" %in% myprov) {autopar[["auto_lambda"]] <- FALSE}
+  if (!"auto_lambda_min" %in% myprov) {autopar[["auto_lambda_min"]] <- -2}
+  if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 3}
+  if (!"auto_psovelocitymaxratio" %in% myprov) {autopar[["auto_psovelocitymaxratio"]] <- TRUE}
+  if (!"auto_psovelocitymaxratio_min" %in% myprov) {autopar[["auto_psovelocitymaxratio_min"]] <- 0.01}
+  if (!"auto_psovelocitymaxratio_max" %in% myprov) {autopar[["auto_psovelocitymaxratio_max"]] <- 0.5}
+  if (!"auto_layers" %in% myprov) {autopar[["auto_layers"]] <- TRUE}
+  if (!"auto_layers_min" %in% myprov) {autopar[["auto_layers_min"]] <- 1}
+  if (!"auto_layers_max" %in% myprov) {autopar[["auto_layers_max"]] <- 2}
+  if (!"auto_layersnodes_min" %in% myprov) {autopar[["auto_layersnodes_min"]] <- 3}
+  if (!"auto_layersnodes_max" %in% myprov) {autopar[["auto_layersnodes_max"]] <- 33}
+  if (!"auto_layersdropo" %in% myprov) {autopar[["auto_layersdropo"]] <- FALSE}
+  if (!"auto_layersdropoprob_min" %in% myprov) {autopar[["auto_layersdropoprob_min"]] <- 0.05}
+  if (!"auto_layersdropoprob_max" %in% myprov) {autopar[["auto_layersdropoprob_max"]] <- 0.25}
+  rm(myprov)
+  #
+  myprov <- c(autopar$auto_minibatchsize,
+              autopar$auto_learningrate,
+              autopar$auto_beta1,
+              autopar$auto_beta2,
+              autopar$auto_psopartpopsize,
+              autopar$auto_lambda,
+              autopar$auto_psovelocitymaxratio)
+  if (autopar$auto_layers == TRUE | autopar$auto_layersdropo == TRUE)
+  {
+   myprov <- c(myprov, rep(1, (1 + 3 * autopar$auto_layers_max)));#because layers nb, nodes nbs, act types, dropout
+  }
+  #100 reservations for positions initialization reproductibility
+  if (length(myprov) > 100)
+  {
+   mylastlog <- ("wrng: positions initialization reproductibility")
+   warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+  }
+  autopar$psonbvar2optim <- ifelse(length(myprov) > 100, length(myprov), 100);
+
+  if (sum(myprov) == 0 & autopar$numiterations > 1)
+  {
+   if (myruntype %in% c('manual'))
+   {
+    mylastlog <- ("error: no auto hpar set to TRUE in autopar")
+    stop(mylastlog)
+   } else if (myruntype %in% c('auto')) {
+    myflagok <- 0
+    mylastlog <- ("wrng: no auto hpar set to TRUE in autopar")
+    warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+   }
+  }
+  rm(myprov)
+ }
+ return(list(autopar = autopar, tstflagok = myflagok))
+}
+
+sbamlvalidhpar <- function(hpar, myruntype = 'manual')
+{
+ #myruntype:
+ # = 'manual' produce error on error
+ # = 'auto' produce warning on error
+ # = 'rawmanual' only raw test produce error on error
+ # = 'rawauto' only raw test produce warning on error
+ myflagok <- 1
+ if (class(hpar) != 'list')
+ {
+  if (myruntype %in% c('manual', 'rawmanual'))
+  {
+   mylastlog <- ("error: hpar is not a list")
+   stop(mylastlog)
+  } else if (myruntype %in% c('auto', 'rawauto')) {
+   myflagok <- 0
+   mylastlog <- ("wrng: hpar is not a list")
+   warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+  }
+ }
+ if (myflagok == 1 & !myruntype %in% c('rawmanual', 'rawauto'))
+ {
   if (!"modexec" %in% names(hpar)) {hpar[["modexec"]] <- 'trainwgrad'}
   if (hpar$modexec == 'trainwgrad')
   {
-    hpar$psopartpopsize <- 0
-    hpar$psonbvar2optim <- 0
-    hpar$psonumiteration <- 0
-    hpar$psovarvalmin <- 0
-    hpar$psovarvalmax <- 0
-    hpar$psovelocitymaxratio <- 0
-    hpar$psoinertiadampratio <- 0
-    hpar$psokappa <- 0
-    hpar$psophi1 <- 0
-    hpar$psophi2 <- 0
-    hpar$psoseed <- 0
+   hpar$psopartpopsize <- 0
+   hpar$psonbvar2optim <- 0
+   hpar$psonumiteration <- 0
+   hpar$psovarvalmin <- 0
+   hpar$psovarvalmax <- 0
+   hpar$psovelocitymaxratio <- 0
+   hpar$psoinertiadampratio <- 0
+   hpar$psokappa <- 0
+   hpar$psophi1 <- 0
+   hpar$psophi2 <- 0
+   hpar$psoseed <- 0
   } else if (hpar$modexec == 'trainwpso')
   {
-    if (!"minibatchsize" %in% names(hpar)) {hpar[["minibatchsize"]] <- 0}
-    hpar$learningrate <- 0
-    hpar$lrdecayrate <- 0
-    hpar$chkgradevery <- 0
-    hpar$chkgradepsilon <- 0
-    hpar$beta1 <- 0
-    hpar$beta2 <- 0
+   if (!"minibatchsize" %in% names(hpar)) {hpar[["minibatchsize"]] <- 0}
+   hpar$learningrate <- 0
+   hpar$lrdecayrate <- 0
+   hpar$chkgradevery <- 0
+   hpar$chkgradepsilon <- 0
+   hpar$beta1 <- 0
+   hpar$beta2 <- 0
   }
   myprov <- names(hpar)
   if (!"useautopar" %in% myprov) {hpar[["useautopar"]] <- FALSE}
@@ -1576,11 +1920,22 @@ sbamlhparvalid <- function(hpar)
   if (length(hpar$layersshape) != length(hpar$layersacttype) |
       length(hpar$layersshape) != length(hpar$layersdropoprob))
   {
-    mylastlog <- ("error: layersshape, layersacttype and layersdropoprob must have same length")
+   mylastlog <- paste("layersshape, layersacttype and layersdropoprob must have same length (",
+                      length(hpar$layersshape), length(hpar$layersacttype), length(hpar$layersdropoprob),
+                      ")", sep = " ")
+   if (myruntype == 'manual')
+   {
+    mylastlog <- paste("error: ", mylastlog, sep = " ")
     stop(mylastlog)
+   } else {
+    myflagok <- 0
+    mylastlog <- paste("wrng: ", mylastlog, sep = " ")
+    warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+   }
   }
   rm(myprov)
-  return(hpar)
+ }
+ return(list(hpar = hpar, tstflagok = myflagok))
 }
 
 sbamlmodresult <- function(trerr, cverr, cvflag = TRUE)
@@ -1616,11 +1971,53 @@ sbamlprepscalem11201 <- function(x)
   return(z)
 }
 
-sbamltestmodel <- function(mymodel)
+sbamltestmodel <- function(mymodel, mymodeltype = 'manual', guess1stlayer = FALSE)
 {
-  if (is.infinite(mymodel$error$tr))
+ #myruntype = 'manual' or 'auto' produce only warning on error
+ myflagok <- 1
+ if (class(mymodel) != 'list')
+ {
+  mymodel <- list()
+  mylastlog <- ("wrng: no exploitable model")
+  warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+  myflagok <- 0
+ } else
+ {
+  if (any(!c('error', 'hpar') %in% names(mymodel)))
   {
-    mylastlog <- ("warning: model produced create infinite error")
-    warning(mylastlog, immediate. = TRUE, noBreaks. = TRUE)
+   mylastlog <- ("wrng: no exploitable model")
+   warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+   myflagok <- 0
+  } else
+  {
+   if (myflagok == 1 & any(!c('useautopar',
+                              'layersshape') %in% names(mymodel$hpar)))
+   {
+    mylastlog <- ("wrng: missing hpar parameters in model")
+    warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+    myflagok <- 0
+   }
+   if (myflagok == 1 & guess1stlayer == TRUE)
+   {
+    mymodel$hpar[["layersshape"]] <- mymodel$hpar$layersshape[2:length(mymodel$hpar$layersshape)]
+   }
+   if (myflagok == 1 & (is.infinite(mymodel$error$tr) | is.infinite(mymodel$error$cv)))
+   {
+    mylastlog <- ("wrng: model create infinite error")
+    warning(mylastlog, immediate. = FALSE, noBreaks. = TRUE)
+    myflagok <- 0
+   }
   }
+  if (myflagok == 1 & mymodeltype == 'auto' & any(!c('autopar',
+                                                     'mylspsoparamlvauto') %in% names(mymodel)))
+  {
+   myflagok <- 0
+   mylastlog <- "wrng: model not trained with automl_train (ignored)"
+  }
+ }
+ if (myflagok == 0)
+ {
+  mymodel <- NULL
+ }
+ return(list(mymodel = mymodel, tstflagok = myflagok))
 }

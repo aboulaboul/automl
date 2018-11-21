@@ -140,39 +140,38 @@ start.time <- Sys.time()
 amlmodel <- automl_train(Xref = xmat, Yref = ymat,
                          autopar = list(psopartpopsize = 15,
                                         numiterations = 5,
+                                        auto_layers_max = 1,
                                         nbcores = 4))
 end.time <- Sys.time()
 cat(paste('time ellapsed:', end.time - start.time, '\n'))
 \end{Sinput}
 \begin{Soutput}
 (cost: mse)
-iteration 1 particle 1 weighted err: 23.08807 (train: 20.43233 cvalid: 13.79297 ) BEST MODEL KEPT
-iteration 1 particle 2 weighted err: 23.29786 (train: 20.80544 cvalid: 14.57438 )
-iteration 1 particle 3 weighted err: 21.37242 (train: 20.49244 cvalid: 18.29247 ) BEST MODEL KEPT
-iteration 1 particle 4 weighted err: 22.44818 (train: 21.07049 cvalid: 17.62624 )
-iteration 1 particle 5 weighted err: 25.90267 (train: 20.79786 cvalid: 23.98837 )
-iteration 1 particle 6 weighted err: 23.10971 (train: 21.0241 cvalid: 22.3276 )
-iteration 1 particle 7 weighted err: 20.63938 (train: 20.56765 cvalid: 20.38834 ) BEST MODEL KEPT
-iteration 1 particle 8 weighted err: 25.00172 (train: 20.13291 cvalid: 23.17591 )
-iteration 1 particle 9 weighted err: 22.1777 (train: 20.7751 cvalid: 17.26859 )
-iteration 1 particle 10 weighted err: 15.92525 (train: 13.59336 cvalid: 15.05079 ) BEST MODEL KEPT
-iteration 1 particle 11 weighted err: 19.86139 (train: 19.28898 cvalid: 17.85796 )
-iteration 1 particle 12 weighted err: 21.90814 (train: 21.05856 cvalid: 18.93462 )
-iteration 1 particle 13 weighted err: 13.64409 (train: 12.87311 cvalid: 10.94568 ) BEST MODEL KEPT
-iteration 1 particle 14 weighted err: 23.06805 (train: 20.8384 cvalid: 15.26429 )
-iteration 1 particle 15 weighted err: 22.33673 (train: 20.87946 cvalid: 17.23627 )
+iteration 1 particle 1 weighted err: 22.20611 (train: 20.93004 cvalid: 17.73985 ) BEST MODEL KEPT
+iteration 1 particle 2 weighted err: 21.48398 (train: 20.87709 cvalid: 19.35987 ) BEST MODEL KEPT
+iteration 1 particle 3 weighted err: 22.98075 (train: 20.96822 cvalid: 15.9369 )
+iteration 1 particle 4 weighted err: 22.64428 (train: 21.44958 cvalid: 22.19627 )
+iteration 1 particle 5 weighted err: 22.03677 (train: 20.83123 cvalid: 17.81739 )
+iteration 1 particle 6 weighted err: 22.30679 (train: 21.02051 cvalid: 17.80482 )
+iteration 1 particle 7 weighted err: 22.15835 (train: 20.67513 cvalid: 16.96709 )
+iteration 1 particle 8 weighted err: 21.04265 (train: 20.1281 cvalid: 17.84174 ) BEST MODEL KEPT
+iteration 1 particle 9 weighted err: 21.0425 (train: 20.72162 cvalid: 19.91941 ) BEST MODEL KEPT
+iteration 1 particle 10 weighted err: 13.78127 (train: 13.54355 cvalid: 12.94923 ) BEST MODEL KEPT
+iteration 1 particle 11 weighted err: 20.34595 (train: 19.54807 cvalid: 17.55337 )
+iteration 1 particle 12 weighted err: 21.86865 (train: 20.99222 cvalid: 18.80114 )
+iteration 1 particle 13 weighted err: 14.11782 (train: 13.54468 cvalid: 12.11184 )
+iteration 1 particle 14 weighted err: 23.71203 (train: 20.88439 cvalid: 13.81528 )
+iteration 1 particle 15 weighted err: 22.20701 (train: 20.90727 cvalid: 17.65792 )
 ...
-iteration 3 particle 1 weighted err: 4.51508 (train: 0.12889 cvalid: 2.87026 )
-iteration 3 particle 2 weighted err: 1.0349 (train: 0.81318 cvalid: 0.25888 ) BEST MODEL KEPT
-iteration 3 particle 3 weighted err: 0.16113 (train: 0.15751 cvalid: 0.14845 ) BEST MODEL KEPT
-iteration 3 particle 4 weighted err: 17.98279 (train: 16.49247 cvalid: 12.76667 )
-iteration 3 particle 5 weighted err: 7.11793 (train: 0.12653 cvalid: 4.49615 )
-iteration 3 particle 6 weighted err: 22.29957 (train: 20.53873 cvalid: 21.63925 )
-iteration 3 particle 7 weighted err: 1.11164 (train: 0.99896 cvalid: 1.06938 )
-iteration 3 particle 8 weighted err: 11.17099 (train: 10.35378 cvalid: 8.31077 )
-iteration 3 particle 9 weighted err: 0.11955 (train: 0.11199 cvalid: 0.09308 ) BEST MODEL KEPT
+iteration 4 particle 1 weighted err: 12.94662 (train: 4.40029 cvalid: 9.74174 )
+iteration 4 particle 2 weighted err: 18.67702 (train: 17.28413 cvalid: 18.15469 )
+iteration 4 particle 3 weighted err: 0.76426 (train: 0.01617 cvalid: 0.48373 )
+iteration 4 particle 4 weighted err: 11.2243 (train: 11.00578 cvalid: 10.45947 )
+iteration 4 particle 5 weighted err: 1.93528 (train: 0.00141 cvalid: 1.21008 )
+iteration 4 particle 6 weighted err: 17.89662 (train: 17.65917 cvalid: 17.06555 )
+iteration 4 particle 7 weighted err: 0.49851 (train: 0.42819 cvalid: 0.47214 ) BEST MODEL KEPT
 ...
-time ellapsed: 2.54119062026342
+time ellapsed: 1.84548579454422
 \end{Soutput}
 \begin{Sinput}
 res <- cbind(ymat, automl_predict(model = amlmodel, X = xmat))
@@ -181,12 +180,12 @@ head(res)
 \end{Sinput}
 \begin{Soutput}
      actual  predict
-[1,]    5.1 4.906462
-[2,]    4.9 4.891540
-[3,]    4.7 4.877194
-[4,]    4.6 4.897768
-[5,]    5.0 4.921673
-[6,]    5.4 5.053157
+[1,]    5.1 4.975551
+[2,]    4.9 4.667541
+[3,]    4.7 4.735524
+[4,]    4.6 4.784364
+[5,]    5.0 5.037152
+[6,]    5.4 5.325999
 \end{Soutput}
 \end{Schunk}
 It's even better, with no human efforts but machine time\\
@@ -363,7 +362,113 @@ amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
                                             layersacttype = c('sigmoid'),
                                             layersdropoprob = c(0)))
 \end{Sinput}
+\begin{Soutput}
+(cost: crossentropy)
+cost epoch10: 2.41256625698174 (cv cost: 1.52787772773656) (LR:  0.001 )
+cost epoch20: 2.39487960709668 (cv cost: 1.30539484912328) (LR:  0.001 )
+cost epoch30: 2.37790838174604 (cv cost: 0.914874371089546) (LR:  0.001 )
+cost epoch40: 2.36237291354489 (cv cost: 1.23368286521283) (LR:  0.001 )
+cost epoch50: 2.34978864866666 (cv cost: 1.26105975399258) (LR:  0.001 )
+   dim X: ...
+\end{Soutput}
+\begin{Sinput}
+amlmodelsaved <- amlmodel
+\end{Sinput}
 \end{Schunk}
+We saved the model to continue training later (see below in next section)\\
+
+\subsection{continue training on saved model (fine tuning ...)}
+Subject: continue training on saved model (model saved above in last section)\\
+\begin{Schunk}
+\begin{Sinput}
+amlmodel <- automl_train_manual(Xref = xmat, Yref = ymat,
+                                hpar = list(numiterations = 100,
+                                            psopartpopsize = 50),
+                                mdlref = amlmodelsaved)
+\end{Sinput}
+\begin{Soutput}
+(cost: crossentropy)
+cost epoch10: 2.33948479711291 (cv cost: 1.3572198299724) (LR:  0.001 )
+cost epoch20: 2.32669285753264 (cv cost: 1.30152708067868) (LR:  0.001 )
+cost epoch30: 2.31504805288479 (cv cost: 1.29552449383989) (LR:  0.001 )
+cost epoch40: 2.30430035748777 (cv cost: 1.29397405747142) (LR:  0.001 )
+cost epoch50: 2.29430374216071 (cv cost: 1.29240693651625) (LR:  0.001 )
+cost epoch60: 2.28495815493859 (cv cost: 1.29246202979512) (LR:  0.001 )
+cost epoch70: 2.27608005019126 (cv cost: 1.29620090185108) (LR:  0.001 )
+cost epoch80: 2.26753980962059 (cv cost: 1.3019296243155) (LR:  0.001 )
+cost epoch90: 2.25934270485252 (cv cost: 1.30591289162664) (LR:  0.001 )
+cost epoch100: 2.25229290115905 (cv cost: 1.30730635529277) (LR:  0.001 )
+   dim X: ...
+\end{Soutput}
+\end{Schunk}
+We can see the error continuing to decrease from last training\\
+The training continued with the same parameters, but notice that we were able to change the number of iterations
+
+
+\subsection{use the 2 steps automatic approach}
+Same subject: predict Species given other Iris parameters\\
+Let's try the automatic approach in 2 steps with the same Logistic Regression architecture;\\
+1st step goal is performance, overfitting\\
+2nd step is robustness, regularization\\
+
+\begin{Schunk}
+\begin{Sinput}
+data(iris)
+xmat = iris[,1:4]
+lab2pred <- levels(iris$Species)
+lghlab <- length(lab2pred)
+iris$Species <- as.numeric(iris$Species)
+ymat <- matrix(seq(from = 1, to = lghlab, by = 1), nrow(xmat), lghlab, byrow = TRUE)
+ymat <- (ymat == as.numeric(iris$Species)) + 0
+amlmodel <- automl_train(Xref = xmat, Yref = ymat,
+                                hpar = list(layersshape = c(0),
+                                            layersacttype = c('sigmoid'),
+                                            layersdropoprob = c(0)),
+                                autopar = list(auto_runtype = '2steps'))
+\end{Sinput}
+\begin{Soutput}
+STEP: 1 (overfitting)
+(cost: crossentropy)
+iteration 1 particle 1 weighted err: 2.42056 BEST MODEL KEPT
+iteration 1 particle 2 weighted err: 2.40494 BEST MODEL KEPT
+iteration 1 particle 3 weighted err: 2.41726
+iteration 1 particle 4 weighted err: 2.42334
+iteration 1 particle 5 weighted err: 2.4091
+iteration 1 particle 6 weighted err: 2.41962
+iteration 1 particle 7 weighted err: 2.40137 BEST MODEL KEPT
+iteration 1 particle 8 weighted err: 2.34594 BEST MODEL KEPT
+...
+iteration 3 particle 1 weighted err: 2.39013
+iteration 3 particle 2 weighted err: 2.36849
+iteration 3 particle 3 weighted err: 2.23385 BEST MODEL KEPT
+iteration 3 particle 4 weighted err: 2.40762
+iteration 3 particle 5 weighted err: 2.33986
+iteration 3 particle 6 weighted err: 2.39917
+iteration 3 particle 7 weighted err: 2.38197
+iteration 3 particle 8 weighted err: 2.34594
+STEP: 2 (regularization)
+(cost: crossentropy)
+iteration 1 particle 1 weighted err: 2.71467 (train: 2.24374 cvalid: 1.06642 ) BEST MODEL KEPT
+iteration 1 particle 2 weighted err: 2.69575 (train: 2.24196 cvalid: 1.1075 ) BEST MODEL KEPT
+iteration 1 particle 3 weighted err: 2.41994 (train: 2.23777 cvalid: 2.35163 ) BEST MODEL KEPT
+iteration 1 particle 4 weighted err: 2.6896 (train: 2.23791 cvalid: 1.10871 )
+iteration 1 particle 5 weighted err: 2.70897 (train: 2.23907 cvalid: 1.06431 )
+iteration 1 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
+iteration 1 particle 7 weighted err: 2.69482 (train: 2.24414 cvalid: 1.11743 )
+iteration 1 particle 8 weighted err: 4.59962 (train: 2.23349 cvalid: 3.71232 )
+...
+iteration 3 particle 1 weighted err: 2.70047 (train: 2.24384 cvalid: 1.10225 )
+iteration 3 particle 2 weighted err: 2.69321 (train: 2.24369 cvalid: 1.11989 )
+iteration 3 particle 3 weighted err: 2.25271 (train: 2.2345 cvalid: 2.18898 ) BEST MODEL KEPT
+iteration 3 particle 4 weighted err: 2.68852 (train: 2.23721 cvalid: 1.10894 )
+iteration 3 particle 5 weighted err: 2.69375 (train: 2.24046 cvalid: 1.10724 )
+iteration 3 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
+iteration 3 particle 7 weighted err: 2.68499 (train: 2.24324 cvalid: 1.13888 )
+iteration 3 particle 8 weighted err: 4.58986 (train: 2.23361 cvalid: 3.70626 )
+\end{Soutput}
+\end{Schunk}
+Compared to the last runs (in previous sections above), difference between train and cross validation errors is much more tenuous\\
+Automatically :-)\\
 
 
 \section{ToDo List}

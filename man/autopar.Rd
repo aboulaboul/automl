@@ -18,6 +18,10 @@ Not mandatory (the list is preset and all arguments are initialized with default
 default value is \sQuote{FALSE} (so default value of argument \sQuote{modexec} in \link{automl_train_manual} function)\cr
 the value can be forced if defined in \link{hpar} list}
 
+\item{auto_runtype}{ if \sQuote{2steps} the 2 following steps will be run automatically (default value is \sQuote{normal}):\cr
+1st overfitting, the goal is performance\cr
+2nd regularization, the goal is generalization \cr}
+
 \item{auto_minibatchsize}{ see below}
 \item{auto_minibatchsize_min}{ see below}
 \item{auto_minibatchsize_max}{ \sQuote{auto_minibatch} default value \sQuote{TRUE} for automatic adjustment of \sQuote{minibatchsize} argument in \link{automl_train_manual} function\cr
@@ -47,12 +51,15 @@ the minimum and maximum value for \sQuote{lambda} correspond to 10 to the power 
 the minimum and maximum value for \sQuote{psovelocitymaxratio}; default 0.01 for \sQuote{auto_psovelocitymaxratio_min} and 0.5 for \sQuote{auto_psovelocitymaxratio_max}}
 
 \item{auto_layers}{ see below (\sQuote{auto_layers} default value \sQuote{TRUE} for automatic adjustment of layers shape in \link{automl_train_manual} function)}
-\item{auto_layers_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the minimum number of hidden layers (default 1)}
-\item{auto_layers_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the maximum number of hidden layers (default 1)}
+\item{auto_layers_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the minimum number of hidden layers (default 1 no hidden layer)}
+\item{auto_layers_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the maximum number of hidden layers (default 2)}
 \item{auto_layersnodes_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the minimum number of nodes per layer (default 3)}
 \item{auto_layersnodes_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersshape} and \sQuote{layersacttype}) the maximum number of nodes per layer (default 33)}
-\item{auto_layersdropoprob_min}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersdropoprob}) the minimum dropout ratio per layer (default 0)}
-\item{auto_layersdropoprob_max}{ (linked to \sQuote{auto_layers} above, set \link{hpar} \sQuote{layersdropoprob}) the maximum dropout ratio per layer (default 0)}
+
+\item{auto_layersdropo}{ see below}
+\item{auto_layersdropoprob_min}{ see below}
+\item{auto_layersdropoprob_max}{ \sQuote{auto_layersdropo} default value \sQuote{FALSE} for automatic adjustment of \link{hpar} \sQuote{layersdropoprob} in \link{automl_train_manual} function)\cr
+the minimum and maximum value for \sQuote{layersdropoprob}; default 0.05 for \sQuote{auto_layersdropoprob_min} and 0.75 for \sQuote{auto_layersdropoprob_max}}
 
 \item{seed}{ seed for reproductibility (default 4)}
 

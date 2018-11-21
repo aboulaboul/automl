@@ -5,7 +5,7 @@
 The base deep neural network train function (one deep neural network trained without automatic hyperparameters tuning)
 }
 \usage{
-automl_train_manual(Xref, Yref, hpar = list())
+automl_train_manual(Xref, Yref, hpar = list(), mdlref = NULL)
 }
 \arguments{
 \item{Xref}{ inputs matrix or data.frame (containing numerical values only)}
@@ -14,6 +14,10 @@ automl_train_manual(Xref, Yref, hpar = list())
 
 \item{hpar}{ list of parameters and hyperparameters for Deep Neural Network, see \link{hpar} section\cr
 Not mandatory (the list is preset and all arguments are initialized with default value) but it is advisable to adjust some important arguments for performance reasons (including processing time)}
+
+\item{mdlref}{ model trained with \link{automl_train} or \link{automl_train_manual} to start training from a saved model (shape,
+weights...) for fine tuning\cr
+nb: manually entered parameters above override loaded ones}
 }
 
 \examples{

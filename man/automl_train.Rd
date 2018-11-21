@@ -6,7 +6,7 @@ The multi deep neural network automatic train function (several deep neural netw
 This function launches the \link{automl_train_manual} function for each particle at each converging step
 }
 \usage{
-automl_train(Xref, Yref, autopar = list(), hpar = list())
+automl_train(Xref, Yref, autopar = list(), hpar = list(), mdlref = NULL)
 }
 \arguments{
 \item{Xref}{ inputs matrix or data.frame (containing numerical values only)
@@ -22,6 +22,10 @@ Not mandatory (the list is preset and all arguments are initialized with default
 \item{hpar}{ list of parameters and hyperparameters for Deep Neural Network, see \link{hpar} section\cr
 Not mandatory (the list is preset and all arguments are initialized with default value) but it is advisable to adjust some important arguments for performance reasons (including processing time)
 }
+
+\item{mdlref}{ model trained with \link{automl_train} to start training with saved \link{hpar} and \link{autopar}
+(not the model)\cr
+nb: manually entered parameters above override loaded ones}
 }
 
 \examples{
