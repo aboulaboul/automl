@@ -1,3 +1,7 @@
+automl 1.2.2
+============================================
+* pkgdown site with vignettes (Rmd file added)
+
 automl 1.2.1
 ============================================
 * pkgdown site (nb: Rnw vignettes are not included)

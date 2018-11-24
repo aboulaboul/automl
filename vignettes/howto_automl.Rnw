@@ -477,5 +477,6 @@ Automatically :-)\\
 - CNN\\
 - RNN\\\\
     -> join the team !\\
+    https://aboulaboul.github.io/automl \\
     https://github.com/aboulaboul/automl
 \end{document}
