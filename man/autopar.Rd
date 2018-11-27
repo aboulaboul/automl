@@ -43,7 +43,7 @@ the minimum and maximum value for \sQuote{learningrate} ; default 2 for \sQuote{
 \item{auto_lambda}{ see below}
 \item{auto_lambda_min}{ see below}
 \item{auto_lambda_max}{ \sQuote{auto_lambda} default value \sQuote{FALSE} for automatic adjustment of \sQuote{lambda} regularization argument in \link{automl_train_manual} function\cr
-the minimum and maximum value for \sQuote{lambda} correspond to 10 to the power value  (default -2) for \sQuote{auto_lambda_min} and (default 3) for \sQuote{auto_lambda_max})}
+the minimum and maximum value for \sQuote{lambda} correspond to 10 to the power value  (default -2) for \sQuote{auto_lambda_min} and (default 4) for \sQuote{auto_lambda_max})}
 
 \item{auto_psovelocitymaxratio}{ see below}
 \item{auto_psovelocitymaxratio_min}{ see below}

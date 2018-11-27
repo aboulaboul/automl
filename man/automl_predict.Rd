@@ -12,7 +12,7 @@ automl_predict(model, X, layoutputnum)
 
 \item{X}{ inputs matrix or data.frame (containing numerical values only)}
 
-\item{layoutputnum}{ which layer number to output (default 0 for last layer)}
+\item{layoutputnum}{ which layer number to output especially for auto encoding (default 0: no particular layer, the last one)}
 }
 \examples{
 ##REGRESSION (predict Sepal.Length given other parameters)

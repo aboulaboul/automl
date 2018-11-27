@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.3</span>
       </span>
     </div>
 
@@ -278,7 +278,7 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## iteration 5 particle 15 weighted err: 5.15812 (train: 4.72209 cvalid: 3.63203 )</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">end.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">cat</span>(<span class="kw">paste</span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
-<pre><code>## time ellapsed: 1.92531058390935</code></pre>
+<pre><code>## time ellapsed: 1.82222026983897</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
@@ -555,30 +555,30 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## iteration 3 particle 8 weighted err: 2.34594
 ## STEP: 2 (regularization)
 ## (cost: crossentropy)
-## iteration 1 particle 1 weighted err: 2.71467 (train: 2.24374 cvalid: 1.06642 ) BEST MODEL KEPT
-## iteration 1 particle 2 weighted err: 2.69575 (train: 2.24196 cvalid: 1.1075 ) BEST MODEL KEPT
-## iteration 1 particle 3 weighted err: 2.41994 (train: 2.23777 cvalid: 2.35163 ) BEST MODEL KEPT
-## iteration 1 particle 4 weighted err: 2.6896 (train: 2.23791 cvalid: 1.10871 )
-## iteration 1 particle 5 weighted err: 2.70897 (train: 2.23907 cvalid: 1.06431 )
-## iteration 1 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
-## iteration 1 particle 7 weighted err: 2.69482 (train: 2.24414 cvalid: 1.11743 )
-## iteration 1 particle 8 weighted err: 4.59962 (train: 2.23349 cvalid: 3.71232 )
-## iteration 2 particle 1 weighted err: 2.70047 (train: 2.24384 cvalid: 1.10225 )
-## iteration 2 particle 2 weighted err: 2.69575 (train: 2.24196 cvalid: 1.1075 )
-## iteration 2 particle 3 weighted err: 2.25403 (train: 2.23556 cvalid: 2.18939 ) BEST MODEL KEPT
-## iteration 2 particle 4 weighted err: 2.68852 (train: 2.23721 cvalid: 1.10894 )
-## iteration 2 particle 5 weighted err: 2.70418 (train: 2.24145 cvalid: 1.08462 )
-## iteration 2 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
-## iteration 2 particle 7 weighted err: 2.69482 (train: 2.24414 cvalid: 1.11743 )
-## iteration 2 particle 8 weighted err: 4.59962 (train: 2.23349 cvalid: 3.71232 )
-## iteration 3 particle 1 weighted err: 2.70047 (train: 2.24384 cvalid: 1.10225 )
-## iteration 3 particle 2 weighted err: 2.69321 (train: 2.24369 cvalid: 1.11989 )
-## iteration 3 particle 3 weighted err: 2.25271 (train: 2.2345 cvalid: 2.18898 ) BEST MODEL KEPT
-## iteration 3 particle 4 weighted err: 2.68852 (train: 2.23721 cvalid: 1.10894 )
-## iteration 3 particle 5 weighted err: 2.69375 (train: 2.24046 cvalid: 1.10724 )
-## iteration 3 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
-## iteration 3 particle 7 weighted err: 2.68499 (train: 2.24324 cvalid: 1.13888 )
-## iteration 3 particle 8 weighted err: 4.58986 (train: 2.23361 cvalid: 3.70626 )</code></pre>
+## iteration 1 particle 1 weighted err: 2.70508 (train: 2.24474 cvalid: 1.09389 ) BEST MODEL KEPT
+## iteration 1 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
+## iteration 1 particle 3 weighted err: 2.2944 (train: 2.23677 cvalid: 2.0927 ) BEST MODEL KEPT
+## iteration 1 particle 4 weighted err: 2.6911 (train: 2.23902 cvalid: 1.1088 )
+## iteration 1 particle 5 weighted err: 2.69633 (train: 2.24061 cvalid: 1.10131 )
+## iteration 1 particle 6 weighted err: 2.68252 (train: 2.24303 cvalid: 1.14432 )
+## iteration 1 particle 7 weighted err: 2.75194 (train: 2.24576 cvalid: 0.98029 )
+## iteration 1 particle 8 weighted err: 4.64173 (train: 2.23456 cvalid: 3.73904 )
+## iteration 2 particle 1 weighted err: 2.70508 (train: 2.24474 cvalid: 1.09389 )
+## iteration 2 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
+## iteration 2 particle 3 weighted err: 2.24647 (train: 2.23637 cvalid: 2.21111 ) BEST MODEL KEPT
+## iteration 2 particle 4 weighted err: 2.68907 (train: 2.23757 cvalid: 1.1088 )
+## iteration 2 particle 5 weighted err: 2.58933 (train: 2.24078 cvalid: 1.36939 )
+## iteration 2 particle 6 weighted err: 2.65867 (train: 2.24364 cvalid: 1.20606 )
+## iteration 2 particle 7 weighted err: 2.69105 (train: 2.24379 cvalid: 1.12563 )
+## iteration 2 particle 8 weighted err: 2.68861 (train: 2.24369 cvalid: 1.13141 )
+## iteration 3 particle 1 weighted err: 2.69592 (train: 2.24417 cvalid: 1.11481 )
+## iteration 3 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
+## iteration 3 particle 3 weighted err: 2.24647 (train: 2.23637 cvalid: 2.21111 )
+## iteration 3 particle 4 weighted err: 2.68907 (train: 2.23757 cvalid: 1.1088 )
+## iteration 3 particle 5 weighted err: 2.58933 (train: 2.24078 cvalid: 1.36939 )
+## iteration 3 particle 6 weighted err: 2.65867 (train: 2.24364 cvalid: 1.20606 )
+## iteration 3 particle 7 weighted err: 2.69105 (train: 2.24379 cvalid: 1.12563 )
+## iteration 3 particle 8 weighted err: 2.68861 (train: 2.24369 cvalid: 1.13141 )</code></pre>
 <p>Compared to the last runs (in previous sections above), difference between train and cross validation errors is much more tenuous<br> Automatically :-)<br></p>
 <h3 id="todo-list" class="sectionHead">
 <span class="titlemark">0.4 </span> <span id="x1-190000.4"></span>ToDo List

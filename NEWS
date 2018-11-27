@@ -1,3 +1,10 @@
+automl 1.2.3
+============================================
+* dropout bug fix (now random at each mini
+  batch and reproductible)
+* bug fix: continue training on auto trained model
+  with manual function
+
 automl 1.2.2
 ============================================
 * pkgdown site with vignettes (Rmd file added)

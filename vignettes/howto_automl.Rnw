@@ -448,23 +448,19 @@ iteration 3 particle 7 weighted err: 2.38197
 iteration 3 particle 8 weighted err: 2.34594
 STEP: 2 (regularization)
 (cost: crossentropy)
-iteration 1 particle 1 weighted err: 2.71467 (train: 2.24374 cvalid: 1.06642 ) BEST MODEL KEPT
-iteration 1 particle 2 weighted err: 2.69575 (train: 2.24196 cvalid: 1.1075 ) BEST MODEL KEPT
-iteration 1 particle 3 weighted err: 2.41994 (train: 2.23777 cvalid: 2.35163 ) BEST MODEL KEPT
-iteration 1 particle 4 weighted err: 2.6896 (train: 2.23791 cvalid: 1.10871 )
-iteration 1 particle 5 weighted err: 2.70897 (train: 2.23907 cvalid: 1.06431 )
-iteration 1 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
-iteration 1 particle 7 weighted err: 2.69482 (train: 2.24414 cvalid: 1.11743 )
-iteration 1 particle 8 weighted err: 4.59962 (train: 2.23349 cvalid: 3.71232 )
+iteration 1 particle 1 weighted err: 2.70508 (train: 2.24474 cvalid: 1.09389 ) BEST MODEL KEPT
+iteration 1 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
+iteration 1 particle 3 weighted err: 2.2944 (train: 2.23677 cvalid: 2.0927 ) BEST MODEL KEPT
+iteration 1 particle 4 weighted err: 2.6911 (train: 2.23902 cvalid: 1.1088 )
+iteration 1 particle 5 weighted err: 2.69633 (train: 2.24061 cvalid: 1.10131 )
+iteration 1 particle 6 weighted err: 2.68252 (train: 2.24303 cvalid: 1.14432 )
+iteration 1 particle 7 weighted err: 2.75194 (train: 2.24576 cvalid: 0.98029 )
+iteration 1 particle 8 weighted err: 4.64173 (train: 2.23456 cvalid: 3.73904 )
 ...
-iteration 3 particle 1 weighted err: 2.70047 (train: 2.24384 cvalid: 1.10225 )
-iteration 3 particle 2 weighted err: 2.69321 (train: 2.24369 cvalid: 1.11989 )
-iteration 3 particle 3 weighted err: 2.25271 (train: 2.2345 cvalid: 2.18898 ) BEST MODEL KEPT
-iteration 3 particle 4 weighted err: 2.68852 (train: 2.23721 cvalid: 1.10894 )
-iteration 3 particle 5 weighted err: 2.69375 (train: 2.24046 cvalid: 1.10724 )
-iteration 3 particle 6 weighted err: 2.68005 (train: 2.24226 cvalid: 1.1478 )
-iteration 3 particle 7 weighted err: 2.68499 (train: 2.24324 cvalid: 1.13888 )
-iteration 3 particle 8 weighted err: 4.58986 (train: 2.23361 cvalid: 3.70626 )
+iteration 2 particle 1 weighted err: 2.70508 (train: 2.24474 cvalid: 1.09389 )
+iteration 2 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
+iteration 2 particle 3 weighted err: 2.24647 (train: 2.23637 cvalid: 2.21111 ) BEST MODEL KEPT
+...
 \end{Soutput}
 \end{Schunk}
 Compared to the last runs (in previous sections above), difference between train and cross validation errors is much more tenuous\\

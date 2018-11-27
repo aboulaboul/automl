@@ -878,6 +878,11 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
     hpar <- myprovres[["hpar"]]
     valmodimpflagok <- myprovres[["valmodimpflagok"]]
     rm(myprovres)
+    if ('autopar' %in% names(mdlref))
+    {
+     hpar$verbose <- TRUE
+     hpar$useautopar <- FALSE
+    }
    }
   } else {valmodimpflagok <- 0}
   #
@@ -1026,7 +1031,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
       }
       myprovres <- sbamlmoddlfw(mydl, X, mydl$hpar$modexec, mydl$hpar$nblayers, mydl$hpar$layersacttype,
                                 mydl$hpar$layersdropoprob, mydl$hpar$seed, mydl$hpar$batchnor_mom,
-                                mydl$hpar$epsil)
+                                mydl$hpar$epsil, epochnum, batchnum)
       Yhat <- myprovres[["A"]]; mydl <- myprovres[["mydl"]]; rm(myprovres)
       if (mydl$hpar$printcostevery != 0)
       {
@@ -1080,7 +1085,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
       {
         mydl <- sbamlmoddlbk(mydl, Y, Yhat, mydl$hpar$costtype, mydl$hpar$nblayers,
                              mydl$hpar$layersacttype, mydl$hpar$lambda, mydl$hpar$layersdropoprob,
-                             mydl$hpar$batchnor_mom, mydl$hpar$epsil)
+                             mydl$hpar$batchnor_mom, mydl$hpar$epsil, epochnum, batchnum)
         if (mydl$hpar$chkgradevery != 0)
         {
           if (epochnum %% mydl$hpar$chkgradevery == 0 & batchnum %% nbbatch == 0)
@@ -1160,7 +1165,8 @@ automl_predict <- function(model, X, layoutputnum = 0)
   return(Yhat)
 }
 
-sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambda, layersdropoprob, batchnor_mom, epsil)
+sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambda, layersdropoprob, batchnor_mom, epsil,
+                         epochnum = 0, batchnum = 0)
 {
   m <- dim(Y)[2]
   for (l in nblayers:1)
@@ -1174,7 +1180,7 @@ sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambd
     } else
     {
      dA <- mydl[[paste("mydl_dA", l, sep = '')]]
-     if (layersdropoprob[l] != 0)
+     if (layersdropoprob[l] != 0 & epochnum != 0 & batchnum != 0)
      {
       D <- mydl[[paste("mydl_D", l, sep = '')]]
       dA <- sbamlmoddldropo(dA, D, layersdropoprob[l])
@@ -1233,7 +1239,8 @@ sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambd
   return(mydl)
 }
 
-sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropoprob, seed, batchnor_mom, epsil)
+sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropoprob, seed, batchnor_mom, epsil,
+                         epochnum = 0, batchnum = 0)
 {
   Aprev <- X
   for (l in 1:nblayers)
@@ -1275,9 +1282,11 @@ sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropop
     }
     if (modexec %in% c('trainwgrad', 'trainwpso'))
     {
-      if (layersdropoprob[l] != 0)
+      if (layersdropoprob[l] != 0 & epochnum != 0 & batchnum != 0)
       {
-        set.seed(seed + l)
+        set.seed(ifelse(epochnum + batchnum > .Machine$integer.max,
+                        epochnum + batchnum - .Machine$integer.max,
+                        epochnum + batchnum))
         D <- matrix(stats::runif(n = dim(A)[1] * dim(A)[2], min = 0, max = 1),
                     nrow = dim(A)[1], ncol = dim(A)[2], byrow = FALSE)
         D <- D > layersdropoprob[l]
@@ -1285,7 +1294,7 @@ sbamlmoddlfw <- function(mydl, X, modexec, nblayers, layersacttype, layersdropop
       }
       mydl[[paste("mydl_Z", l, sep = '')]] <- Z
       mydl[[paste("mydl_A", l, sep = '')]] <- A
-      if (layersdropoprob[l] != 0)
+      if (layersdropoprob[l] != 0 & epochnum != 0 & batchnum != 0)
       {
         mydl[[paste("mydl_D", l, sep = '')]] <- D
       }
@@ -1787,7 +1796,7 @@ sbamlvalidautopar <- function(autopar, myruntype = 'manual')
   if (!"auto_psopartpopsize_max" %in% myprov) {autopar[["auto_psopartpopsize_max"]] <- 50}
   if (!"auto_lambda" %in% myprov) {autopar[["auto_lambda"]] <- FALSE}
   if (!"auto_lambda_min" %in% myprov) {autopar[["auto_lambda_min"]] <- -2}
-  if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 3}
+  if (!"auto_lambda_max" %in% myprov) {autopar[["auto_lambda_max"]] <- 4}
   if (!"auto_psovelocitymaxratio" %in% myprov) {autopar[["auto_psovelocitymaxratio"]] <- TRUE}
   if (!"auto_psovelocitymaxratio_min" %in% myprov) {autopar[["auto_psovelocitymaxratio_min"]] <- 0.01}
   if (!"auto_psovelocitymaxratio_max" %in% myprov) {autopar[["auto_psovelocitymaxratio_max"]] <- 0.5}
@@ -1798,7 +1807,7 @@ sbamlvalidautopar <- function(autopar, myruntype = 'manual')
   if (!"auto_layersnodes_max" %in% myprov) {autopar[["auto_layersnodes_max"]] <- 33}
   if (!"auto_layersdropo" %in% myprov) {autopar[["auto_layersdropo"]] <- FALSE}
   if (!"auto_layersdropoprob_min" %in% myprov) {autopar[["auto_layersdropoprob_min"]] <- 0.05}
-  if (!"auto_layersdropoprob_max" %in% myprov) {autopar[["auto_layersdropoprob_max"]] <- 0.25}
+  if (!"auto_layersdropoprob_max" %in% myprov) {autopar[["auto_layersdropoprob_max"]] <- 0.75}
   rm(myprov)
   #
   myprov <- c(autopar$auto_minibatchsize,
