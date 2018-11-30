@@ -809,39 +809,42 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
     mylspsopart <- mylsres
     for (i in 1:autopar$psopartpopsize)
     {
-     if (autopar$verbose == TRUE)
+     myflagok <- 1
+     if (iternbr == 1 & i == 1 & autopar$verbose == TRUE)
      {
-      if (iternbr == 1 & i == 1)
+      if (autopar$auto_runtype == "2steps")
       {
-       if (autopar$auto_runtype == "2steps")
-       {
-        cat(paste('STEP: ', autoloopnbr,' (',ifelse(autoloopnbr == 1, 'overfitting', 'regularization'),')\n', sep = ''))
-       }
-       cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))
+       cat(paste('STEP: ', autoloopnbr,' (',ifelse(autoloopnbr == 1, 'overfitting', 'regularization'),')\n', sep = ''))
       }
-      mylastlog <- paste("iteration", iternbr,
-                         "particle", i, sep = " ")
-      if (any(!c('Cost', 'model') %in% names(mylspsopart[[i]]$Best)))
-      {
-       mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
-      } else {
-       if (is.na(mylspsopart[[i]]$Best$model$error$cv))
-       {
-        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5), sep = " ")
-       } else {
-        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
-                           "(train:", round(mylspsopart[[i]]$Best$model$error$tr, digits = 5),
-                           "cvalid:", round(mylspsopart[[i]]$Best$model$error$cv, digits = 5),
-                           ")", sep = " ")
-       }
-      }
-      cat(mylastlog)
+      cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))
      }
-     if (mylspsopart[[i]]$Best$Cost < mylspsoparam$globalbest$Cost)
+     mylastlog <- paste("iteration", iternbr,
+                        "particle", i, sep = " ")
+     if (any(!c('Cost', 'model') %in% names(mylspsopart[[i]]$Best)))
      {
-      mylspsoparam$globalbest <- mylspsopart[[i]]$Best
-      if (autopar$verbose == TRUE) {cat(" BEST MODEL KEPT\n")}
-     } else {if (autopar$verbose == TRUE) {cat("\n")}}
+      mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
+      myflagok <- 0
+     } else {
+      if (is.na(mylspsopart[[i]]$Best$model$error$cv))
+      {
+       mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5), sep = " ")
+      } else {
+       mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
+                          "(train:", round(mylspsopart[[i]]$Best$model$error$tr, digits = 5),
+                          "cvalid:", round(mylspsopart[[i]]$Best$model$error$cv, digits = 5),
+                          ")", sep = " ")
+      }
+     }
+     if (autopar$verbose == TRUE) {cat(mylastlog)}
+     if (myflagok == 1)
+     {
+      if (mylspsopart[[i]]$Best$Cost < mylspsoparam$globalbest$Cost)
+      {
+       mylspsoparam$globalbest <- mylspsopart[[i]]$Best
+       if (autopar$verbose == TRUE) {cat(" BEST MODEL KEPT")}
+      }
+     }
+     if (autopar$verbose == TRUE) {cat("\n")}
     }
     mylspsoparam$globbestcostlog[iternbr, 1] <- mylspsoparam$globalbest$idpart
     mylspsoparam$globbestcostlog[iternbr, 2] <- mylspsoparam$globalbest$Cost

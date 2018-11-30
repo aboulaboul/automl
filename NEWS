@@ -1,3 +1,8 @@
+automl 1.2.4
+============================================
+* automl_train bug fix when particle produces
+  no exploitable model
+
 automl 1.2.3
 ============================================
 * dropout bug fix (now random at each mini

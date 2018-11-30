@@ -1,7 +1,7 @@
 Package: automl
 Type: Package
 Title: Deep Learning with Metaheuristic
-Version: 1.2.3
+Version: 1.2.4
 Author: Alex Boulangé <aboul@free.fr>
 Authors@R: person("Alex", "Boulangé", role = c("aut", "cre"), email = "aboul@free.fr")
 Maintainer: Alex Boulangé <alex@socialintelligence.fr>
