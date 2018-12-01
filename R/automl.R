@@ -655,17 +655,18 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
     {
      mymodel <- list(error = list(tr = Inf, cv = Inf))
      mylspsoactivpart$Cost <- Inf
-    } else {
+    } else
+    {
      mylspsoactivpart$Cost <- sbamlmodresult(trerr = mymodel$error$tr,
                                              cverr = mymodel$error$cv,
                                              cvflag = mymodel$hpar$testcvsize != 0 & mymodel$hpar$overfitautopar == FALSE)
-    }
-    if (mylspsoactivpart$Cost < mylspsoactivpart$Best$Cost)
-    {
-     mylspsoactivpart$Best$Position <- mylspsoactivpart$Position
-     mylspsoactivpart$Best$Cost <- mylspsoactivpart$Cost
-     mylspsoactivpart$Best$idpart <- myactivpartnbr
-     mylspsoactivpart$Best$model <- mymodel
+     if (mylspsoactivpart$Cost < mylspsoactivpart$Best$Cost)
+     {
+      mylspsoactivpart$Best$Position <- mylspsoactivpart$Position
+      mylspsoactivpart$Best$Cost <- mylspsoactivpart$Cost
+      mylspsoactivpart$Best$idpart <- myactivpartnbr
+      mylspsoactivpart$Best$model <- mymodel
+     }
     }
     return(mylspsoactivpart)
    }
@@ -810,41 +811,66 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
     for (i in 1:autopar$psopartpopsize)
     {
      myflagok <- 1
+     if (class(mylspsopart[[i]]) != "list")
+     {
+      myflagok <- 0
+     } else
+     {
+      if (any(!c('Cost', 'Best') %in% names(mylspsopart[[i]])))
+      {
+       myflagok <- 0
+      } else
+      {
+       if (any(!c('Cost', 'model', 'Position') %in% names(mylspsopart[[i]]$Best)))
+       {
+        myflagok <- 0
+       } else
+       {
+        if (any(!c('error', 'hpar') %in% names(mylspsopart[[i]]$Best$model)))
+        {
+         myflagok <- 0
+        } else
+        {
+         if (mylspsopart[[i]]$Best$model$error$tr == Inf)
+         {
+          myflagok <- 0
+         }
+        }
+       }
+      }
+     }
      if (iternbr == 1 & i == 1 & autopar$verbose == TRUE)
      {
       if (autopar$auto_runtype == "2steps")
       {
        cat(paste('STEP: ', autoloopnbr,' (',ifelse(autoloopnbr == 1, 'overfitting', 'regularization'),')\n', sep = ''))
       }
-      cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))
+      if (myflagok == 1) {cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))}
      }
      mylastlog <- paste("iteration", iternbr,
                         "particle", i, sep = " ")
-     if (any(!c('Cost', 'model') %in% names(mylspsopart[[i]]$Best)))
+     if (myflagok == 1)
      {
-      mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
-      myflagok <- 0
-     } else {
       if (is.na(mylspsopart[[i]]$Best$model$error$cv))
       {
        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5), sep = " ")
-      } else {
+      } else
+      {
        mylastlog <- paste(mylastlog, "weighted err:", round(mylspsopart[[i]]$Best$Cost, digits = 5),
                           "(train:", round(mylspsopart[[i]]$Best$model$error$tr, digits = 5),
                           "cvalid:", round(mylspsopart[[i]]$Best$model$error$cv, digits = 5),
                           ")", sep = " ")
       }
-     }
-     if (autopar$verbose == TRUE) {cat(mylastlog)}
-     if (myflagok == 1)
-     {
       if (mylspsopart[[i]]$Best$Cost < mylspsoparam$globalbest$Cost)
       {
        mylspsoparam$globalbest <- mylspsopart[[i]]$Best
-       if (autopar$verbose == TRUE) {cat(" BEST MODEL KEPT")}
+       mylastlog <- paste(mylastlog, "BEST MODEL KEPT", sep = " ")
       }
+     } else
+     {
+      mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
      }
-     if (autopar$verbose == TRUE) {cat("\n")}
+     if (autopar$verbose == TRUE) {cat(paste0(mylastlog, "\n"))}
     }
     mylspsoparam$globbestcostlog[iternbr, 1] <- mylspsoparam$globalbest$idpart
     mylspsoparam$globbestcostlog[iternbr, 2] <- mylspsoparam$globalbest$Cost

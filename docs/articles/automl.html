@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.5</span>
       </span>
     </div>
 
@@ -278,7 +278,7 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## iteration 5 particle 15 weighted err: 5.15812 (train: 4.72209 cvalid: 3.63203 )</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">end.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">cat</span>(<span class="kw">paste</span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
-<pre><code>## time ellapsed: 1.82908192475637</code></pre>
+<pre><code>## time ellapsed: 1.94056885242462</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>

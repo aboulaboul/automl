@@ -1,3 +1,8 @@
+automl 1.2.5
+============================================
+* automl_train bug fix when particle produces
+  no exploitable model (continued work)
+
 automl 1.2.4
 ============================================
 * automl_train bug fix when particle produces
