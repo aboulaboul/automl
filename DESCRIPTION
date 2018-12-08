@@ -1,10 +1,9 @@
 Package: automl
 Type: Package
 Title: Deep Learning with Metaheuristic
-Version: 1.2.5
-Author: Alex Boulangé <aboul@free.fr>
+Version: 1.2.6
 Authors@R: person("Alex", "Boulangé", role = c("aut", "cre"), email = "aboul@free.fr")
-Maintainer: Alex Boulangé <alex@socialintelligence.fr>
+BugReports: https://github.com/aboulaboul/automl/issues
 Description: Fits from simple regression to highly customizable deep neural networks 
     either with gradient descent or metaheuristic, using automatic hyper parameters 
     tuning and custom cost function.

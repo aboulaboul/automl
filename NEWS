@@ -1,3 +1,7 @@
+automl 1.2.6
+============================================
+* just a proper Authors@R field 4 CRAN :-)
+
 automl 1.2.5
 ============================================
 * automl_train bug fix when particle produces
