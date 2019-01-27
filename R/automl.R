@@ -1173,6 +1173,14 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
    mylastlog <- ("error: model training error")
    stop(mylastlog);#to return error to automl_train
   }
+  for (l in 0:mydl$hpar$nblayers)
+  {
+   # lightening model
+   try(mydl[[paste0("mydl_Z",l)]] <- NULL)
+   try(mydl[[paste0("mydl_A",l)]] <- NULL)
+   try(mydl[[paste0("mydl_Zn",l)]] <- NULL)
+   try(mydl[[paste0("mydl_Zt",l)]] <- NULL)
+  }
   return(mydl)
 }
 

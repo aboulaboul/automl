@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.6</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.2.7</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
       <h1>automl</h1>
                         <h4 class="author">Alex Boulangé</h4>
             
-            <h4 class="date">24 novembre 2018</h4>
+            <h4 class="date">january 27, 2019</h4>
       
       
       <div class="hidden name"><code>automl.Rmd</code></div>
@@ -128,10 +128,10 @@ For those who will laugh at seeing deep learning with one hidden layer and the I
 </h4>
 <p>
 Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient descent and default hyperparameters value for learning rate (0.001) and mini batch size (32)<br></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species))</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb1-2" title="2">xmat &lt;-<span class="st"> </span><span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species))</a>
+<a class="sourceLine" id="cb1-3" title="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb1-4" title="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat)</a></code></pre></div>
 <pre><code>## (cost: mse)
 ## cost epoch10: 20.9340400047156 (cv cost: 25.205632342013) (LR:  0.001 ) 
 ## cost epoch20: 20.6280923387762 (cv cost: 23.8214521197268) (LR:  0.001 ) 
@@ -146,9 +146,9 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ##    dim bB2: [1,1] (min|max: 0.216274212807187, 0.216274212807187)
 ##    dim j2: [1,1] (min|max: 0.896170058073578, 0.896170058073578)
 ##    dim Y: [1,135]</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##      actual   predict
 ## [1,]    5.1 -2.063614
 ## [2,]    4.9 -2.487673
@@ -157,13 +157,13 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## [5,]    5.0 -1.956937
 ## [6,]    5.4 -1.729314</code></pre>
 <p>:-[] no pain, no gain …<br> After some manual fine tuning on learning rate, mini batch size and iterations number (epochs):<br></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species))</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">learningrate =</span> <span class="fl">0.01</span>,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">                                <span class="dt">minibatchsize =</span> <span class="dv">2</span><span class="op">^</span><span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">                                <span class="dt">numiterations =</span> <span class="dv">30</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb5-2" title="2">xmat &lt;-<span class="st"> </span><span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species))</a>
+<a class="sourceLine" id="cb5-3" title="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb5-4" title="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb5-5" title="5">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">learningrate =</span> <span class="fl">0.01</span>,</a>
+<a class="sourceLine" id="cb5-6" title="6">                                <span class="dt">minibatchsize =</span> <span class="dv">2</span><span class="op">^</span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb5-7" title="7">                                <span class="dt">numiterations =</span> <span class="dv">30</span>))</a></code></pre></div>
 <pre><code>## (cost: mse)
 ## cost epoch10: 5.55679482839698 (cv cost: 4.87492997304325) (LR:  0.01 ) 
 ## cost epoch20: 1.64996951479802 (cv cost: 1.50339773126712) (LR:  0.01 ) 
@@ -176,9 +176,9 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ##    dim bB2: [1,1] (min|max: 5.20448636682865, 5.20448636682865)
 ##    dim j2: [1,1] (min|max: 0.353886604123629, 0.353886604123629)
 ##    dim Y: [1,135]</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
 ## [1,]    5.1 4.478478
 ## [2,]    4.9 4.215683
@@ -191,15 +191,15 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.2 </span> <span id="x1-120000.3.2"></span>fit a regression model automatically (easy way, Mix 1)
 </h4>
 <p>Same subject: predict Sepal.Length given other Iris parameters<br></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">start.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train.html">automl_train</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">                         <span class="dt">autopar =</span> <span class="kw">list</span>(<span class="dt">psopartpopsize =</span> <span class="dv">15</span>,</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">                                        <span class="dt">numiterations =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">                                        <span class="dt">auto_layers_max =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">                                        <span class="dt">nbcores =</span> <span class="dv">4</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb9-2" title="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
+<a class="sourceLine" id="cb9-3" title="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb9-4" title="4">start.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb9-5" title="5">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train.html">automl_train</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb9-6" title="6">                         <span class="dt">autopar =</span> <span class="kw">list</span>(<span class="dt">psopartpopsize =</span> <span class="dv">15</span>,</a>
+<a class="sourceLine" id="cb9-7" title="7">                                        <span class="dt">numiterations =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb9-8" title="8">                                        <span class="dt">auto_layers_max =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb9-9" title="9">                                        <span class="dt">nbcores =</span> <span class="dv">4</span>))</a></code></pre></div>
 <pre><code>## (cost: mse)
 ## iteration 1 particle 1 weighted err: 22.20611 (train: 20.93004 cvalid: 17.73985 ) BEST MODEL KEPT
 ## iteration 1 particle 2 weighted err: 21.48398 (train: 20.87709 cvalid: 19.35987 ) BEST MODEL KEPT
@@ -276,12 +276,12 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## iteration 5 particle 13 weighted err: 0.6469 (train: 0.02339 cvalid: 0.41308 )
 ## iteration 5 particle 14 weighted err: 6.071 (train: 1.5917 cvalid: 4.39126 )
 ## iteration 5 particle 15 weighted err: 5.15812 (train: 4.72209 cvalid: 3.63203 )</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">end.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">cat</span>(<span class="kw">paste</span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
-<pre><code>## time ellapsed: 2.31084796190262</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">end.time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">cat</span>(<span class="kw">paste</span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
+<pre><code>## time ellapsed: 2.34573694467545</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
 ## [1,]    5.1 4.975551
 ## [2,]    4.9 4.667541
@@ -294,13 +294,13 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.3 </span> <span id="x1-130000.3.3"></span>fit a regression model experimentally (experimental way, Mix 2)
 </h4>
 <p>Same subject: predict Sepal.Length given other Iris parameters<br></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">                                            <span class="dt">numiterations =</span> <span class="dv">30</span>,</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                            <span class="dt">psopartpopsize =</span> <span class="dv">50</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb15-2" title="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
+<a class="sourceLine" id="cb15-3" title="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb15-4" title="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb15-5" title="5">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
+<a class="sourceLine" id="cb15-6" title="6">                                            <span class="dt">numiterations =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb15-7" title="7">                                            <span class="dt">psopartpopsize =</span> <span class="dv">50</span>))</a></code></pre></div>
 <pre><code>## (cost: mse)
 ## cost epoch10: 0.113576786377019 (cv cost: 0.0967069106128153) (LR:  0 ) 
 ## cost epoch20: 0.0595472259640828 (cv cost: 0.0831404427407914) (LR:  0 ) 
@@ -313,9 +313,9 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ##    dim bB2: [1,1] (min|max: 5.81920420695991, 5.81920420695991)
 ##    dim j2: [1,1] (min|max: 0.739758079637033, 0.739758079637033)
 ##    dim Y: [1,135]</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
 ## [1,]    5.1 5.028114
 ## [2,]    4.9 4.673366
@@ -328,18 +328,18 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.4 </span> <span id="x1-140000.3.4"></span>fit a regression model with custom cost (experimental way, Mix 2)
 </h4>
 <p>Same subject: predict Sepal.Length given other Iris parameters<br> Let’s try with Mean Absolute Percentage Error instead of Mean Square Error<br></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">f &lt;-<span class="st"> 'J=abs((y-yhat)/y)'</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">f &lt;-<span class="st"> </span><span class="kw">c</span>(f, <span class="st">'J=sum(J[!is.infinite(J)],na.rm=TRUE)'</span>)</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">f &lt;-<span class="st"> </span><span class="kw">c</span>(f, <span class="st">'J=(J/length(y))'</span>)</a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">f &lt;-<span class="st"> </span><span class="kw">paste</span>(f, <span class="dt">collapse =</span> <span class="st">';'</span>)</a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb19-9" data-line-number="9">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
-<a class="sourceLine" id="cb19-10" data-line-number="10">                                            <span class="dt">numiterations =</span> <span class="dv">30</span>,</a>
-<a class="sourceLine" id="cb19-11" data-line-number="11">                                            <span class="dt">psopartpopsize =</span> <span class="dv">50</span>,</a>
-<a class="sourceLine" id="cb19-12" data-line-number="12">                                            <span class="dt">costcustformul =</span> f))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb19-2" title="2">xmat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">cbind</span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)))</a>
+<a class="sourceLine" id="cb19-3" title="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb19-4" title="4">f &lt;-<span class="st"> 'J=abs((y-yhat)/y)'</span></a>
+<a class="sourceLine" id="cb19-5" title="5">f &lt;-<span class="st"> </span><span class="kw">c</span>(f, <span class="st">'J=sum(J[!is.infinite(J)],na.rm=TRUE)'</span>)</a>
+<a class="sourceLine" id="cb19-6" title="6">f &lt;-<span class="st"> </span><span class="kw">c</span>(f, <span class="st">'J=(J/length(y))'</span>)</a>
+<a class="sourceLine" id="cb19-7" title="7">f &lt;-<span class="st"> </span><span class="kw">paste</span>(f, <span class="dt">collapse =</span> <span class="st">';'</span>)</a>
+<a class="sourceLine" id="cb19-8" title="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb19-9" title="9">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
+<a class="sourceLine" id="cb19-10" title="10">                                            <span class="dt">numiterations =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb19-11" title="11">                                            <span class="dt">psopartpopsize =</span> <span class="dv">50</span>,</a>
+<a class="sourceLine" id="cb19-12" title="12">                                            <span class="dt">costcustformul =</span> f))</a></code></pre></div>
 <pre><code>## (cost: custom)
 ## cost epoch10: 0.901580275333795 (cv cost: 1.15936129555304) (LR:  0 ) 
 ## cost epoch20: 0.890142834441629 (cv cost: 1.24167078564786) (LR:  0 ) 
@@ -352,9 +352,9 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ##    dim bB2: [1,1] (min|max: 0.0216923703335529, 0.0216923703335529)
 ##    dim j2: [1,1] (min|max: -6.12554946752224, -6.12554946752224)
 ##    dim Y: [1,135]</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
 ## [1,]    5.1 4.693915
 ## [2,]    4.9 4.470968
@@ -366,20 +366,20 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.5 </span> <span id="x1-150000.3.5"></span>fit a classification model with softmax (Mix 2)
 </h4>
 <p>Subject: predict Species given other Iris parameters<br> Softmax is available with PSO, no derivative needed ;-)<br></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb23-6" data-line-number="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb23-7" data-line-number="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb23-8" data-line-number="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb23-9" data-line-number="9">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
-<a class="sourceLine" id="cb23-10" data-line-number="10">                                <span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb23-11" data-line-number="11">                                <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'relu'</span>, <span class="st">'softmax'</span>),</a>
-<a class="sourceLine" id="cb23-12" data-line-number="12">                                <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb23-13" data-line-number="13">                                <span class="dt">numiterations =</span> <span class="dv">50</span>,</a>
-<a class="sourceLine" id="cb23-14" data-line-number="14">                                <span class="dt">psopartpopsize =</span> <span class="dv">50</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb23-2" title="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb23-3" title="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb23-4" title="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
+<a class="sourceLine" id="cb23-5" title="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb23-6" title="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb23-7" title="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb23-8" title="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb23-9" title="9">                                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">modexec =</span> <span class="st">'trainwpso'</span>,</a>
+<a class="sourceLine" id="cb23-10" title="10">                                <span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb23-11" title="11">                                <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'relu'</span>, <span class="st">'softmax'</span>),</a>
+<a class="sourceLine" id="cb23-12" title="12">                                <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb23-13" title="13">                                <span class="dt">numiterations =</span> <span class="dv">50</span>,</a>
+<a class="sourceLine" id="cb23-14" title="14">                                <span class="dt">psopartpopsize =</span> <span class="dv">50</span>))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
 ## cost epoch10: 0.373706545886467 (cv cost: 0.36117608867856) (LR:  0 ) 
 ## cost epoch20: 0.267034060152876 (cv cost: 0.163635821437066) (LR:  0 ) 
@@ -394,10 +394,10 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ##    dim bB2: [3,1] (min|max: -0.0165862349385389, 0.0974829458643821)
 ##    dim j2: [3,1] (min|max: 1.35026790529631, 4.95476076574517)
 ##    dim Y: [3,135]</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">'act'</span>,lab2pred, <span class="dt">sep =</span> <span class="st">'_'</span>),</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">paste</span>(<span class="st">'pred'</span>,lab2pred, <span class="dt">sep =</span> <span class="st">'_'</span>))</a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw">head</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">res &lt;-<span class="st"> </span><span class="kw">cbind</span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="kw">colnames</span>(res) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">'act'</span>,lab2pred, <span class="dt">sep =</span> <span class="st">'_'</span>),</a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="kw">paste</span>(<span class="st">'pred'</span>,lab2pred, <span class="dt">sep =</span> <span class="st">'_'</span>))</a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="kw">head</span>(res)</a></code></pre></div>
 <pre><code>##   act_setosa act_versicolor act_virginica pred_setosa pred_versicolor
 ## 1          1              0             0   0.9863481     0.003268881
 ## 2          1              0             0   0.9897295     0.003387193
@@ -412,7 +412,7 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## 4    0.013373451
 ## 5    0.014122277
 ## 6    0.035400439</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">tail</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">tail</span>(res)</a></code></pre></div>
 <pre><code>##     act_setosa act_versicolor act_virginica pred_setosa pred_versicolor
 ## 145          0              0             1  0.02549091    2.877957e-05
 ## 146          0              0             1  0.08146753    2.005664e-03
@@ -431,82 +431,82 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.6 </span> <span id="x1-160000.3.6"></span>change the model parameters (shape …)
 </h4>
 <p>Same subject: predict Species given other Iris parameters<br> 1st example: with gradient descent and 2 hidden layers containing 10 nodes, with various activation functions for hidden layers<br></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb29-8" data-line-number="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(</a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">                <span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">                <span class="dt">hpar =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11">                    <span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb29-12" data-line-number="12">                    <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'tanh'</span>, <span class="st">'relu'</span>, <span class="st">''</span>),</a>
-<a class="sourceLine" id="cb29-13" data-line-number="13">                    <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb29-2" title="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb29-3" title="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb29-4" title="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
+<a class="sourceLine" id="cb29-5" title="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb29-6" title="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb29-7" title="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb29-8" title="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(</a>
+<a class="sourceLine" id="cb29-9" title="9">                <span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb29-10" title="10">                <span class="dt">hpar =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb29-11" title="11">                    <span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb29-12" title="12">                    <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'tanh'</span>, <span class="st">'relu'</span>, <span class="st">''</span>),</a>
+<a class="sourceLine" id="cb29-13" title="13">                    <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
 ## cost epoch10: 2.41325242052537 (cv cost: 0.951806491052378) (LR:  0.001 ) 
-## cost epoch20: 2.39981582102664 (cv cost: 0.824359586244001) (LR:  0.001 ) 
+## cost epoch20: 2.39981582102664 (cv cost: 0.824359586244002) (LR:  0.001 ) 
 ## cost epoch30: 2.38675064044667 (cv cost: 0.964281122916916) (LR:  0.001 ) 
 ## cost epoch40: 2.37511219594812 (cv cost: 0.984804476392134) (LR:  0.001 ) 
 ## cost epoch50: 2.36537225332899 (cv cost: 1.00906865173689) (LR:  0.001 ) 
 ##    dim X: [4,135]
 ##    dim W1: [10,4] (min|max: -1.17844190602841, 1.17623904342124)
 ##    dim bB1: [10,1] (min|max: -0.171280904463528, 0.170073959995729)
-##    dim j1: [10,1] (min|max: 0.834989059174757, 1.04591303447967)
+##    dim j1: [10,1] (min|max: 0.834989059174756, 1.04591303447967)
 ##    dim W2: [10,10] (min|max: -0.864498450147197, 1.17157236499935)
-##    dim bB2: [10,1] (min|max: -0.166479516706595, -0.0175789096131512)
+##    dim bB2: [10,1] (min|max: -0.166479516706595, -0.0175789096131513)
 ##    dim j2: [10,1] (min|max: 0.915919628756264, 1.05962744467235)
 ##    dim W3: [3,10] (min|max: -0.0443294023087402, 0.0663865843224797)
 ##    dim bB3: [3,1] (min|max: -0.084494659874969, -0.0474264925511486)
 ##    dim j3: [3,1] (min|max: 0.880875803781447, 0.947129830590927)
 ##    dim Y: [3,135]</code></pre>
 <p>nb: last activation type may be left to blank (it will be set automatically)<br><br> 2nd example: with gradient descent and no hidden layer (logistic regression)<br></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb31-8" data-line-number="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb31-9" data-line-number="9">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb31-10" data-line-number="10">                    <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'sigmoid'</span>),</a>
-<a class="sourceLine" id="cb31-11" data-line-number="11">                    <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb31-2" title="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb31-3" title="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb31-4" title="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
+<a class="sourceLine" id="cb31-5" title="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb31-6" title="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb31-7" title="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-8" title="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb31-9" title="9">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb31-10" title="10">                    <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'sigmoid'</span>),</a>
+<a class="sourceLine" id="cb31-11" title="11">                    <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
 ## cost epoch10: 2.41256625698174 (cv cost: 1.52787772773656) (LR:  0.001 ) 
 ## cost epoch20: 2.39487960709668 (cv cost: 1.30539484912328) (LR:  0.001 ) 
-## cost epoch30: 2.37790838174604 (cv cost: 0.914874371089546) (LR:  0.001 ) 
+## cost epoch30: 2.37790838174604 (cv cost: 0.914874371089548) (LR:  0.001 ) 
 ## cost epoch40: 2.36237291354489 (cv cost: 1.23368286521283) (LR:  0.001 ) 
 ## cost epoch50: 2.34978864866666 (cv cost: 1.26105975399258) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.0824233319087833, 0.0665219165277063)
+##    dim W1: [3,4] (min|max: -0.0824233319087832, 0.0665219165277063)
 ##    dim bB1: [3,1] (min|max: -0.0853265142410669, -0.0504193608620526)
 ##    dim j1: [3,1] (min|max: 0.877190207011175, 0.912854186557978)
 ##    dim Y: [3,135]</code></pre>
 <p>We saved the model to continue training later (see below in next section)</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">amlmodelsaved &lt;-<span class="st"> </span>amlmodel</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">amlmodelsaved &lt;-<span class="st"> </span>amlmodel</a></code></pre></div>
 <h4 id="fit-a-regression-model-manually-hard-way" class="subsectionHead">
 <span class="titlemark">0.3.7 </span> <span id="x1-170000.3.7"></span>continue training on saved model (fine tuning …)
 </h4>
 <p>Subject: continue training on saved model (model saved above in last section)<br></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">numiterations =</span> <span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">                    <span class="dt">psopartpopsize =</span> <span class="dv">50</span>),</a>
-<a class="sourceLine" id="cb34-4" data-line-number="4">                <span class="dt">mdlref =</span> amlmodelsaved)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb34-2" title="2">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">numiterations =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb34-3" title="3">                    <span class="dt">psopartpopsize =</span> <span class="dv">50</span>),</a>
+<a class="sourceLine" id="cb34-4" title="4">                <span class="dt">mdlref =</span> amlmodelsaved)</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 2.33948479711291 (cv cost: 1.3572198299724) (LR:  0.001 ) 
+## cost epoch10: 2.33948479711291 (cv cost: 1.35721982997238) (LR:  0.001 ) 
 ## cost epoch20: 2.32669285753264 (cv cost: 1.30152708067868) (LR:  0.001 ) 
 ## cost epoch30: 2.31504805288479 (cv cost: 1.29552449383989) (LR:  0.001 ) 
-## cost epoch40: 2.30430035748777 (cv cost: 1.29397405747142) (LR:  0.001 ) 
+## cost epoch40: 2.30430035748777 (cv cost: 1.29397405747141) (LR:  0.001 ) 
 ## cost epoch50: 2.29430374216071 (cv cost: 1.29240693651625) (LR:  0.001 ) 
 ## cost epoch60: 2.28495815493859 (cv cost: 1.29246202979512) (LR:  0.001 ) 
 ## cost epoch70: 2.27608005019126 (cv cost: 1.29620090185108) (LR:  0.001 ) 
-## cost epoch80: 2.26753980962059 (cv cost: 1.3019296243155) (LR:  0.001 ) 
+## cost epoch80: 2.26753980962059 (cv cost: 1.30192962431549) (LR:  0.001 ) 
 ## cost epoch90: 2.25934270485252 (cv cost: 1.30591289162664) (LR:  0.001 ) 
-## cost epoch100: 2.25229290115905 (cv cost: 1.30730635529277) (LR:  0.001 ) 
+## cost epoch100: 2.25229290115905 (cv cost: 1.30730635529278) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.0584244836620893, 0.0979357668398826)
+##    dim W1: [3,4] (min|max: -0.0584244836620892, 0.0979357668398827)
 ##    dim bB1: [3,1] (min|max: -0.235339245685138, -0.147348457818883)
 ##    dim j1: [3,1] (min|max: 0.675771007836825, 0.773425314642678)
 ##    dim Y: [3,135]</code></pre>
@@ -515,18 +515,18 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <span class="titlemark">0.3.8 </span> <span id="x1-180000.3.8"></span>use the 2 steps automatic approach
 </h4>
 <p>Same subject: predict Species given other Iris parameters<br> Let’s try the automatic approach in 2 steps with the same Logistic Regression architecture;<br> 1st step goal is performance, overfitting<br> 2nd step is robustness, regularization<br></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">data</span>(iris)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
-<a class="sourceLine" id="cb36-5" data-line-number="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
-<a class="sourceLine" id="cb36-6" data-line-number="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb36-7" data-line-number="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb36-8" data-line-number="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train.html">automl_train</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
-<a class="sourceLine" id="cb36-9" data-line-number="9">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb36-10" data-line-number="10">                   <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'sigmoid'</span>),</a>
-<a class="sourceLine" id="cb36-11" data-line-number="11">                   <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>)),</a>
-<a class="sourceLine" id="cb36-12" data-line-number="12">                <span class="dt">autopar =</span> <span class="kw">list</span>(<span class="dt">auto_runtype =</span> <span class="st">'2steps'</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="cb36-2" title="2">xmat =<span class="st"> </span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb36-3" title="3">lab2pred &lt;-<span class="st"> </span><span class="kw">levels</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb36-4" title="4">lghlab &lt;-<span class="st"> </span><span class="kw">length</span>(lab2pred)</a>
+<a class="sourceLine" id="cb36-5" title="5">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)</a>
+<a class="sourceLine" id="cb36-6" title="6">ymat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> lghlab, <span class="dt">by =</span> <span class="dv">1</span>), <span class="kw">nrow</span>(xmat), lghlab, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb36-7" title="7">ymat &lt;-<span class="st"> </span>(ymat <span class="op">==</span><span class="st"> </span><span class="kw">as.numeric</span>(iris<span class="op">$</span>Species)) <span class="op">+</span><span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb36-8" title="8">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train.html">automl_train</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat,</a>
+<a class="sourceLine" id="cb36-9" title="9">                <span class="dt">hpar =</span> <span class="kw">list</span>(<span class="dt">layersshape =</span> <span class="kw">c</span>(<span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb36-10" title="10">                   <span class="dt">layersacttype =</span> <span class="kw">c</span>(<span class="st">'sigmoid'</span>),</a>
+<a class="sourceLine" id="cb36-11" title="11">                   <span class="dt">layersdropoprob =</span> <span class="kw">c</span>(<span class="dv">0</span>)),</a>
+<a class="sourceLine" id="cb36-12" title="12">                <span class="dt">autopar =</span> <span class="kw">list</span>(<span class="dt">auto_runtype =</span> <span class="st">'2steps'</span>))</a></code></pre></div>
 <pre><code>## STEP: 1 (overfitting)
 ## (cost: crossentropy)
 ## iteration 1 particle 1 weighted err: 2.42056 BEST MODEL KEPT

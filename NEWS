@@ -1,3 +1,8 @@
+automl 1.2.7
+============================================
+* lightening models produced by removing
+  unnecessary data (Z, A layers, etc...)
+
 automl 1.2.6
 ============================================
 * just a proper Authors@R field 4 CRAN :-)
