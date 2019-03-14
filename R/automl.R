@@ -109,83 +109,89 @@ sbamlmodpsoparam <- function(mylspsoparam, mylspsopart)
   mylspsoparam$minvel = -mylspsoparam$maxvel
   mylspsoparam$activpart = 0
 
-  if (mylspsoparam$modeinit %in% c('angdlpso', 'autopar'))
+  if (is.null(mylspsoparam$modeinit))
   {
+   mylastlog <- ("error: no model trained")
+   stop(mylastlog);
+  } else {
+   if (mylspsoparam$modeinit %in% c('angdlpso', 'autopar'))
+   {
     mylspsopart <- list(
+     Position = NULL,
+     Velocity = 0,
+     Cost = NA,
+     Best = list(
       Position = NULL,
-      Velocity = 0,
       Cost = NA,
-      Best = list(
-        Position = NULL,
-        Cost = NA,
-        idpart = NA
-      )
+      idpart = NA
+     )
     )
     mylspsopart <- rep(list(mylspsopart), mylspsoparam$partpopsize)
 
     #pop members initialization
     for (i in 1:mylspsoparam$partpopsize)
     {
-      if (mylspsoparam$modeinit == 'angdlpso')
+     if (mylspsoparam$modeinit == 'angdlpso')
+     {
+      #random solution
+      mydl <- mylspsoparam$angdl$mydl
+      mydl <- sbamlmoddlparaminit(mydl, mydl$hpar$layersshape, mydl$hpar$layersacttype,
+                                  mylspsoparam$seed + i, mydl$hpar$batchnor_mom)
+      for (l in 1:mydl$hpar$nblayers)
       {
-        #random solution
-        mydl <- mylspsoparam$angdl$mydl
-        mydl <- sbamlmoddlparaminit(mydl, mydl$hpar$layersshape, mydl$hpar$layersacttype,
-                                    mylspsoparam$seed + i, mydl$hpar$batchnor_mom)
-        for (l in 1:mydl$hpar$nblayers)
-        {
-          # n = mydl$hpar$layersshape[l + 1]
-          # m = mydl$hpar$layersshape[l]
-          mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_W", l, sep = '')]]))
-          mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_bB", l, sep = '')]]))
-          if (mydl$hpar$batchnor_mom != 0)
-          {
-            mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_j", l, sep = '')]]))
-          }
-          #to avoid stagnation for bB & j
-          myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0])
-          set.seed(mylspsoparam$seed + i)
-          mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0] <- stats::runif(n = myprov, min = 0, max = 0.05)
-          myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1])
-          set.seed(mylspsoparam$seed + i)
-          mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1] <- stats::runif(n = myprov, min = 0.95, max = 1)
-          rm(myprov)
-        }
-        mylspsoparam$nbvar2optim <- length(mylspsopart[[i]]$Position)
-      } else if (mylspsoparam$modeinit == 'autopar')
-      {
-        #random solution
-        set.seed(mylspsoparam$seed + i)
-        mylspsopart[[i]]$Position <- stats::runif(n = mylspsoparam$nbvar2optim,
-                                           min = mylspsoparam$varvalmin,
-                                           max = mylspsoparam$varvalmax)
+       # n = mydl$hpar$layersshape[l + 1]
+       # m = mydl$hpar$layersshape[l]
+       mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_W", l, sep = '')]]))
+       mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_bB", l, sep = '')]]))
+       if (mydl$hpar$batchnor_mom != 0)
+       {
+        mylspsopart[[i]]$Position <- c(mylspsopart[[i]]$Position, c(mydl[[paste("mydl_j", l, sep = '')]]))
+       }
+       #to avoid stagnation for bB & j
+       myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0])
+       set.seed(mylspsoparam$seed + i)
+       mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 0] <- stats::runif(n = myprov, min = 0, max = 0.05)
+       myprov <- length(mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1])
+       set.seed(mylspsoparam$seed + i)
+       mylspsopart[[i]]$Position[mylspsopart[[i]]$Position == 1] <- stats::runif(n = myprov, min = 0.95, max = 1)
+       rm(myprov)
       }
+      mylspsoparam$nbvar2optim <- length(mylspsopart[[i]]$Position)
+     } else if (mylspsoparam$modeinit == 'autopar')
+     {
+      #random solution
+      set.seed(mylspsoparam$seed + i)
+      mylspsopart[[i]]$Position <- stats::runif(n = mylspsoparam$nbvar2optim,
+                                                min = mylspsoparam$varvalmin,
+                                                max = mylspsoparam$varvalmax)
+     }
 
-      if (i == 1)
-      {
-        #global best
-        mylspsoparam$globalbest = list(
-          Position = rep(0, mylspsoparam$nbvar2optim),
-          Cost = Inf,
-          idpart = NA); #the worst possible cost value
-        #logs of best each cost operation on each iteration
-        mylspsoparam$globbestcostlog = matrix(data = rep(NA, 2 * mylspsoparam$numiteration),
-                                              nrow = mylspsoparam$numiteration, ncol = 2,
-                                              byrow = FALSE)
-        colnames(mylspsoparam$globbestcostlog) = c('idpart', 'cost')
-      }
-      #initialize velocity
-      mylspsopart[[i]]$Velocity <- rep(0, mylspsoparam$nbvar2optim)
-      #evaluation
-      mylspsopart[[i]]$Cost <- Inf
-      #update personal best
-      mylspsopart[[i]]$Best$Position <- mylspsopart[[i]]$Position
-      mylspsopart[[i]]$Best$Cost <- mylspsopart[[i]]$Cost
-      mylspsopart[[i]]$Best$idpart <- i
-      if (mylspsoparam$modeinit == 'angdlpso') {mylspsopart[[i]]$angdl$mydl <- mydl}
+     if (i == 1)
+     {
+      #global best
+      mylspsoparam$globalbest = list(
+       Position = rep(0, mylspsoparam$nbvar2optim),
+       Cost = Inf,
+       idpart = NA); #the worst possible cost value
+      #logs of best each cost operation on each iteration
+      mylspsoparam$globbestcostlog = matrix(data = rep(NA, 2 * mylspsoparam$numiteration),
+                                            nrow = mylspsoparam$numiteration, ncol = 2,
+                                            byrow = FALSE)
+      colnames(mylspsoparam$globbestcostlog) = c('idpart', 'cost')
+     }
+     #initialize velocity
+     mylspsopart[[i]]$Velocity <- rep(0, mylspsoparam$nbvar2optim)
+     #evaluation
+     mylspsopart[[i]]$Cost <- Inf
+     #update personal best
+     mylspsopart[[i]]$Best$Position <- mylspsopart[[i]]$Position
+     mylspsopart[[i]]$Best$Cost <- mylspsopart[[i]]$Cost
+     mylspsopart[[i]]$Best$idpart <- i
+     if (mylspsoparam$modeinit == 'angdlpso') {mylspsopart[[i]]$angdl$mydl <- mydl}
     }
+   }
+   return(list(mylspsoparam = mylspsoparam, mylspsopart = mylspsopart))
   }
-  return(list(mylspsoparam = mylspsoparam, mylspsopart = mylspsopart))
 }
 
 sbamlmodpsooptkern <- function(mylspsoparam, mylspsoactivpart)
@@ -647,7 +653,9 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
     #
     if (valhparflagok == 1)
     {
+     setTimeLimit(cpu = Inf, elapsed = autopar$subtimelimit, transient = FALSE)
      mymodel <- try(automl_train_manual(Xref = Xref, Yref = Yref, hpar = hpar), TRUE)
+     setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE)
     } else {
      mymodel <- NULL
     }
@@ -868,7 +876,7 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
       }
      } else
      {
-      mylastlog <- paste(mylastlog, "no exploitable results", sep = " ")
+      mylastlog <- paste(mylastlog, "no exploitable results or timeout", sep = " ")
      }
      if (autopar$verbose == TRUE) {cat(paste0(mylastlog, "\n"))}
     }
@@ -1809,6 +1817,7 @@ sbamlvalidautopar <- function(autopar, myruntype = 'manual')
   if (!"seed" %in% myprov) {autopar[["seed"]] <- 4}
   if (!"nbcores" %in% myprov) {autopar[["nbcores"]] <- 1}
   if (!"verbose" %in% myprov) {autopar[["verbose"]] <- TRUE}
+  if (!"subtimelimit" %in% myprov) {autopar[["subtimelimit"]] <- 3600}
   if (!"psomodeinit" %in% myprov) {autopar[["psomodeinit"]] <- 'autopar'}
   if (!"psomodecost" %in% myprov) {autopar[["psomodecost"]] <- 'autopar'}
   if (!"psopartpopsize" %in% myprov) {autopar[["psopartpopsize"]] <- 8}

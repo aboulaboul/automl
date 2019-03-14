@@ -67,5 +67,7 @@ the minimum and maximum value for \sQuote{layersdropoprob}; default 0.05 for \sQ
 
 \item{verbose}{ to display or not the costs at each iteration for each particle (default TRUE)}\cr
 
+\item{subtimelimit}{ time limit in seconds for sub modelizations to avoid waiting too long for a specific particle to finish its modelization (default 3600)}\cr
+
 \emph{back to \link{automl_train}}
 }

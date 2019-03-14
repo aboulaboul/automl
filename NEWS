@@ -1,3 +1,10 @@
+automl 1.2.8
+============================================
+* time limit for sub modelizations in automl_
+  train function, to avoid waiting too long
+  for a specific particle to finish its mode-
+  lization
+
 automl 1.2.7
 ============================================
 * lightening models produced by removing

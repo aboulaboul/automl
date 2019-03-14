@@ -1,7 +1,7 @@
 Package: automl
 Type: Package
 Title: Deep Learning with Metaheuristic
-Version: 1.2.7
+Version: 1.2.8
 Authors@R: person("Alex", "Boulangé", role = c("aut", "cre"), email = "aboul@free.fr")
 BugReports: https://github.com/aboulaboul/automl/issues
 Description: Fits from simple regression to highly customizable deep neural networks 
