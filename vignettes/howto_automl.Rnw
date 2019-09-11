@@ -467,12 +467,14 @@ Compared to the last runs (in previous sections above), difference between train
 Automatically :-)\\
 
 
-\section{ToDo List}
+\section{ToDo List idea}
 
-- transfert learning from existing frameworks\\
-- CNN\\
-- RNN\\\\
-    -> join the team !\\
+- review the code to object oriented\\
+- manage transfert learning from existing frameworks\\
+- implement CNN\\
+- implement RNN\\
+- ...\\\\
+    -> I won't do it alone, let's create a team !\\
     https://aboulaboul.github.io/automl \\
     https://github.com/aboulaboul/automl
 \end{document}

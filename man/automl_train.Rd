@@ -3,7 +3,8 @@
 \title{automl_train}
 \description{
 The multi deep neural network automatic train function (several deep neural networks are trained with automatic hyperparameters tuning, best model is kept)\cr
-This function launches the \link{automl_train_manual} function for each particle at each converging step
+This function launches the \link{automl_train_manual} function by passing it parameters
+for each particle at each converging step
 }
 \usage{
 automl_train(Xref, Yref, autopar = list(), hpar = list(), mdlref = NULL)

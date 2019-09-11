@@ -1,7 +1,7 @@
 ---
 title: "automl"
 author: "Alex Boulangé"
-date: "january 27, 2019"
+date: "september 11, 2019"
 output:
   html_document: default
   pdf_document: default
@@ -284,12 +284,14 @@ amlmodel <- automl_train(Xref = xmat, Yref = ymat,
 Compared to the last runs (in previous sections above), difference between train and cross validation errors is much more tenuous<br />
 Automatically :-)<br />
 
-<h3 id="todo-list" class="sectionHead"><span class="titlemark">0.4 </span> <span id="x1-190000.4"></span>ToDo List</h3>
-<p>- transfert learning from existing frameworks<br />
-- CNN<br />
-- RNN<br />
+<h3 id="todo-list-idea" class="sectionHead"><span class="titlemark">0.4 </span> <span id="x1-190000.4"></span>ToDo List idea</h3>
+<p>- review the code to object oriented<br />
+- manage transfert learning from existing frameworks<br />
+- implement CNN<br />
+- implement RNN<br />
+- ...<br />
 <br />
--&gt; join the team !<br />
+-&gt; I won't do it alone, let's create a team !<br />
 https://aboulaboul.github.io/automl <br />
 https://github.com/aboulaboul/automl</p>
 </body>

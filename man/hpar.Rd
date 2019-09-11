@@ -7,8 +7,8 @@ Not mandatory (the list is preset and all arguments are initialized with default
 }
 \arguments{
 
-\item{modexec}{ \sQuote{trainwgrad} (the default value) to train with gradient descent\cr
-\sQuote{trainwpso} to train using Particle Swarm Optimization, each particle represents a set of neural network weights}\cr
+\item{modexec}{ \sQuote{trainwgrad} (the default value) to train with gradient descent (suitable for all volume of data)\cr
+\sQuote{trainwpso} to train using Particle Swarm Optimization, each particle represents a set of neural network weights (CAUTION: suitable for low volume of data, time consuming for medium to large volume of data)}\cr
 
 \emph{Below specific arguments to \sQuote{trainwgrad} execution mode}
 

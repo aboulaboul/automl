@@ -15,7 +15,7 @@ Not mandatory (the list is preset and all arguments are initialized with default
 #tuning priority 1}
 
 \item{auto_modexec}{ if \sQuote{TRUE} the type of Neural Net optimization will be randomly choosen between \sQuote{trainwgrad} and \sQuote{trainwpso} for each particle\cr
-default value is \sQuote{FALSE} (so default value of argument \sQuote{modexec} in \link{automl_train_manual} function)\cr
+default value is \sQuote{FALSE} (so default value of argument \sQuote{modexec} in \link{automl_train_manual} function, actually \sQuote{trainwgrad} as default is more suited to large data volume)\cr
 the value can be forced if defined in \link{hpar} list}
 
 \item{auto_runtype}{ if \sQuote{2steps} the 2 following steps will be run automatically (default value is \sQuote{normal}):\cr
@@ -37,8 +37,8 @@ the minimum and maximum value for \sQuote{learningrate} correspond to 10 to the 
 
 \item{auto_psopartpopsize}{ see below}
 \item{auto_psopartpopsize_min}{ see below}
-\item{auto_psopartpopsize_max}{ \sQuote{auto_psopartpopsize} default value \sQuote{TRUE} for automatic adjustment of \sQuote{psopartpopsize} argument in \link{automl_train_manual} function\cr
-the minimum and maximum value for \sQuote{learningrate} ; default 2 for \sQuote{auto_psopartpopsize_min} and 50 for \sQuote{auto_psopartpopsize_max})}
+\item{auto_psopartpopsize_max}{ \sQuote{auto_psopartpopsize} default value \sQuote{TRUE} for automatic adjustment of \sQuote{psopartpopsize} argument in \link{automl_train_manual} function (concern only \sQuote{modexec} set to \sQuote{trainwpso})\cr
+the minimum and maximum value for \sQuote{psopartpopsize} ; default 2 for \sQuote{auto_psopartpopsize_min} and 50 for \sQuote{auto_psopartpopsize_max})}
 
 \item{auto_lambda}{ see below}
 \item{auto_lambda_min}{ see below}

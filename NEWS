@@ -1,3 +1,10 @@
+automl 1.2.9
+============================================
+* documentation update (typo correction and
+  more detailed explanations concerning
+  modexec and autopar)
+  thanks to Alexey
+
 automl 1.2.8
 ============================================
 * time limit for sub modelizations in automl_
