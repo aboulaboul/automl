@@ -270,6 +270,14 @@ sbamlmoddlcost <- function(mydl, y, yhat, costtype, lambda, nblayers, epsil)
   {
     m = dim(y)[2]
     J <- (1 / (2 * m)) * sum((y - yhat) ^ 2)
+  } else if (costtype == 'rmse')
+  {
+    m = dim(y)[2]
+    J <- (1 / m) * sqrt(sum((y - yhat) ^ 2))
+  } else if (costtype == 'mape')
+  {
+    m = dim(y)[2]
+    J <- (1 / m) * sum(abs((y - yhat) / (y + epsil)))
   } else if (costtype == 'custom')
   {
     mytest <- try(eval(parse(text = mydl$hpar$costcustformul)), TRUE)
@@ -289,16 +297,24 @@ sbamlmoddlcost <- function(mydl, y, yhat, costtype, lambda, nblayers, epsil)
   return(J)
 }
 
-sbamlmoddlcostbk <- function(y, yhat, costtype)
+sbamlmoddlcostbk <- function(y, yhat, costtype, epsil)
 {
   if (costtype == 'crossentropy')
   {
-    dJ <- sbamlmatopebroadcst(sbamlmatopebroadcst(y, yhat, 'divid') * (-1),
-                              sbamlmatopebroadcst((1 - y), (1 - yhat), 'divid'),
+    dJ <- sbamlmatopebroadcst(sbamlmatopebroadcst(y, (yhat + epsil), 'divid') * (-1),
+                              sbamlmatopebroadcst((1 - y), (1 - yhat) + epsil, 'divid'),
                               'add')
   } else if (costtype == 'mse')
   {
     dJ <- sbamlmatopebroadcst(yhat, y  * (-1), 'add')
+  } else if (costtype == 'rmse')
+  {
+    dJ <- sbamlmatopebroadcst(2 * sbamlmatopebroadcst(yhat, y  * (-1), 'add'),
+                              (1 / 2) * ((sbamlmatopebroadcst(y, yhat  * (-1), 'add') + epsil) ^ 2) ^ (-1 / 2),
+                              'mult')
+  } else if (costtype == 'mape')
+  {
+    dJ <- (abs(y) + epsil) ^ (-1)
   }
   return(dJ)
 }
@@ -959,7 +975,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
   {
     if (any(!Yref %in% c(0, 1)))
     {
-      mydl$hpar$costtype <- 'mse'
+      if (mydl$hpar$costtype == '') {mydl$hpar$costtype <- 'mse'}
     } else {
       mydl$hpar$costtype <- 'crossentropy'
     }
@@ -1220,7 +1236,7 @@ sbamlmoddlbk <- function(mydl, Y, Yhat, costtype, nblayers, layersacttype, lambd
     {
       dA <- sbamlmoddlcostbk(Y,
                              Yhat,
-                             costtype)
+                             costtype, epsil)
       mydl[[paste("mydl_dA", l, sep = '')]] <- dA
     } else
     {

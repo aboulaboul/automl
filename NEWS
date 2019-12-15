@@ -1,3 +1,8 @@
+automl 1.3.0
+============================================
+* rmse & mape cost function added for regres-
+  sion
+
 automl 1.2.9
 ============================================
 * documentation update (typo correction and

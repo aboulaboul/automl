@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@
       <h1>automl</h1>
                         <h4 class="author">Alex Boulangé</h4>
             
-            <h4 class="date">september 11, 2019</h4>
+            <h4 class="date">december 15, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aboulaboul/automl/blob/master/vignettes/automl.Rmd"><code>vignettes/automl.Rmd</code></a></small>
       <div class="hidden name"><code>automl.Rmd</code></div>
@@ -288,7 +288,7 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## iteration 5 particle 15 weighted err: 5.15812 (train: 4.72209 cvalid: 3.63203 )</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">end.time &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
-<pre><code>## time ellapsed: 3.18466548919678</code></pre>
+<pre><code>## time ellapsed: 1.81807948748271</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(res) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(res)</a></code></pre></div>
@@ -455,21 +455,21 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb29-12" data-line-number="12">                    <span class="dt">layersacttype =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'tanh'</span>, <span class="st">'relu'</span>, <span class="st">''</span>),</a>
 <a class="sourceLine" id="cb29-13" data-line-number="13">                    <span class="dt">layersdropoprob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 2.41325242052537 (cv cost: 0.951806491052378) (LR:  0.001 ) 
-## cost epoch20: 2.39981582102664 (cv cost: 0.824359586244001) (LR:  0.001 ) 
-## cost epoch30: 2.38675064044667 (cv cost: 0.964281122916916) (LR:  0.001 ) 
-## cost epoch40: 2.37511219594812 (cv cost: 0.984804476392134) (LR:  0.001 ) 
-## cost epoch50: 2.36537225332899 (cv cost: 1.00906865173689) (LR:  0.001 ) 
+## cost epoch10: 2.4132524205254 (cv cost: 0.95180649104616) (LR:  0.001 ) 
+## cost epoch20: 2.39981582102669 (cv cost: 0.824359586243816) (LR:  0.001 ) 
+## cost epoch30: 2.3867506404468 (cv cost: 0.964281122912999) (LR:  0.001 ) 
+## cost epoch40: 2.37511219594828 (cv cost: 0.984804476385321) (LR:  0.001 ) 
+## cost epoch50: 2.36537225332912 (cv cost: 1.00906865173363) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [10,4] (min|max: -1.17844190602841, 1.17623904342124)
-##    dim bB1: [10,1] (min|max: -0.171280904463528, 0.170073959995729)
-##    dim j1: [10,1] (min|max: 0.834989059174757, 1.04591303447967)
-##    dim W2: [10,10] (min|max: -0.864498450147197, 1.17157236499935)
-##    dim bB2: [10,1] (min|max: -0.166479516706595, -0.0175789096131512)
-##    dim j2: [10,1] (min|max: 0.915919628756264, 1.05962744467235)
-##    dim W3: [3,10] (min|max: -0.0443294023087402, 0.0663865843224797)
-##    dim bB3: [3,1] (min|max: -0.084494659874969, -0.0474264925511486)
-##    dim j3: [3,1] (min|max: 0.880875803781447, 0.947129830590927)
+##    dim W1: [10,4] (min|max: -1.17844190602728, 1.17623904341995)
+##    dim bB1: [10,1] (min|max: -0.171280904463481, 0.170073959995005)
+##    dim j1: [10,1] (min|max: 0.834989059173039, 1.04591303447872)
+##    dim W2: [10,10] (min|max: -0.864498450147371, 1.17157236499926)
+##    dim bB2: [10,1] (min|max: -0.166479516705297, -0.0175789096139293)
+##    dim j2: [10,1] (min|max: 0.915919628754245, 1.05962744467369)
+##    dim W3: [3,10] (min|max: -0.0443294023089159, 0.0663865843225873)
+##    dim bB3: [3,1] (min|max: -0.0844946598750256, -0.0474264925511012)
+##    dim j3: [3,1] (min|max: 0.880875803781154, 0.947129830591421)
 ##    dim Y: [3,135]</code></pre>
 <p>nb: last activation type may be left to blank (it will be set automatically)<br><br> 2nd example: with gradient descent and no hidden layer (logistic regression)<br></p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(iris)</a>
@@ -484,15 +484,15 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb31-10" data-line-number="10">                    <span class="dt">layersacttype =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'sigmoid'</span>),</a>
 <a class="sourceLine" id="cb31-11" data-line-number="11">                    <span class="dt">layersdropoprob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 2.41256625698174 (cv cost: 1.52787772773656) (LR:  0.001 ) 
-## cost epoch20: 2.39487960709668 (cv cost: 1.30539484912328) (LR:  0.001 ) 
-## cost epoch30: 2.37790838174604 (cv cost: 0.914874371089546) (LR:  0.001 ) 
-## cost epoch40: 2.36237291354489 (cv cost: 1.23368286521283) (LR:  0.001 ) 
-## cost epoch50: 2.34978864866666 (cv cost: 1.26105975399258) (LR:  0.001 ) 
+## cost epoch10: 2.41256625698176 (cv cost: 1.52787772773637) (LR:  0.001 ) 
+## cost epoch20: 2.39487960709674 (cv cost: 1.30539484912269) (LR:  0.001 ) 
+## cost epoch30: 2.3779083817461 (cv cost: 0.914874371090141) (LR:  0.001 ) 
+## cost epoch40: 2.36237291354495 (cv cost: 1.23368286521275) (LR:  0.001 ) 
+## cost epoch50: 2.34978864866672 (cv cost: 1.26105975399248) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.0824233319087833, 0.0665219165277063)
-##    dim bB1: [3,1] (min|max: -0.0853265142410669, -0.0504193608620526)
-##    dim j1: [3,1] (min|max: 0.877190207011175, 0.912854186557978)
+##    dim W1: [3,4] (min|max: -0.0824233319087768, 0.0665219165274753)
+##    dim bB1: [3,1] (min|max: -0.0853265142411273, -0.0504193608620862)
+##    dim j1: [3,1] (min|max: 0.877190207011202, 0.912854186558064)
 ##    dim Y: [3,135]</code></pre>
 <p>We saved the model to continue training later (see below in next section)</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">amlmodelsaved &lt;-<span class="st"> </span>amlmodel</a></code></pre></div>
@@ -505,20 +505,20 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb34-3" data-line-number="3">                    <span class="dt">psopartpopsize =</span> <span class="dv">50</span>),</a>
 <a class="sourceLine" id="cb34-4" data-line-number="4">                <span class="dt">mdlref =</span> amlmodelsaved)</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 2.33948479711291 (cv cost: 1.3572198299724) (LR:  0.001 ) 
-## cost epoch20: 2.32669285753264 (cv cost: 1.30152708067868) (LR:  0.001 ) 
-## cost epoch30: 2.31504805288479 (cv cost: 1.29552449383989) (LR:  0.001 ) 
-## cost epoch40: 2.30430035748777 (cv cost: 1.29397405747142) (LR:  0.001 ) 
-## cost epoch50: 2.29430374216071 (cv cost: 1.29240693651625) (LR:  0.001 ) 
-## cost epoch60: 2.28495815493859 (cv cost: 1.29246202979512) (LR:  0.001 ) 
-## cost epoch70: 2.27608005019126 (cv cost: 1.29620090185108) (LR:  0.001 ) 
-## cost epoch80: 2.26753980962059 (cv cost: 1.3019296243155) (LR:  0.001 ) 
-## cost epoch90: 2.25934270485252 (cv cost: 1.30591289162664) (LR:  0.001 ) 
-## cost epoch100: 2.25229290115905 (cv cost: 1.30730635529277) (LR:  0.001 ) 
+## cost epoch10: 2.33948479711318 (cv cost: 1.35721982997034) (LR:  0.001 ) 
+## cost epoch20: 2.32669285753288 (cv cost: 1.30152708067931) (LR:  0.001 ) 
+## cost epoch30: 2.31504805288498 (cv cost: 1.29552449384034) (LR:  0.001 ) 
+## cost epoch40: 2.30430035748795 (cv cost: 1.29397405747182) (LR:  0.001 ) 
+## cost epoch50: 2.2943037421609 (cv cost: 1.29240693651664) (LR:  0.001 ) 
+## cost epoch60: 2.28495815493879 (cv cost: 1.29246202979552) (LR:  0.001 ) 
+## cost epoch70: 2.27608005019148 (cv cost: 1.29620090185143) (LR:  0.001 ) 
+## cost epoch80: 2.26753980962082 (cv cost: 1.30192962431577) (LR:  0.001 ) 
+## cost epoch90: 2.25934270485277 (cv cost: 1.30591289162687) (LR:  0.001 ) 
+## cost epoch100: 2.25229290115931 (cv cost: 1.307306355293) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.0584244836620893, 0.0979357668398826)
-##    dim bB1: [3,1] (min|max: -0.235339245685138, -0.147348457818883)
-##    dim j1: [3,1] (min|max: 0.675771007836825, 0.773425314642678)
+##    dim W1: [3,4] (min|max: -0.058424483662092, 0.0979357668398925)
+##    dim bB1: [3,1] (min|max: -0.235339245685316, -0.147348457818869)
+##    dim j1: [3,1] (min|max: 0.675771007837172, 0.773425314643101)
 ##    dim Y: [3,135]</code></pre>
 <p>We can see the error continuing to decrease from last training<br> The training continued with the same parameters, but notice that we were able to change the number of iterations<br></p>
 <h4 id="fit-a-regression-model-manually-hard-way" class="subsectionHead">
@@ -567,7 +567,7 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 ## (cost: crossentropy)
 ## iteration 1 particle 1 weighted err: 2.70508 (train: 2.24474 cvalid: 1.09389 ) BEST MODEL KEPT
 ## iteration 1 particle 2 weighted err: 2.71015 (train: 2.2452 cvalid: 1.08283 )
-## iteration 1 particle 3 weighted err: 2.2944 (train: 2.23677 cvalid: 2.0927 ) BEST MODEL KEPT
+## iteration 1 particle 3 weighted err: 2.2943 (train: 2.23677 cvalid: 2.09294 ) BEST MODEL KEPT
 ## iteration 1 particle 4 weighted err: 2.6911 (train: 2.23902 cvalid: 1.1088 )
 ## iteration 1 particle 5 weighted err: 2.69633 (train: 2.24061 cvalid: 1.10131 )
 ## iteration 1 particle 6 weighted err: 2.68252 (train: 2.24303 cvalid: 1.14432 )
