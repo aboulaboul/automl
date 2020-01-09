@@ -1,7 +1,7 @@
 ---
 title: "automl"
 author: "Alex Boulangé"
-date: "december 15, 2019"
+date: "january 09, 2020"
 output:
   html_document: default
   pdf_document: default

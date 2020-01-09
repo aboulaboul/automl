@@ -73,7 +73,7 @@ default value no drop out: c(0, 0)\cr
 \item{testgainunder}{ threshold to stop the training if the gain between last train or cross validation cost is smaller than the threshold, 0 for no stop test (default 0.000001)}
 
 \item{costtype}{ cost type function name \sQuote{mse} or \sQuote{crossentropy} or \sQuote{custom}\cr
-\sQuote{mse} for Mean Squared Error, set automatically for continuous target type\cr
+\sQuote{mse} for Mean Squared Error, set automatically for continuous target type (\sQuote{rmse} Root MSE may be specified)\cr
 \sQuote{crossentropy} set automatically for binary target type\cr
 \sQuote{custom} set automatically if \sQuote{costcustformul} different from \sQuote{}
 }
@@ -81,7 +81,7 @@ default value no drop out: c(0, 0)\cr
 \item{lambda}{ regularization term added to cost function (default value 0, no regularization)
 }
 
-\item{batchnor_mom}{ batch normalization momentum for j and B (default value 0.9, no batch normalization if equal to 0)
+\item{batchnor_mom}{ batch normalization momentum for j and B (default 0, no batch normalization, may be set to 0.9 for deep neural net)
 }
 
 \item{epsil}{ epsilon the low value to avoid dividing by 0 or log(0) in cost function, etc ... (default value 1e-12)\cr

@@ -20,7 +20,8 @@ the value can be forced if defined in \link{hpar} list}
 
 \item{auto_runtype}{ if \sQuote{2steps} the 2 following steps will be run automatically (default value is \sQuote{normal}):\cr
 1st overfitting, the goal is performance\cr
-2nd regularization, the goal is generalization \cr}
+2nd regularization, the goal is generalization \cr
+ nb: \sQuote{overfitting} or \sQuote{regularization} may be directly specified to avoid the 2 steps\cr}
 
 \item{auto_minibatchsize}{ see below}
 \item{auto_minibatchsize_min}{ see below}

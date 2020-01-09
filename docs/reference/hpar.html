@@ -70,7 +70,7 @@ Not mandatory (the list is preset and all arguments are initialized with default
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -222,7 +222,7 @@ default value no drop out: c(0, 0)<br />
     <tr>
       <th>costtype</th>
       <td><p>cost type function name &#8216;mse&#8217; or &#8216;crossentropy&#8217; or &#8216;custom&#8217;<br />
-&#8216;mse&#8217; for Mean Squared Error, set automatically for continuous target type<br />
+&#8216;mse&#8217; for Mean Squared Error, set automatically for continuous target type (&#8216;rmse&#8217; Root MSE may be specified)<br />
 &#8216;crossentropy&#8217; set automatically for binary target type<br />
 &#8216;custom&#8217; set automatically if &#8216;costcustformul&#8217; different from &#8216;&#8217;</p></td>
     </tr>
@@ -232,7 +232,7 @@ default value no drop out: c(0, 0)<br />
     </tr>
     <tr>
       <th>batchnor_mom</th>
-      <td><p>batch normalization momentum for j and B (default value 0.9, no batch normalization if equal to 0)</p></td>
+      <td><p>batch normalization momentum for j and B (default 0, no batch normalization, may be set to 0.9 for deep neural net)</p></td>
     </tr>
     <tr>
       <th>epsil</th>

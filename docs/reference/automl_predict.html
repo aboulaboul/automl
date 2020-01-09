@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -147,12 +147,12 @@
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>ymat</span>, <span class='fu'>automl_predict</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='no'>amlmodel</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>xmat</span>))
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>res</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'actual'</span>, <span class='st'>'predict'</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;      actual  predict
-#&gt; [1,]    5.1 5.030406
-#&gt; [2,]    4.9 4.659813
-#&gt; [3,]    4.7 4.756626
-#&gt; [4,]    4.6 4.785356
-#&gt; [5,]    5.0 5.104524
-#&gt; [6,]    5.4 5.472317</div><div class='input'><span class='co'>#</span>
+#&gt; [1,]    5.1 5.113573
+#&gt; [2,]    4.9 4.562844
+#&gt; [3,]    4.7 4.715187
+#&gt; [4,]    4.6 4.740938
+#&gt; [5,]    5.0 5.223718
+#&gt; [6,]    5.4 5.629219</div><div class='input'><span class='co'>#</span>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'>##CLASSIFICATION (predict Species given other Iris parameters)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>iris</span>)

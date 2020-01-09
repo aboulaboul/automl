@@ -1,3 +1,15 @@
+automl 1.3.1
+============================================
+* direct ‘overfitting’  &  ‘regularization’
+  modes for auto_runtype
+* batch normalization set to 0 by default
+  (not good for regression targets)
+* bug fix: now exits if no gain when no cros-
+  s validation sample
+* bug fix: testgainunder now kept as is
+* MAPE cost function removed (probably an er-
+  ror to be fixed in derivative: todo list)
+
 automl 1.3.0
 ============================================
 * rmse & mape cost function added for regres-

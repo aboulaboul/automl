@@ -743,11 +743,27 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
   #
   for (autoloopnbr in 1:myautonbloop)
   {
-   if (autopar$auto_runtype == "2steps" & autoloopnbr == 1)
+   if (autopar$auto_runtype %in% c("2steps", "overfitting", "regularization") & autoloopnbr == 1)
    {
-    hpar$overfitautopar <- TRUE;#TRUE to overfit (cv but no cv test)
-    autopar[["auto_lambda"]] <- FALSE
-    autopar[["auto_layersdropo"]] <- FALSE
+    if (autopar$auto_runtype %in% c("2steps", "overfitting"))
+    {
+     hpar$overfitautopar <- TRUE;#TRUE to overfit (cv but no cv test)
+     autopar[["auto_lambda"]] <- FALSE
+     autopar[["auto_layersdropo"]] <- FALSE
+    } else {
+     hpar$overfitautopar <- FALSE;#FALSE to generalize (cv w cv test)
+     autopar[["auto_modexec"]] <- FALSE
+     autopar[["auto_minibatchsize"]] <- FALSE
+     autopar[["auto_learningrate"]] <- FALSE
+     autopar[["auto_beta1"]] <- FALSE
+     autopar[["auto_beta2"]] <- FALSE
+     autopar[["auto_psopartpopsize"]] <- FALSE
+     autopar[["auto_psovelocitymaxratio"]] <- FALSE
+     autopar[["auto_layers"]] <- FALSE
+     #
+     autopar[["auto_lambda"]] <- TRUE
+     autopar[["auto_layersdropo"]] <- TRUE
+    }
     myprovres <- sbamlvalidautopar(autopar = autopar, myruntype = 'auto')
     autopar <- myprovres[["autopar"]]
     if (myprovres[["tstflagok"]] == 0)
@@ -760,7 +776,6 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
      autopar <- sbamlvalidautopar(autopar = autopar, myruntype = 'manual')[["autopar"]]
     }
     rm(myprovres)
-
    } else if (autopar$auto_runtype == "2steps" & autoloopnbr == 2)
    {
     hpar$overfitautopar <- FALSE;#FALSE to generalize (cv w cv test)
@@ -868,6 +883,9 @@ automl_train <- function(Xref, Yref, autopar = list(), hpar = list(), mdlref = N
       if (autopar$auto_runtype == "2steps")
       {
        cat(paste('STEP: ', autoloopnbr,' (',ifelse(autoloopnbr == 1, 'overfitting', 'regularization'),')\n', sep = ''))
+      } else if (!autopar$auto_runtype %in% c("normal", "2steps"))
+      {
+       cat(paste('PRESET: (',ifelse(autopar$auto_runtype == 'overfitting', 'overfitting', 'regularization'),')\n', sep = ''))
       }
       if (myflagok == 1) {cat(paste('(cost: ', mylspsopart[[i]]$Best$model$hpar$costtype,')\n', sep = ''))}
      }
@@ -980,14 +998,14 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
       mydl$hpar$costtype <- 'crossentropy'
     }
   }
-  mynbtestsoktostop <- 1;#legacy hyperparam dropped to simplify
   mytestokcpt <- 0;#to avoid error with test while not defined
   mytrlastcost <- mycvlastcost <- mydl$hpar$epsil ^ -1;#why not to get a huge number
   if (mydl$hpar$testcvsize != 0)
   {
+    mynbtestsoktostop <- 2;#legacy hyperparam dropped to simplify
     #shuffling handled upstream
     mycvpctg <- mydl$hpar$testcvsize / 100
-    mycvgainunder <- mydl$hpar$testgainunder / 100
+    mycvgainunder <- mydl$hpar$testgainunder
     mythld <- floor(dim(Xref)[2] * mycvpctg)
     if (mydl$hpar$useautopar == FALSE)
     {
@@ -1001,6 +1019,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
     Xref <- matrix(Xref[,-mysample], nrow = dim(Xref)[1], byrow = F)
     Yref <- matrix(Yref[,-mysample], nrow = dim(Yref)[1], byrow = F)
   } else {
+    mynbtestsoktostop <- 1;#legacy hyperparam dropped to simplify
     mycvpctg <- mycvgainunder <- 0
   }
   if (mydl$hpar$minibatchsize != 0 & dim(Xref)[2] > mydl$hpar$minibatchsize)
@@ -1090,14 +1109,20 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
       {
         if ((epochnum %% mydl$hpar$printcostevery == 0 | epochnum == mydl$hpar$numiterations) & batchnum %% nbbatch == 0)
         {
+          mylastlog <- " "; mytestokcpt <- 0
           mytrcost <- sbamlmoddlcost(mydl, Y, Yhat, mydl$hpar$costtype,
                                      mydl$hpar$lambda, mydl$hpar$nblayers,
                                      mydl$hpar$epsil)
           mydl$error$tr <- mytrcost
           if (mydl$hpar$verbose == TRUE) {cat(paste('cost epoch',epochnum , ': ', mytrcost, sep = ''))}
+          if (abs(mytrlastcost - mytrcost) < mydl$hpar$testgainunder)
+          {
+            mylastlog <- paste(mylastlog, "[test trgainunder OK]", sep = " ")
+            mytestokcpt <- mytestokcpt + 1
+          }
+          mytrlastcost <- mytrcost
           if (mydl$hpar$testcvsize != 0 & mydl$hpar$overfitautopar == FALSE)
           {
-            mylastlog <- " "; mytestokcpt <- 0
             myprovres <- sbamlmoddlfw(mydl, Xcv, 'predict', mydl$hpar$nblayers, mydl$hpar$layersacttype,
                                       mydl$hpar$layersdropoprob, mydl$hpar$seed, mydl$hpar$batchnor_mom,
                                       mydl$hpar$epsil)
@@ -1106,30 +1131,23 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
                                        mydl$hpar$nblayers, mydl$hpar$epsil)
             mydl$error$cv <- mycvcost
             if (mydl$hpar$verbose == TRUE) {cat(paste(' (cv cost: ', mycvcost, ')', sep = ''))}
-            if (abs(mytrlastcost - mytrcost) < mydl$hpar$testgainunder)
-            {
-              mylastlog <- paste(mylastlog, "[test trgainunder OK]", sep = " ")
-              mytestokcpt <- mytestokcpt + 1
-            }
-            mytrlastcost <- mytrcost
             if (abs(mycvlastcost - mycvcost) < mycvgainunder)
             {
               mylastlog <- paste(mylastlog, "[test cvgainunder OK]", sep = " ")
               mytestokcpt <- mytestokcpt + 1
             }
-            if (mylastlog != ' ')
-            {
-              if (mydl$hpar$verbose == TRUE) {cat(paste(mylastlog), '\n', sep = '')}
-            }
             mycvlastcost <- mycvcost
           } else {
             mydl$error$cv <- NA
           }
-          if (mydl$hpar$verbose == TRUE) {cat(paste(' (LR: ', mydl$hpar$learningrate, ')',
-                    '\n', sep = ' '))}
+          if (mydl$hpar$verbose == TRUE)
+          {
+            cat(paste(' (LR: ', mydl$hpar$learningrate, ')', '\n', sep = ' '))
+            if (mylastlog != ' ') {cat(paste(mylastlog), '\n', sep = '')}
+          }
           if (mytestokcpt >= mynbtestsoktostop)
           {
-            if (mydl$hpar$verbose == TRUE) {cat(mylastlog)}
+            cat(paste0('[', mytestokcpt, ' / ', mynbtestsoktostop, ' cond. OK to exit]\n'))
             myflagcontinue <- 0
           }
         }
@@ -1974,7 +1992,7 @@ sbamlvalidhpar <- function(hpar, myruntype = 'manual')
   if (!"beta1" %in% myprov) {hpar[["beta1"]] <- 0.9}
   if (!"beta2" %in% myprov) {hpar[["beta2"]] <- 0.999}
   if (!"epsil" %in% myprov) {hpar[["epsil"]] <- 1e-12}
-  if (!"batchnor_mom" %in% myprov) {hpar[["batchnor_mom"]] <- 0.9}
+  if (!"batchnor_mom" %in% myprov) {hpar[["batchnor_mom"]] <- 0}
   if (!"testcvsize" %in% myprov) {hpar[["testcvsize"]] <- 10}
   if (!"testgainunder" %in% myprov) {hpar[["testgainunder"]] <- 0.000001}
   if (!"psomodeinit" %in% myprov) {hpar[["psomodeinit"]] <- 'angdlpso'}
