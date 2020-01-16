@@ -1,3 +1,11 @@
+automl 1.3.2
+============================================
+* one step forward, one step back!
+  MAPE cost function is back and validated
+  RMSE cost function removed (derivative
+  challenge + no added value vs MSE imo)
+* bug fix: 'chkgradevery' is now available
+
 automl 1.3.1
 ============================================
 * direct ‘overfitting’  &  ‘regularization’

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">automl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.2</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@
       <h1>automl</h1>
                         <h4 class="author">Alex Boulangé</h4>
             
-            <h4 class="date">january 09, 2020</h4>
+            <h4 class="date">january 16, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aboulaboul/automl/blob/master/vignettes/automl.Rmd"><code>vignettes/automl.Rmd</code></a></small>
       <div class="hidden name"><code>automl.Rmd</code></div>
@@ -143,27 +143,27 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb1-3" data-line-number="3">ymat &lt;-<span class="st"> </span>iris[,<span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">amlmodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/automl_train_manual.html">automl_train_manual</a></span>(<span class="dt">Xref =</span> xmat, <span class="dt">Yref =</span> ymat)</a></code></pre></div>
 <pre><code>## (cost: mse)
-## cost epoch10: 4.32448145592516 (cv cost: 7.44514208138857) (LR:  0.001 ) 
-## cost epoch20: 1.27972351311775 (cv cost: 1.69428813572827) (LR:  0.001 ) 
-## cost epoch30: 0.991239258252379 (cv cost: 1.35479595235304) (LR:  0.001 ) 
-## cost epoch40: 0.874354643996513 (cv cost: 1.11254348557089) (LR:  0.001 ) 
-## cost epoch50: 0.820912599503419 (cv cost: 0.94611998908678) (LR:  0.001 ) 
+## cost epoch10: 0.805238955644501 (cv cost: 4.21618247893937) (LR:  0.001 ) 
+## cost epoch20: 0.635110258608589 (cv cost: 1.6721782273314) (LR:  0.001 ) 
+## cost epoch30: 0.442896887636891 (cv cost: 1.38613208757511) (LR:  0.001 ) 
+## cost epoch40: 0.417861223304396 (cv cost: 1.14304235928791) (LR:  0.001 ) 
+## cost epoch50: 0.384222897412199 (cv cost: 0.959845846511371) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [10,4] (min|max: -1.54429770594677, 1.76233243009315)
-##    dim bB1: [10,1] (min|max: 0, 0.535820185335336)
-##    dim W2: [1,10] (min|max: -0.0130920429820853, 0.359182043843503)
-##    dim bB2: [1,1] (min|max: 0.0738492547345204, 0.0738492547345204)
+##    dim W1: [10,4] (min|max: -1.54429770594677, 1.76673847197307)
+##    dim bB1: [10,1] (min|max: 0, 0.545298555899576)
+##    dim W2: [1,10] (min|max: -0.0130920429820853, 0.349457454208908)
+##    dim bB2: [1,1] (min|max: 0.074428956661853, 0.074428956661853)
 ##    dim Y: [1,135]</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(res) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
-## [1,]    5.1 3.110401
-## [2,]    4.9 2.958797
-## [3,]    4.7 2.980532
-## [4,]    4.6 3.028025
-## [5,]    5.0 3.140722
-## [6,]    5.4 3.451010</code></pre>
+## [1,]    5.1 3.040397
+## [2,]    4.9 2.885246
+## [3,]    4.7 2.911639
+## [4,]    4.6 2.951945
+## [5,]    5.0 3.071427
+## [6,]    5.4 3.365510</code></pre>
 <p>:-[] no pain, no gain …<br> After some manual fine tuning on learning rate, mini batch size and iterations number (epochs):<br></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(iris)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">xmat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(iris[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(iris<span class="op">$</span>Species))</a>
@@ -173,25 +173,25 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb5-6" data-line-number="6">                                <span class="dt">minibatchsize =</span> <span class="dv">2</span><span class="op">^</span><span class="dv">2</span>,</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">                                <span class="dt">numiterations =</span> <span class="dv">30</span>))</a></code></pre></div>
 <pre><code>## (cost: mse)
-## cost epoch10: 0.0909389048336394 (cv cost: 0.439632172549961) (LR:  0.01 ) 
-## cost epoch20: 0.210309280392956 (cv cost: 0.269961600588818) (LR:  0.01 ) 
-## cost epoch30: 0.184726596625289 (cv cost: 0.23328493701916) (LR:  0.01 ) 
+## cost epoch10: 0.07483378655409 (cv cost: 0.466478285718589) (LR:  0.01 ) 
+## cost epoch20: 0.275546796158403 (cv cost: 0.294895895020273) (LR:  0.01 ) 
+## cost epoch30: 0.231827727788502 (cv cost: 0.233179461368555) (LR:  0.01 ) 
 ##    dim X: [4,135]
-##    dim W1: [10,4] (min|max: -1.54429770594677, 2.74230332717209)
-##    dim bB1: [10,1] (min|max: -0.317658298585351, 1.90363761544538)
-##    dim W2: [1,10] (min|max: -0.313978049365135, 0.272467258806951)
-##    dim bB2: [1,1] (min|max: 0.315091282545438, 0.315091282545438)
+##    dim W1: [10,4] (min|max: -1.54429770594677, 2.73130744979701)
+##    dim bB1: [10,1] (min|max: -0.317658298585351, 1.99139261324871)
+##    dim W2: [1,10] (min|max: -0.313978049365135, 0.286454921099375)
+##    dim bB2: [1,1] (min|max: 0.337210920487028, 0.337210920487028)
 ##    dim Y: [1,135]</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(res) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
-## [1,]    5.1 5.516877
-## [2,]    4.9 4.978799
-## [3,]    4.7 5.182687
-## [4,]    4.6 5.097757
-## [5,]    5.0 5.624492
-## [6,]    5.4 5.998602</code></pre>
+## [1,]    5.1 5.662462
+## [2,]    4.9 5.112758
+## [3,]    4.7 5.319313
+## [4,]    4.6 5.236026
+## [5,]    5.0 5.772403
+## [6,]    5.4 6.152288</code></pre>
 <p>Better result, but with human efforts!<br></p>
 <h4 id="fit-a-regression-model-manually-hard-way" class="subsectionHead">
 <span class="titlemark">0.3.2 </span> <span id="x1-120000.3.2"></span>fit a regression model automatically (easy way, Mix 1)
@@ -207,94 +207,94 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb9-8" data-line-number="8">                                        <span class="dt">auto_layers_max =</span> <span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9">                                        <span class="dt">nbcores =</span> <span class="dv">4</span>))</a></code></pre></div>
 <pre><code>## (cost: mse)
-## iteration 1 particle 1 weighted err: 18.02186 (train: 17.4759 cvalid: 16.111 ) BEST MODEL KEPT
-## iteration 1 particle 2 weighted err: 17.39575 (train: 16.86192 cvalid: 15.52734 ) BEST MODEL KEPT
-## iteration 1 particle 3 weighted err: 18.58025 (train: 17.96074 cvalid: 16.41196 )
-## iteration 1 particle 4 weighted err: 20.59253 (train: 19.78752 cvalid: 17.77499 )
-## iteration 1 particle 5 weighted err: 17.09589 (train: 16.61277 cvalid: 15.40496 ) BEST MODEL KEPT
-## iteration 1 particle 6 weighted err: 19.76509 (train: 19.02818 cvalid: 17.18591 )
-## iteration 1 particle 7 weighted err: 14.49483 (train: 14.28691 cvalid: 13.76709 ) BEST MODEL KEPT
-## iteration 1 particle 8 weighted err: 10.10214 (train: 8.99941 cvalid: 9.68862 ) BEST MODEL KEPT
-## iteration 1 particle 9 weighted err: 14.29499 (train: 14.14298 cvalid: 13.76297 )
-## iteration 1 particle 10 weighted err: 0.59976 (train: 0.56871 cvalid: 0.49107 ) BEST MODEL KEPT
-## iteration 1 particle 11 weighted err: 6.85908 (train: 3.94742 cvalid: 5.76721 )
-## iteration 1 particle 12 weighted err: 20.50769 (train: 19.71033 cvalid: 17.71692 )
-## iteration 1 particle 13 weighted err: 0.73017 (train: 0.51338 cvalid: 0.64888 )
-## iteration 1 particle 14 weighted err: 18.6274 (train: 18.00644 cvalid: 16.45405 )
-## iteration 1 particle 15 weighted err: 18.1267 (train: 17.55215 cvalid: 16.11577 )
-## iteration 2 particle 1 weighted err: 3.57996 (train: 0.62222 cvalid: 2.47081 )
-## iteration 2 particle 2 weighted err: 7.25992 (train: 5.1728 cvalid: 6.47725 )
-## iteration 2 particle 3 weighted err: 1.75391 (train: 0.04264 cvalid: 1.11218 )
-## iteration 2 particle 4 weighted err: 8.22296 (train: 5.20481 cvalid: 7.09116 )
-## iteration 2 particle 5 weighted err: 0.39498 (train: 0.3159 cvalid: 0.1182 ) BEST MODEL KEPT
-## iteration 2 particle 6 weighted err: 12.99226 (train: 12.87704 cvalid: 12.58897 )
-## iteration 2 particle 7 weighted err: 0.69904 (train: 0.51322 cvalid: 0.62936 )
-## iteration 2 particle 8 weighted err: 10.10214 (train: 8.99941 cvalid: 9.68862 )
-## iteration 2 particle 9 weighted err: 0.2747 (train: 0.2225 cvalid: 0.09202 ) BEST MODEL KEPT
-## iteration 2 particle 10 weighted err: 0.543 (train: 0.52841 cvalid: 0.53753 )
-## iteration 2 particle 11 weighted err: 0.21454 (train: 0.18248 cvalid: 0.10232 ) BEST MODEL KEPT
-## iteration 2 particle 12 weighted err: 10.3364 (train: 7.83458 cvalid: 9.39822 )
-## iteration 2 particle 13 weighted err: 0.73017 (train: 0.51338 cvalid: 0.64888 )
-## iteration 2 particle 14 weighted err: 12.53886 (train: 12.53397 cvalid: 12.52175 )
-## iteration 2 particle 15 weighted err: 0.67686 (train: 0.48915 cvalid: 0.60647 )
-## iteration 3 particle 1 weighted err: 0.16893 (train: 0.14979 cvalid: 0.10194 ) BEST MODEL KEPT
-## iteration 3 particle 2 weighted err: 0.25774 (train: 0.20635 cvalid: 0.07786 )
-## iteration 3 particle 3 weighted err: 0.20948 (train: 0.17599 cvalid: 0.09225 )
-## iteration 3 particle 4 weighted err: 0.28547 (train: 0.2331 cvalid: 0.10217 )
-## iteration 3 particle 5 weighted err: 0.29453 (train: 0.23342 cvalid: 0.08064 )
-## iteration 3 particle 6 weighted err: 5.69445 (train: 2.46895 cvalid: 4.48489 )
-## iteration 3 particle 7 weighted err: 0.31008 (train: 0.24159 cvalid: 0.07036 )
-## iteration 3 particle 8 weighted err: 0.40518 (train: 0.32648 cvalid: 0.12973 )
-## iteration 3 particle 9 weighted err: 0.26302 (train: 0.20913 cvalid: 0.0744 )
-## iteration 3 particle 10 weighted err: 0.543 (train: 0.52841 cvalid: 0.53753 )
-## iteration 3 particle 11 weighted err: 0.21454 (train: 0.18248 cvalid: 0.10232 )
-## iteration 3 particle 12 weighted err: 0.48475 (train: 0.43012 cvalid: 0.29354 )
-## iteration 3 particle 13 weighted err: 0.17314 (train: 0.15263 cvalid: 0.10136 )
-## iteration 3 particle 14 weighted err: 3.08393 (train: 0.41376 cvalid: 2.08262 )
-## iteration 3 particle 15 weighted err: 0.13461 (train: 0.12747 cvalid: 0.10963 ) BEST MODEL KEPT
-## iteration 4 particle 1 weighted err: 0.16893 (train: 0.14979 cvalid: 0.10194 )
-## iteration 4 particle 2 weighted err: 0.25774 (train: 0.20635 cvalid: 0.07786 )
-## iteration 4 particle 3 weighted err: 0.20948 (train: 0.17599 cvalid: 0.09225 )
-## iteration 4 particle 4 weighted err: 0.1644 (train: 0.14916 cvalid: 0.11106 )
-## iteration 4 particle 5 weighted err: 0.19234 (train: 0.16307 cvalid: 0.08991 )
-## iteration 4 particle 6 weighted err: 0.34724 (train: 0.28248 cvalid: 0.12058 )
-## iteration 4 particle 7 weighted err: 0.26448 (train: 0.21072 cvalid: 0.0763 )
-## iteration 4 particle 8 weighted err: 0.16131 (train: 0.14443 cvalid: 0.10223 )
-## iteration 4 particle 9 weighted err: 0.26302 (train: 0.20913 cvalid: 0.0744 )
-## iteration 4 particle 10 weighted err: 0.543 (train: 0.52841 cvalid: 0.53753 )
-## iteration 4 particle 11 weighted err: 0.12011 (train: 0.11639 cvalid: 0.10708 ) BEST MODEL KEPT
-## iteration 4 particle 12 weighted err: 0.3232 (train: 0.26459 cvalid: 0.11805 )
-## iteration 4 particle 13 weighted err: 0.17314 (train: 0.15263 cvalid: 0.10136 )
-## iteration 4 particle 14 weighted err: 0.29992 (train: 0.24038 cvalid: 0.09152 )
-## iteration 4 particle 15 weighted err: 0.13461 (train: 0.12747 cvalid: 0.10963 )
-## iteration 5 particle 1 weighted err: 0.15678 (train: 0.14332 cvalid: 0.10966 )
-## iteration 5 particle 2 weighted err: 0.14781 (train: 0.13646 cvalid: 0.1081 )
-## iteration 5 particle 3 weighted err: 0.19405 (train: 0.16423 cvalid: 0.08967 )
-## iteration 5 particle 4 weighted err: 0.1644 (train: 0.14916 cvalid: 0.11106 )
-## iteration 5 particle 5 weighted err: 0.15928 (train: 0.14552 cvalid: 0.11113 )
-## iteration 5 particle 6 weighted err: 0.23815 (train: 0.19992 cvalid: 0.10437 )
-## iteration 5 particle 7 weighted err: 0.15141 (train: 0.13915 cvalid: 0.10851 )
-## iteration 5 particle 8 weighted err: 0.12789 (train: 0.12079 cvalid: 0.10304 )
-## iteration 5 particle 9 weighted err: 0.121 (train: 0.11645 cvalid: 0.10509 )
-## iteration 5 particle 10 weighted err: 0.543 (train: 0.52841 cvalid: 0.53753 )
-## iteration 5 particle 11 weighted err: 0.12011 (train: 0.11639 cvalid: 0.10708 )
-## iteration 5 particle 12 weighted err: 0.23061 (train: 0.19392 cvalid: 0.1022 )
-## iteration 5 particle 13 weighted err: 0.10415 (train: 0.10081 cvalid: 0.1029 ) BEST MODEL KEPT
-## iteration 5 particle 14 weighted err: 0.17604 (train: 0.15252 cvalid: 0.09373 )
-## iteration 5 particle 15 weighted err: 0.13461 (train: 0.12747 cvalid: 0.10963 )</code></pre>
+## iteration 1 particle 1 weighted err: 16.07611 (train: 15.72634 cvalid: 14.85191 ) BEST MODEL KEPT
+## iteration 1 particle 2 weighted err: 16.3075 (train: 15.87959 cvalid: 14.80982 )
+## iteration 1 particle 3 weighted err: 16.94757 (train: 16.49087 cvalid: 15.34912 )
+## iteration 1 particle 4 weighted err: 20.13882 (train: 19.37989 cvalid: 17.48256 )
+## iteration 1 particle 5 weighted err: 14.5494 (train: 14.31557 cvalid: 13.731 ) BEST MODEL KEPT
+## iteration 1 particle 6 weighted err: 19.092 (train: 18.42356 cvalid: 16.75247 )
+## iteration 1 particle 7 weighted err: 12.88628 (train: 12.82588 cvalid: 12.67488 ) BEST MODEL KEPT
+## iteration 1 particle 8 weighted err: 9.66599 (train: 8.34742 cvalid: 9.17153 ) BEST MODEL KEPT
+## iteration 1 particle 9 weighted err: 12.87134 (train: 12.85174 cvalid: 12.80274 )
+## iteration 1 particle 10 weighted err: 0.53282 (train: 0.51617 cvalid: 0.47454 ) BEST MODEL KEPT
+## iteration 1 particle 11 weighted err: 6.02654 (train: 2.92766 cvalid: 4.86446 )
+## iteration 1 particle 12 weighted err: 20.07748 (train: 19.32307 cvalid: 17.43702 )
+## iteration 1 particle 13 weighted err: 0.8172 (train: 0.3341 cvalid: 0.63604 )
+## iteration 1 particle 14 weighted err: 15.12864 (train: 14.84328 cvalid: 14.12987 )
+## iteration 1 particle 15 weighted err: 16.04961 (train: 15.68522 cvalid: 14.77424 )
+## iteration 2 particle 1 weighted err: 3.25095 (train: 0.44164 cvalid: 2.19746 )
+## iteration 2 particle 2 weighted err: 6.72649 (train: 4.47423 cvalid: 5.88189 )
+## iteration 2 particle 3 weighted err: 1.5405 (train: 0.07335 cvalid: 0.99032 )
+## iteration 2 particle 4 weighted err: 7.84113 (train: 4.75334 cvalid: 6.68321 )
+## iteration 2 particle 5 weighted err: 0.34593 (train: 0.27883 cvalid: 0.11109 ) BEST MODEL KEPT
+## iteration 2 particle 6 weighted err: 12.3852 (train: 12.32275 cvalid: 12.1666 )
+## iteration 2 particle 7 weighted err: 0.72669 (train: 0.40974 cvalid: 0.60783 )
+## iteration 2 particle 8 weighted err: 9.46709 (train: 7.63313 cvalid: 8.77935 )
+## iteration 2 particle 9 weighted err: 0.26449 (train: 0.21547 cvalid: 0.0929 ) BEST MODEL KEPT
+## iteration 2 particle 10 weighted err: 0.53108 (train: 0.50309 cvalid: 0.52058 )
+## iteration 2 particle 11 weighted err: 0.21346 (train: 0.18145 cvalid: 0.10142 ) BEST MODEL KEPT
+## iteration 2 particle 12 weighted err: 10.01845 (train: 7.41695 cvalid: 9.04289 )
+## iteration 2 particle 13 weighted err: 0.8172 (train: 0.3341 cvalid: 0.63604 )
+## iteration 2 particle 14 weighted err: 11.38494 (train: 10.64396 cvalid: 11.10707 )
+## iteration 2 particle 15 weighted err: 0.65022 (train: 0.48874 cvalid: 0.58967 )
+## iteration 3 particle 1 weighted err: 0.16991 (train: 0.14985 cvalid: 0.0997 ) BEST MODEL KEPT
+## iteration 3 particle 2 weighted err: 0.2571 (train: 0.20501 cvalid: 0.07478 )
+## iteration 3 particle 3 weighted err: 0.21233 (train: 0.17727 cvalid: 0.08962 )
+## iteration 3 particle 4 weighted err: 0.27683 (train: 0.22695 cvalid: 0.10223 )
+## iteration 3 particle 5 weighted err: 0.29569 (train: 0.23231 cvalid: 0.07386 )
+## iteration 3 particle 6 weighted err: 5.28776 (train: 2.08285 cvalid: 4.08592 )
+## iteration 3 particle 7 weighted err: 0.3073 (train: 0.23883 cvalid: 0.06767 )
+## iteration 3 particle 8 weighted err: 0.26232 (train: 0.22815 cvalid: 0.24951 )
+## iteration 3 particle 9 weighted err: 0.26025 (train: 0.20627 cvalid: 0.07132 )
+## iteration 3 particle 10 weighted err: 0.53108 (train: 0.50309 cvalid: 0.52058 )
+## iteration 3 particle 11 weighted err: 0.21346 (train: 0.18145 cvalid: 0.10142 )
+## iteration 3 particle 12 weighted err: 0.46891 (train: 0.41581 cvalid: 0.28306 )
+## iteration 3 particle 13 weighted err: 0.17794 (train: 0.15515 cvalid: 0.09818 )
+## iteration 3 particle 14 weighted err: 2.70264 (train: 0.22617 cvalid: 1.77397 )
+## iteration 3 particle 15 weighted err: 0.13619 (train: 0.12791 cvalid: 0.10723 ) BEST MODEL KEPT
+## iteration 4 particle 1 weighted err: 0.16991 (train: 0.14985 cvalid: 0.0997 )
+## iteration 4 particle 2 weighted err: 0.2571 (train: 0.20501 cvalid: 0.07478 )
+## iteration 4 particle 3 weighted err: 0.21233 (train: 0.17727 cvalid: 0.08962 )
+## iteration 4 particle 4 weighted err: 0.16451 (train: 0.14885 cvalid: 0.1097 )
+## iteration 4 particle 5 weighted err: 0.1932 (train: 0.16253 cvalid: 0.08585 )
+## iteration 4 particle 6 weighted err: 0.33533 (train: 0.27301 cvalid: 0.1172 )
+## iteration 4 particle 7 weighted err: 0.26357 (train: 0.20933 cvalid: 0.07372 )
+## iteration 4 particle 8 weighted err: 0.25709 (train: 0.20479 cvalid: 0.07402 )
+## iteration 4 particle 9 weighted err: 0.26025 (train: 0.20627 cvalid: 0.07132 )
+## iteration 4 particle 10 weighted err: 0.52717 (train: 0.50699 cvalid: 0.45654 )
+## iteration 4 particle 11 weighted err: 0.12243 (train: 0.11719 cvalid: 0.1041 ) BEST MODEL KEPT
+## iteration 4 particle 12 weighted err: 0.31195 (train: 0.25553 cvalid: 0.1145 )
+## iteration 4 particle 13 weighted err: 0.17794 (train: 0.15515 cvalid: 0.09818 )
+## iteration 4 particle 14 weighted err: 0.28483 (train: 0.22989 cvalid: 0.09254 )
+## iteration 4 particle 15 weighted err: 0.13619 (train: 0.12791 cvalid: 0.10723 )
+## iteration 5 particle 1 weighted err: 0.15756 (train: 0.14336 cvalid: 0.10787 )
+## iteration 5 particle 2 weighted err: 0.14906 (train: 0.13677 cvalid: 0.10603 )
+## iteration 5 particle 3 weighted err: 0.19496 (train: 0.16397 cvalid: 0.08648 )
+## iteration 5 particle 4 weighted err: 0.16451 (train: 0.14885 cvalid: 0.1097 )
+## iteration 5 particle 5 weighted err: 0.15987 (train: 0.1455 cvalid: 0.1096 )
+## iteration 5 particle 6 weighted err: 0.23285 (train: 0.19629 cvalid: 0.10489 )
+## iteration 5 particle 7 weighted err: 0.15237 (train: 0.13932 cvalid: 0.10669 )
+## iteration 5 particle 8 weighted err: 0.14906 (train: 0.1377 cvalid: 0.10931 )
+## iteration 5 particle 9 weighted err: 0.12347 (train: 0.11734 cvalid: 0.10201 )
+## iteration 5 particle 10 weighted err: 0.47067 (train: 0.42237 cvalid: 0.3016 )
+## iteration 5 particle 11 weighted err: 0.12243 (train: 0.11719 cvalid: 0.1041 )
+## iteration 5 particle 12 weighted err: 0.22751 (train: 0.19169 cvalid: 0.10214 )
+## iteration 5 particle 13 weighted err: 0.10348 (train: 0.10208 cvalid: 0.09857 ) BEST MODEL KEPT
+## iteration 5 particle 14 weighted err: 0.17735 (train: 0.15256 cvalid: 0.09059 )
+## iteration 5 particle 15 weighted err: 0.13619 (train: 0.12791 cvalid: 0.10723 )</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">end.time &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">'time ellapsed:'</span>, end.time <span class="op">-</span><span class="st"> </span>start.time, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>))</a></code></pre></div>
-<pre><code>## time ellapsed: 1.4992272734642</code></pre>
+<pre><code>## time ellapsed: 1.63398174842199</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(ymat, <span class="kw"><a href="../reference/automl_predict.html">automl_predict</a></span>(<span class="dt">model =</span> amlmodel, <span class="dt">X =</span> xmat))</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(res) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'actual'</span>, <span class="st">'predict'</span>)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(res)</a></code></pre></div>
 <pre><code>##      actual  predict
-## [1,]    5.1 5.027661
-## [2,]    4.9 4.596144
-## [3,]    4.7 4.717559
-## [4,]    4.6 4.733640
-## [5,]    5.0 5.113964
-## [6,]    5.4 5.467246</code></pre>
+## [1,]    5.1 5.042245
+## [2,]    4.9 4.611002
+## [3,]    4.7 4.731076
+## [4,]    4.6 4.749674
+## [5,]    5.0 5.128494
+## [6,]    5.4 5.483997</code></pre>
 <p>It’s even better, with no human efforts but machine time<br> Windows users won’t benefit from parallelization, the function uses parallel package included with R base…<br></p>
 <h4 id="fit-a-regression-model-manually-hard-way" class="subsectionHead">
 <span class="titlemark">0.3.3 </span> <span id="x1-130000.3.3"></span>fit a regression model experimentally (experimental way, Mix 2)
@@ -445,18 +445,18 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb29-12" data-line-number="12">                    <span class="dt">layersacttype =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'tanh'</span>, <span class="st">'relu'</span>, <span class="st">''</span>),</a>
 <a class="sourceLine" id="cb29-13" data-line-number="13">                    <span class="dt">layersdropoprob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 1.71189614432236 (cv cost: 1.87093107817872) (LR:  0.001 ) 
-## cost epoch20: 1.46539498970153 (cv cost: 1.60827685220873) (LR:  0.001 ) 
-## cost epoch30: 1.51097359914267 (cv cost: 1.35829158526842) (LR:  0.001 ) 
-## cost epoch40: 1.54885630861372 (cv cost: 1.13063792573005) (LR:  0.001 ) 
-## cost epoch50: 1.5701919737473 (cv cost: 1.01013240092999) (LR:  0.001 ) 
+## cost epoch10: 1.29665380285058 (cv cost: 1.74704657843323) (LR:  0.001 ) 
+## cost epoch20: 0.843225266258057 (cv cost: 1.42636447877544) (LR:  0.001 ) 
+## cost epoch30: 0.701209294390727 (cv cost: 1.17240091510447) (LR:  0.001 ) 
+## cost epoch40: 0.622160843160679 (cv cost: 0.943666041712498) (LR:  0.001 ) 
+## cost epoch50: 0.565909433052226 (cv cost: 0.787110144812501) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [10,4] (min|max: -0.992318461003706, 1.34989617707359)
-##    dim bB1: [10,1] (min|max: -0.206069758132562, 0.253890502123614)
-##    dim W2: [10,10] (min|max: -1.08700750868112, 1.26848630822546)
-##    dim bB2: [10,1] (min|max: -0.0345749905577558, 0.274368217048584)
-##    dim W3: [3,10] (min|max: -0.53483618820997, 0.201379256673472)
-##    dim bB3: [3,1] (min|max: -0.0612170632863233, 0.00596096686809277)
+##    dim W1: [10,4] (min|max: -0.984666718846624, 1.2276818401708)
+##    dim bB1: [10,1] (min|max: -0.233920588133026, 0.216425500872177)
+##    dim W2: [10,10] (min|max: -1.16908577147715, 1.33687388305463)
+##    dim bB2: [10,1] (min|max: -0.104718049250744, 0.270935180680764)
+##    dim W3: [3,10] (min|max: -0.590874371939718, 0.274362508051798)
+##    dim bB3: [3,1] (min|max: -0.0572599515085427, -0.00566976537932757)
 ##    dim Y: [3,135]</code></pre>
 <p>nb: last activation type may be left to blank (it will be set automatically)<br><br> 2nd example: with gradient descent and no hidden layer (logistic regression)<br></p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(iris)</a>
@@ -471,14 +471,14 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb31-10" data-line-number="10">                    <span class="dt">layersacttype =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'sigmoid'</span>),</a>
 <a class="sourceLine" id="cb31-11" data-line-number="11">                    <span class="dt">layersdropoprob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>)))</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 1.99625400356964 (cv cost: 1.96668349911798) (LR:  0.001 ) 
-## cost epoch20: 1.80623664408059 (cv cost: 1.88055968458769) (LR:  0.001 ) 
-## cost epoch30: 1.7129547023897 (cv cost: 1.83222758233555) (LR:  0.001 ) 
-## cost epoch40: 1.65986375013556 (cv cost: 1.79683014575606) (LR:  0.001 ) 
-## cost epoch50: 1.62852986670403 (cv cost: 1.76958091833677) (LR:  0.001 ) 
+## cost epoch10: 1.61658507238184 (cv cost: 1.8587790444063) (LR:  0.001 ) 
+## cost epoch20: 1.282437925451 (cv cost: 1.75200681363052) (LR:  0.001 ) 
+## cost epoch30: 1.14470029130381 (cv cost: 1.7014875357026) (LR:  0.001 ) 
+## cost epoch40: 1.07541781099265 (cv cost: 1.66542615961813) (LR:  0.001 ) 
+## cost epoch50: 1.03556196030768 (cv cost: 1.63423987109533) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.287822586802553, 0.0745329912660817)
-##    dim bB1: [3,1] (min|max: -0.0565657905949928, 0.00110157423432543)
+##    dim W1: [3,4] (min|max: -0.345231105340077, 0.17778948876087)
+##    dim bB1: [3,1] (min|max: -0.044780022734441, -0.00432463071420275)
 ##    dim Y: [3,135]</code></pre>
 <p>We saved the model to continue training later (see below in next section)</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">amlmodelsaved &lt;-<span class="st"> </span>amlmodel</a></code></pre></div>
@@ -491,19 +491,19 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb34-3" data-line-number="3">                    <span class="dt">psopartpopsize =</span> <span class="dv">50</span>),</a>
 <a class="sourceLine" id="cb34-4" data-line-number="4">                <span class="dt">mdlref =</span> amlmodelsaved)</a></code></pre></div>
 <pre><code>## (cost: crossentropy)
-## cost epoch10: 1.64939345678508 (cv cost: 1.71937333380575) (LR:  0.001 ) 
-## cost epoch20: 1.59222961498199 (cv cost: 1.68871980974644) (LR:  0.001 ) 
-## cost epoch30: 1.55920723100684 (cv cost: 1.66301770657286) (LR:  0.001 ) 
-## cost epoch40: 1.53753479283443 (cv cost: 1.63906547412896) (LR:  0.001 ) 
-## cost epoch50: 1.52142303375345 (cv cost: 1.61605959302094) (LR:  0.001 ) 
-## cost epoch60: 1.5083504142276 (cv cost: 1.59378034170119) (LR:  0.001 ) 
-## cost epoch70: 1.49709713220979 (cv cost: 1.57217010517658) (LR:  0.001 ) 
-## cost epoch80: 1.48702147224837 (cv cost: 1.55121668496295) (LR:  0.001 ) 
-## cost epoch90: 1.47776257083127 (cv cost: 1.53091751538077) (LR:  0.001 ) 
-## cost epoch100: 1.46994872480746 (cv cost: 1.51320448300005) (LR:  0.001 ) 
+## cost epoch10: 1.03490764428668 (cv cost: 1.5747333885312) (LR:  0.001 ) 
+## cost epoch20: 0.984919653938184 (cv cost: 1.54910087025623) (LR:  0.001 ) 
+## cost epoch30: 0.960401280365616 (cv cost: 1.52503143346609) (LR:  0.001 ) 
+## cost epoch40: 0.945402492400156 (cv cost: 1.5012185303328) (LR:  0.001 ) 
+## cost epoch50: 0.934562606741102 (cv cost: 1.47771633414801) (LR:  0.001 ) 
+## cost epoch60: 0.925808832781349 (cv cost: 1.45465321997861) (LR:  0.001 ) 
+## cost epoch70: 0.918224963832334 (cv cost: 1.43212401603518) (LR:  0.001 ) 
+## cost epoch80: 0.911363942116939 (cv cost: 1.41018954252011) (LR:  0.001 ) 
+## cost epoch90: 0.904989144440137 (cv cost: 1.38888553087885) (LR:  0.001 ) 
+## cost epoch100: 0.898966219608152 (cv cost: 1.36822990736218) (LR:  0.001 ) 
 ##    dim X: [4,135]
-##    dim W1: [3,4] (min|max: -0.58898107691444, 0.272038569275488)
-##    dim bB1: [3,1] (min|max: -0.142270510796367, 0.0595738450840597)
+##    dim W1: [3,4] (min|max: -0.668645124243207, 0.423201531504067)
+##    dim bB1: [3,1] (min|max: -0.138743373085797, 0.0607721058469752)
 ##    dim Y: [3,135]</code></pre>
 <p>We can see the error continuing to decrease from last training<br> The training continued with the same parameters, but notice that we were able to change the number of iterations<br></p>
 <h4 id="fit-a-regression-model-manually-hard-way" class="subsectionHead">
@@ -524,56 +524,56 @@ Subject: predict Sepal.Length given other Iris parameters<br> 1st with gradient 
 <a class="sourceLine" id="cb36-12" data-line-number="12">                <span class="dt">autopar =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">auto_runtype =</span> <span class="st">'2steps'</span>))</a></code></pre></div>
 <pre><code>## STEP: 1 (overfitting)
 ## (cost: crossentropy)
-## iteration 1 particle 1 weighted err: 1.89223 BEST MODEL KEPT
-## iteration 1 particle 2 weighted err: 2.01374
-## iteration 1 particle 3 weighted err: 1.98038
-## iteration 1 particle 4 weighted err: 2.06968
-## iteration 1 particle 5 weighted err: 1.86284 BEST MODEL KEPT
-## iteration 1 particle 6 weighted err: 2.08126
-## iteration 1 particle 7 weighted err: 1.92107
-## iteration 1 particle 8 weighted err: 1.79115 BEST MODEL KEPT
-## iteration 2 particle 1 weighted err: 1.89223
-## iteration 2 particle 2 weighted err: 1.97729
-## iteration 2 particle 3 weighted err: 1.78583 BEST MODEL KEPT
-## iteration 2 particle 4 weighted err: 2.02162
-## iteration 2 particle 5 weighted err: 1.78917
-## iteration 2 particle 6 weighted err: 1.99649
-## iteration 2 particle 7 weighted err: 1.82008
-## iteration 2 particle 8 weighted err: 1.79115
-## iteration 3 particle 1 weighted err: 1.76979 BEST MODEL KEPT
-## iteration 3 particle 2 weighted err: 1.84428
-## iteration 3 particle 3 weighted err: 1.65681 BEST MODEL KEPT
-## iteration 3 particle 4 weighted err: 1.94741
-## iteration 3 particle 5 weighted err: 1.76721
-## iteration 3 particle 6 weighted err: 1.97101
-## iteration 3 particle 7 weighted err: 1.79742
-## iteration 3 particle 8 weighted err: 1.79115
+## iteration 1 particle 1 weighted err: 1.43461 BEST MODEL KEPT
+## iteration 1 particle 2 weighted err: 1.74468
+## iteration 1 particle 3 weighted err: 1.55675
+## iteration 1 particle 4 weighted err: 1.96274
+## iteration 1 particle 5 weighted err: 1.27769 BEST MODEL KEPT
+## iteration 1 particle 6 weighted err: 1.91679
+## iteration 1 particle 7 weighted err: 1.53373
+## iteration 1 particle 8 weighted err: 1.62916
+## iteration 2 particle 1 weighted err: 1.43461
+## iteration 2 particle 2 weighted err: 1.74468
+## iteration 2 particle 3 weighted err: 1.43444
+## iteration 2 particle 4 weighted err: 1.83142
+## iteration 2 particle 5 weighted err: 1.1734 BEST MODEL KEPT
+## iteration 2 particle 6 weighted err: 1.83183
+## iteration 2 particle 7 weighted err: 0.96437 BEST MODEL KEPT
+## iteration 2 particle 8 weighted err: 1.62916
+## iteration 3 particle 1 weighted err: 1.42865
+## iteration 3 particle 2 weighted err: 1.3816
+## iteration 3 particle 3 weighted err: 1.43444
+## iteration 3 particle 4 weighted err: 1.63056
+## iteration 3 particle 5 weighted err: 1.1734
+## iteration 3 particle 6 weighted err: 1.77773
+## iteration 3 particle 7 weighted err: 0.96437
+## iteration 3 particle 8 weighted err: 1.32337
 ## STEP: 2 (regularization)
 ## (cost: crossentropy)
-## iteration 1 particle 1 weighted err: 1.8825 (train: 1.86862 cvalid: 1.83392 ) BEST MODEL KEPT
-## iteration 1 particle 2 weighted err: 1.87967 (train: 1.86508 cvalid: 1.82863 ) BEST MODEL KEPT
-## iteration 1 particle 3 weighted err: 1.94153 (train: 1.93027 cvalid: 1.90212 )
-## iteration 1 particle 4 weighted err: 1.74796 (train: 1.74723 cvalid: 1.7454 ) BEST MODEL KEPT
-## iteration 1 particle 5 weighted err: 1.79112 (train: 1.7849 cvalid: 1.76937 )
-## iteration 1 particle 6 weighted err: 1.88973 (train: 1.87743 cvalid: 1.84668 )
-## iteration 1 particle 7 weighted err: 2.03988 (train: 2.02659 cvalid: 1.99337 )
-## iteration 1 particle 8 weighted err: 1.8257 (train: 1.81894 cvalid: 1.80204 )
-## iteration 2 particle 1 weighted err: 1.73252 (train: 1.72937 cvalid: 1.72148 ) BEST MODEL KEPT
-## iteration 2 particle 2 weighted err: 1.70953 (train: 1.67906 cvalid: 1.6981 ) BEST MODEL KEPT
-## iteration 2 particle 3 weighted err: 1.75612 (train: 1.73784 cvalid: 1.74927 )
-## iteration 2 particle 4 weighted err: 1.71942 (train: 1.68315 cvalid: 1.70582 )
-## iteration 2 particle 5 weighted err: 1.79112 (train: 1.7849 cvalid: 1.76937 )
-## iteration 2 particle 6 weighted err: 1.88973 (train: 1.87743 cvalid: 1.84668 )
-## iteration 2 particle 7 weighted err: 1.82257 (train: 1.81428 cvalid: 1.79356 )
-## iteration 2 particle 8 weighted err: 1.8257 (train: 1.81894 cvalid: 1.80204 )
-## iteration 3 particle 1 weighted err: 1.70099 (train: 1.69381 cvalid: 1.6983 ) BEST MODEL KEPT
-## iteration 3 particle 2 weighted err: 1.70665 (train: 1.6696 cvalid: 1.69276 )
-## iteration 3 particle 3 weighted err: 1.73878 (train: 1.6778 cvalid: 1.71591 )
-## iteration 3 particle 4 weighted err: 1.71942 (train: 1.68315 cvalid: 1.70582 )
-## iteration 3 particle 5 weighted err: 1.79112 (train: 1.7849 cvalid: 1.76937 )
-## iteration 3 particle 6 weighted err: 1.75088 (train: 1.74261 cvalid: 1.74778 )
-## iteration 3 particle 7 weighted err: 1.72825 (train: 1.6841 cvalid: 1.71169 )
-## iteration 3 particle 8 weighted err: 1.8257 (train: 1.81894 cvalid: 1.80204 )</code></pre>
+## iteration 1 particle 1 weighted err: 2.13159 (train: 1.17461 cvalid: 1.77273 ) BEST MODEL KEPT
+## iteration 1 particle 2 weighted err: 2.1416 (train: 1.15954 cvalid: 1.77332 )
+## iteration 1 particle 3 weighted err: 2.14985 (train: 1.35839 cvalid: 1.85305 )
+## iteration 1 particle 4 weighted err: 2.12978 (train: 1.02018 cvalid: 1.71368 ) BEST MODEL KEPT
+## iteration 1 particle 5 weighted err: 2.12189 (train: 1.05832 cvalid: 1.72305 ) BEST MODEL KEPT
+## iteration 1 particle 6 weighted err: 2.13872 (train: 1.20338 cvalid: 1.78796 )
+## iteration 1 particle 7 weighted err: 2.12623 (train: 1.73922 cvalid: 1.9811 )
+## iteration 1 particle 8 weighted err: 2.17603 (train: 1.08256 cvalid: 1.76598 )
+## iteration 2 particle 1 weighted err: 2.11751 (train: 0.99708 cvalid: 1.69734 ) BEST MODEL KEPT
+## iteration 2 particle 2 weighted err: 2.13076 (train: 0.97468 cvalid: 1.69723 )
+## iteration 2 particle 3 weighted err: 2.14492 (train: 1.02066 cvalid: 1.72332 )
+## iteration 2 particle 4 weighted err: 2.12683 (train: 0.97774 cvalid: 1.69592 )
+## iteration 2 particle 5 weighted err: 2.12189 (train: 1.05832 cvalid: 1.72305 )
+## iteration 2 particle 6 weighted err: 2.13872 (train: 1.20338 cvalid: 1.78796 )
+## iteration 2 particle 7 weighted err: 2.12623 (train: 1.73922 cvalid: 1.9811 )
+## iteration 2 particle 8 weighted err: 2.17376 (train: 1.32826 cvalid: 1.8567 )
+## iteration 3 particle 1 weighted err: 2.11533 (train: 0.97388 cvalid: 1.68728 ) BEST MODEL KEPT
+## iteration 3 particle 2 weighted err: 2.13044 (train: 0.97003 cvalid: 1.69529 )
+## iteration 3 particle 3 weighted err: 2.1429 (train: 0.98359 cvalid: 1.70816 )
+## iteration 3 particle 4 weighted err: 2.12683 (train: 0.97774 cvalid: 1.69592 )
+## iteration 3 particle 5 weighted err: 2.12189 (train: 1.05832 cvalid: 1.72305 )
+## iteration 3 particle 6 weighted err: 2.13285 (train: 1.02146 cvalid: 1.71608 )
+## iteration 3 particle 7 weighted err: 2.12623 (train: 1.73922 cvalid: 1.9811 )
+## iteration 3 particle 8 weighted err: 2.17376 (train: 1.32826 cvalid: 1.8567 )</code></pre>
 <p>Compared to the last runs (in previous sections above), difference between train and cross validation errors is much more tenuous<br> Automatically :-)<br></p>
 <h3 id="todo-list-idea" class="sectionHead">
 <span class="titlemark">0.4 </span> <span id="x1-190000.4"></span>ToDo List idea

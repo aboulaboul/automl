@@ -270,14 +270,13 @@ sbamlmoddlcost <- function(mydl, y, yhat, costtype, lambda, nblayers, epsil)
   {
     m = dim(y)[2]
     J <- (1 / (2 * m)) * sum((y - yhat) ^ 2)
-  } else if (costtype == 'rmse')
-  {
-    m = dim(y)[2]
-    J <- (1 / m) * sqrt(sum((y - yhat) ^ 2))
   } else if (costtype == 'mape')
   {
     m = dim(y)[2]
-    J <- (1 / m) * sum(abs((y - yhat) / (y + epsil)))
+    J <- abs((y - yhat) / y)
+    J[is.na(J)] <- 0;#if all to 0
+    J[is.infinite(J)] <- 1 / epsil;#if y to 0
+    J <- (1 / m) * sum(J)
   } else if (costtype == 'custom')
   {
     mytest <- try(eval(parse(text = mydl$hpar$costcustformul)), TRUE)
@@ -307,14 +306,16 @@ sbamlmoddlcostbk <- function(y, yhat, costtype, epsil)
   } else if (costtype == 'mse')
   {
     dJ <- sbamlmatopebroadcst(yhat, y  * (-1), 'add')
-  } else if (costtype == 'rmse')
-  {
-    dJ <- sbamlmatopebroadcst(2 * sbamlmatopebroadcst(yhat, y  * (-1), 'add'),
-                              (1 / 2) * ((sbamlmatopebroadcst(y, yhat  * (-1), 'add') + epsil) ^ 2) ^ (-1 / 2),
-                              'mult')
   } else if (costtype == 'mape')
   {
-    dJ <- (abs(y) + epsil) ^ (-1)
+    tmp <- sbamlmatopebroadcst(y, yhat  * (-1), 'add')
+    dJ <- abs(sbamlmatopebroadcst(tmp, y, 'divid'))
+    dJ[is.na(dJ)] <- 0;#if all to 0
+    dJ[is.infinite(dJ)] <- 1 / epsil;#if y to 0
+    dJ <- sbamlmatopebroadcst(dJ, tmp, 'divid')
+    dJ[is.na(dJ)] <- 0;#if all to 0
+    dJ[is.infinite(dJ)] <- 1 / epsil;#if y - yhat tp 0
+    dJ <- dJ * (-1)
   }
   return(dJ)
 }
@@ -1152,7 +1153,7 @@ automl_train_manual <- function(Xref, Yref, hpar = list(), mdlref = NULL)
           }
         }
       }
-      if (mydl$hpar$modexec == 'trainwgrad' & (epochnum != mydl$hpar$numiterations & batchnum != nbbatch))
+      if (mydl$hpar$modexec == 'trainwgrad' & !(epochnum == mydl$hpar$numiterations & batchnum == nbbatch))
       {
         mydl <- sbamlmoddlbk(mydl, Y, Yhat, mydl$hpar$costtype, mydl$hpar$nblayers,
                              mydl$hpar$layersacttype, mydl$hpar$lambda, mydl$hpar$layersdropoprob,

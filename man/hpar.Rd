@@ -73,7 +73,7 @@ default value no drop out: c(0, 0)\cr
 \item{testgainunder}{ threshold to stop the training if the gain between last train or cross validation cost is smaller than the threshold, 0 for no stop test (default 0.000001)}
 
 \item{costtype}{ cost type function name \sQuote{mse} or \sQuote{crossentropy} or \sQuote{custom}\cr
-\sQuote{mse} for Mean Squared Error, set automatically for continuous target type (\sQuote{rmse} Root MSE may be specified)\cr
+\sQuote{mse} for Mean Squared Error, set automatically for continuous target type (\sQuote{mape} Mean Absolute Percentage Error may be specified)\cr
 \sQuote{crossentropy} set automatically for binary target type\cr
 \sQuote{custom} set automatically if \sQuote{costcustformul} different from \sQuote{}
 }
